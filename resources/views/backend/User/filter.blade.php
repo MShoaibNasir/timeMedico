@@ -1,0 +1,349 @@
+@extends('backend.layout.master')
+@section('content')
+
+<style>
+    #myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin: 5px;
+        /* Added margin for spacing */
+    }
+
+    #myImg:hover {
+        opacity: 0.7;
+    }
+
+    /* The Modal (background) */
+    .mmodal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.9);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .mmodal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    /* Caption of Modal Image */
+    #ccaption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+    }
+
+    /* Add Animation */
+    .mmodal-content,
+    #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0)
+        }
+
+        to {
+            -webkit-transform: scale(1)
+        }
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* The Close Button */
+    .cclose {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .cclose:hover,
+    .cclose:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px) {
+        .mmodal-content {
+            width: 100%;
+        }
+    }
+
+    .button_rotate {
+        margin-top: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background: black;
+        width: 100px;
+        color: #fff;
+    }
+
+
+    .rotating-image {
+        transition: transform 0.5s ease-in-out;
+        /* Smooth rotation */
+
+
+    }
+
+    #loader_data {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+    }
+
+    .form-label {
+        margin-bottom: 0.5rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    /* Chrome, Safari, Edge */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<div class="content">
+    <div class="container-fluid pt-4 px-4 form_width">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Users List</h6>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pdmadatalist">
+                        <!--Toolbar-->
+                        <div class="toolbar">
+                            <div class="filters-toolbar-wrapper">
+                                <div class="row">
+                                    <h4>Filters</h4>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">{{ __('Search By Name') }}</label>
+                                        <div class="uc_list">
+                                            <input type="text" name="name" id="name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">{{ __('Search By Email') }}</label>
+                                        <div class="uc_list">
+                                            <input type="text" name="email" id="email" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">{{ __('Search By Phone No') }}</label>
+                                        <div class="uc_list">
+                                            <input type="number" name="phone" id="phone" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">{{ __('Search By Gender') }}</label>
+                                        <div class="uc_list">
+                                            <select name="gender" id="gender" class="form-control">
+                                                <option value="">Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End Toolbar-->
+                        <div class="filter_data"></div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div id="mmyModal" class="mmodal">
+                <span class="cclose">&times;</span>
+                <img class="mmodal-content" id="img01">
+                <div id="ccaption"></div>
+            </div>
+        </div>
+    </div>
+
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "{{ session('error') }}",
+            toast: true, // This enables the toast mode
+            position: 'top-end', // Position of the toast
+            showConfirmButton: false, // Hides the confirm button
+            timer: 3000 // Time to show the toast in milliseconds
+        });
+    </script>
+    @endif
+    @if(session('success'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "{{ session('success') }}"
+        });
+    </script>
+    @endif
+
+
+    @endsection
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+    <style>
+        .pdmadatalist .form-group {
+            margin-bottom: 15px;
+        }
+
+        .pdmadatalist label {
+            display: block;
+            text-align: left;
+        }
+
+        .pdmadatalist .select2-container {
+            width: 100% !important;
+            text-align: left;
+        }
+    </style>
+    @push('specific_js')
+    <script>
+        $(document).ready(function() {
+            filter_data();
+
+            function filter_data(currentpage) {
+                $('.filter_data').html('<div id="loading"></div>');
+                var action = 'fetch_data';
+                var sorting = $("#sorting").val();
+                var direction = $("#direction").val();
+                var name = $("#name").val();
+                var email = $("#email").val();
+                var phone = $("#phone").val();
+                var gender = $("#gender").val();
+                var qty = $("#qty").val();
+
+
+                var ayis_page = currentpage ?? 1;
+
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        action: action,
+                        sorting: sorting,
+                        direction: direction,
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        gender: gender,
+                        qty: qty,
+                        ayis_page: ayis_page,
+                        _token: '{{csrf_token()}}'
+                    },
+                    url: "{{ route('manager.email.send.index') }}",
+
+                    beforeSend: function() {
+                        $('.filter_data').html('<center><img src="{{ asset("backend/assets/images/pic.gif") }}" width="200" alt="Loader" /></center>');
+                    },
+                    success: function(data) {
+
+                        $('.filter_data').html(data);
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+
+            }
+
+
+
+
+
+
+
+            $("#b_reference_number, #name, #cnic , #email,#phone").on('keyup keydown', function() {
+                filter_data();
+            });
+
+
+
+            $('body').on('change', '#sorting, #direction, #qty , #gender', function(e) {
+                e.preventDefault();
+                filter_data();
+            });
+
+            $('body').on('click', '.pagination a', function(f) {
+                f.preventDefault();
+                var url = $(this).attr('href');
+                var currentpage = url.split('page=')[1];
+                filter_data(currentpage);
+            });
+
+        });
+    </script>
+    @endpush

@@ -1,0 +1,782 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "PICG API Documentation",
+        "description": "This documentation covers all API endpoints for the PICG project.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/api/education/store": {
+            "post": {
+                "tags": [
+                    "Education"
+                ],
+                "summary": "Store Education",
+                "operationId": "storeEducation",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "degree",
+                                    "degree_title",
+                                    "majors",
+                                    "institute_name",
+                                    "board_name",
+                                    "start_date",
+                                    "end_date",
+                                    "obtained_marks",
+                                    "total_marks",
+                                    "obtained_percentage",
+                                    "grade",
+                                    "foreign_qualified",
+                                    "education_document"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "degree": {
+                                        "type": "string",
+                                        "example": "BS"
+                                    },
+                                    "degree_title": {
+                                        "type": "string",
+                                        "example": "BS Computer Science"
+                                    },
+                                    "majors": {
+                                        "type": "string",
+                                        "example": "Computer Science"
+                                    },
+                                    "institute_name": {
+                                        "type": "string",
+                                        "example": "Virtual University"
+                                    },
+                                    "board_name": {
+                                        "type": "string",
+                                        "example": "BISE Lahore"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2021-01-01"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-01-01"
+                                    },
+                                    "obtained_marks": {
+                                        "type": "integer",
+                                        "example": 850
+                                    },
+                                    "total_marks": {
+                                        "type": "integer",
+                                        "example": 1100
+                                    },
+                                    "obtained_percentage": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 77.27
+                                    },
+                                    "grade": {
+                                        "type": "string",
+                                        "example": "A"
+                                    },
+                                    "foreign_qualified": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Yes",
+                                            "No"
+                                        ],
+                                        "example": "No"
+                                    },
+                                    "education_document": {
+                                        "type": "string",
+                                        "example": "documents/degree.pdf"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Education created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/education/show": {
+            "get": {
+                "tags": [
+                    "Education"
+                ],
+                "summary": "Get education record by ID",
+                "operationId": "showEducation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID of the education record",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/education/update": {
+            "put": {
+                "tags": [
+                    "Education"
+                ],
+                "summary": "Update Education",
+                "operationId": "updateEducation",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "user_id",
+                                    "degree",
+                                    "degree_title",
+                                    "majors",
+                                    "institute_name",
+                                    "board_name",
+                                    "start_date",
+                                    "end_date",
+                                    "obtained_marks",
+                                    "total_marks",
+                                    "obtained_percentage",
+                                    "grade",
+                                    "foreign_qualified",
+                                    "education_document"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "degree": {
+                                        "type": "string",
+                                        "example": "BS Computer Science"
+                                    },
+                                    "degree_title": {
+                                        "type": "string",
+                                        "example": "Bachelor of Science"
+                                    },
+                                    "majors": {
+                                        "type": "string",
+                                        "example": "Computer Science"
+                                    },
+                                    "institute_name": {
+                                        "type": "string",
+                                        "example": "Virtual University"
+                                    },
+                                    "board_name": {
+                                        "type": "string",
+                                        "example": "HEC"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2021-01-01"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-01-01"
+                                    },
+                                    "obtained_marks": {
+                                        "type": "integer",
+                                        "example": 800
+                                    },
+                                    "total_marks": {
+                                        "type": "integer",
+                                        "example": 1000
+                                    },
+                                    "obtained_percentage": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 80.5
+                                    },
+                                    "grade": {
+                                        "type": "string",
+                                        "example": "A"
+                                    },
+                                    "foreign_qualified": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Yes",
+                                            "No"
+                                        ],
+                                        "example": "No"
+                                    },
+                                    "education_document": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Education updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "Education not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/education/delete": {
+            "delete": {
+                "tags": [
+                    "Education"
+                ],
+                "summary": "Delete Education",
+                "operationId": "deleteEducation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the education to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Education deleted successfully"
+                    },
+                    "404": {
+                        "description": "Education not found"
+                    },
+                    "500": {
+                        "description": "Failed to delete education"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/authentication/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "operationId": "registerUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Shoaib"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "shoaib@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User registered successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/authentication/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login a user",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "shoaib@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User login successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/skill": {
+            "get": {
+                "tags": [
+                    "Skill"
+                ],
+                "summary": "Get Skills by User ID",
+                "operationId": "getSkills",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "ID of the user whose skills to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of skills",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 5
+                                            },
+                                            "skill_name": {
+                                                "type": "string",
+                                                "example": "Laravel"
+                                            },
+                                            "level": {
+                                                "type": "string",
+                                                "example": "Intermediate"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No skills found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Skill"
+                ],
+                "summary": "Create a new skill",
+                "operationId": "storeSkill",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "name",
+                                    "skill_proficiency",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Laravel"
+                                    },
+                                    "skill_proficiency": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Beginner",
+                                            "Intermediate",
+                                            "Expert"
+                                        ],
+                                        "example": "Intermediate"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Experience building RESTful APIs"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Skill created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Laravel"
+                                                },
+                                                "skill_proficiency": {
+                                                    "type": "string",
+                                                    "example": "Intermediate"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Experience building RESTful APIs"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-11T10:45:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-11T10:45:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Skill Create Successfully!."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/skill/show": {
+            "get": {
+                "tags": [
+                    "Skill"
+                ],
+                "summary": "Get skill details by ID",
+                "operationId": "showSkill",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID of the skill to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Skill retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Laravel"
+                                        },
+                                        "skill_proficiency": {
+                                            "type": "string",
+                                            "example": "Expert"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Developed APIs and admin dashboards."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Skill not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/skill/update": {
+            "post": {
+                "tags": [
+                    "Skill"
+                ],
+                "summary": "Update a skill",
+                "operationId": "updateSkill",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "skill_id"
+                                ],
+                                "properties": {
+                                    "skill_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Laravel"
+                                    },
+                                    "skill_proficiency": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Beginner",
+                                            "Intermediate",
+                                            "Expert"
+                                        ],
+                                        "example": "Expert"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Experience with Laravel framework."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Skill updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/skill/delete": {
+            "delete": {
+                "tags": [
+                    "Skill"
+                ],
+                "summary": "Delete a skill by ID",
+                "operationId": "deleteSkill",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Skill deleted successfully"
+                    },
+                    "404": {
+                        "description": "Skill not found"
+                    },
+                    "500": {
+                        "description": "Failed to delete skill"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Education",
+            "description": "Education"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Skill",
+            "description": "Skill"
+        }
+    ]
+}
