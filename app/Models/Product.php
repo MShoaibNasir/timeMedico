@@ -2,19 +2,25 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // Added for Soft Deletes
+
 
 class Product extends Model
 {
-    protected $guarded=['id'];
+    use HasFactory;
+    use SoftDeletes; // Added for Soft Deletes
 
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
-    }
 
-    public function user()
+    protected $table = 'products';
+    protected $guarded =['id'];
+
+ 
+
+    public function category()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Category::class, 'category_id', 'id')->withTrashed();
     }
+  
 }

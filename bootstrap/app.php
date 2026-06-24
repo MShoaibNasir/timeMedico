@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
         $middleware->alias([
             'auth' => Authenticate::class,
+            'api.secret' => \App\Http\Middleware\ApiSecretMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role' => RoleMiddleware::class,
             'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,

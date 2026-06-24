@@ -4,12 +4,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Create Category</h1>
+                <h1>Edit Department</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{url('/manager')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Create Category</li>
+                    <li class="breadcrumb-item active">Edit Department</li>
                 </ol>
             </div>
         </div>
@@ -27,37 +27,22 @@
             <div class="col-md-12">
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Create Category</h3>
+                        <h3 class="card-title">Edit Department</h3>
                     </div>
-                    <form action="{{ route('manager.category.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('manager.department.update', $class->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="card-body">
                             <div class="form-group mb-3">
                                 <strong>Name:</strong>
-                                <input type="text" name="name" placeholder="Enter Class Name" class="form-control">
-                            </div>
-                            <div class="form-group mb-3">
-                                <strong>Department:</strong>
-                                <select name="department_id" class="form-control">
-                                    <option value="">Select Option</option>
-                                    @foreach ($departments as $data)
-                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                    @endforeach
-
-                                </select>
-                            </div>
-                            <!-- Logo -->
-                            <div class="mt-2">
-                                <div class="form-group">
-                                    <strong>Image:</strong>
-                                    <input type="file" name="image" class="form-control">
-                                </div>
+                                <input type="text" name="name" class="form-control"
+                                    value="{{ $class->name }}" placeholder="Enter Class Name">
                             </div>
                             <div class="form-group mb-3">
                                 <strong>Status:</strong>
                                 <select name="status" class="form-control">
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value="1" {{ $class->status == 1 ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ $class->status == 0 ? 'selected' : '' }}>Inactive</option>
                                 </select>
                             </div>
                         </div>

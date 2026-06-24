@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Category List</h1>
+                <h1>Department List</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ url('/manager') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Category List</li>
+                    <li class="breadcrumb-item active">Department List</li>
                 </ol>
             </div>
         </div>
@@ -38,7 +38,6 @@
                     <th>Name</th>
                     <th>Image</th>
                     <th>status</th>
-                    <th>Department</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -47,6 +46,7 @@
                 <tr>
                     <td>{{ $loop->index+1 }}</td>
                     <td>{{ $data->name }}</td>
+
                     <td class="align-middle">
                         @if($data->image)
                         <img src="{{ asset('storage/'.$data->image) }}"
@@ -72,30 +72,22 @@
                         </div>
                         @endif
                     </td>
-
-
                     <td class="align-middle">
                         <span class="badge {{ $data->status == 1 ? 'bg-success' : 'bg-danger' }}">
                             {{ $data->status == 1 ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
 
-                    <td class="align-middle">
-                        <span>
-                            {{ $data->department->name }}
-                        </span>
-                    </td>
-
 
                     <td>
                         @can('category-edit')
-                        <a class="btn btn-primary btn-sm" href="{{ route('manager.category.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('manager.department.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                         @endcan
 
                         @can('category-delete')
                         <form id="deleteAdminForm{{ $key }}"
                             method="POST"
-                            action="{{ route('manager.category.destroy', $data->id) }}"
+                            action="{{ route('manager.department.destroy', $data->id) }}"
                             style="display:inline">
                             @csrf
                             @method('DELETE')

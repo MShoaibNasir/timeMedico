@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\HomeSlider;
 use Auth;
-use App\Models\Category;
-use App\Models\Department;
 use Illuminate\Support\Facades\Storage;
 
-class CategoryController extends Controller
+class HomeSliderController extends Controller
 {
     public function index(Request $request)
     {
      
         
-        $query = Category::latest();
+        $query = HomeSlider::latest();
         if ($request->has('export')) {
 
             $filename = 'Policies-Category.csv';
@@ -40,98 +39,88 @@ class CategoryController extends Controller
             return response()->stream($callback, 200, $headers);
         }
         $classes = $query->paginate(10);
-        return view('backend.category.index', compact('classes'));
+        return view('backend.slider.index', compact('classes'));
     }
 
     public function create()
     {
-        $departments=Department::where('status',1)->get();
-        return view('backend.category.create',['departments'=>$departments]);
+        return view('backend.slider.create');
     }
 
     public function store(Request $request)
     {
+   
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,svg|max:2048',
+         
+            'image' => 'nullable|file|mimes:jpg,png,jpeg,svg|max:2048',
             'status' => 'required|boolean',
-            'department_id' => 'required',
         ]);
 
-        $imagePath = null;
+        $logoPath = null;
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('categories', 'public');
+            $logoPath = $request->file('image')->store('homeslider', 'public');
         }
 
-        category::create([
-            'name' => $request->name,
-            'image' => $imagePath,
+        HomeSlider::create([
+            'image' => $logoPath,
             'status' => $request->status,
-            'department_id' => $request->department_id,
+            'admin_id'=>Auth::user()->id
         ]);
 
-        return redirect()->route('manager.category.index')
-            ->with('success', 'Category created successfully');
+        return redirect()->route('manager.slider.index')
+            ->with('success', 'Slider created successfully');
     }
 
     public function edit($id)
-    { 
-        $departments=Department::where('status',1)->get();
-        $category = category::with('department')->findOrFail($id);
-        return view('backend.category.edit', compact('category','departments'));
+    {
+        $class = HomeSlider::findOrFail($id);
+        return view('backend.slider.edit', compact('class'));
     }
 
     public function update(Request $request, $id)
     {
-        $class = category::with('department')->findOrFail($id);
+        $class = HomeSlider::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,svg|max:2048',
             'status' => 'required|boolean',
         ]);
 
-        $imagePath = $class->image;
+        $logoPath = $class->image;
+  
 
         if ($request->hasFile('image')) {
 
-            if ($class->image && Storage::disk('public')->exists($class->image)) {
-                Storage::disk('public')->delete($class->image);
-            }
-
-            $imagePath = $request->file('image')->store('category', 'public');
+            $logoPath = $request->file('image')->store('homeslider', 'public');
+            
         }
 
         $class->update([
-            'name' => $request->name,
-            'image' => $imagePath,
+            'image' => $logoPath,
             'status' => $request->status,
-            'department_id' => $request->department_id,
+             'admin_id'=>Auth::user()->id
         ]);
 
-        return redirect()->route('manager.category.index')
-            ->with('success', 'Category updated successfully');
+        return redirect()->route('manager.slider.index')
+            ->with('success', 'Slider updated successfully');
     }
 
     public function destroy($id)
     {
-        $class = category::findOrFail($id);
-
-        if ($class->image && Storage::disk('public')->exists($class->image)) {
-            Storage::disk('public')->delete($class->image);
+        $class = HomeSlider::findOrFail($id);
+        if ($class->logo && Storage::disk('public')->exists($class->logo)) {
+            Storage::disk('public')->delete($class->logo);
         }
-
         $class->delete();
-
-        return redirect()->route('manager.category.index')
-            ->with('success', 'Category deleted successfully');
+        return redirect()->route('manager.slider.index')
+            ->with('success', 'Slider deleted successfully');
     }
 
     // 🔥 OPTIONAL: quick toggle active/inactive
     public function toggleStatus($id)
     {
-        $class = category::findOrFail($id);
+        $class = HomeSlider::findOrFail($id);
     
         $class->status = !$class->status;
         $class->save();

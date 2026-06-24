@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Category List</h1>
+                <h1>Slider List</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ url('/manager') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Category List</li>
+                    <li class="breadcrumb-item active">Slider List</li>
                 </ol>
             </div>
         </div>
@@ -35,10 +35,8 @@
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
-                    <th>Name</th>
                     <th>Image</th>
                     <th>status</th>
-                    <th>Department</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -46,31 +44,8 @@
                 @foreach ($classes as $key => $data)
                 <tr>
                     <td>{{ $loop->index+1 }}</td>
-                    <td>{{ $data->name }}</td>
-                    <td class="align-middle">
-                        @if($data->image)
-                        <img src="{{ asset('storage/'.$data->image) }}"
-                            width="60"
-                            height="60"
-                            style="object-fit: cover; border-radius: 8px; border:1px solid #ddd; padding:2px;">
-                        @else
-                        <div style="
-            width:60px;
-            height:60px;
-            background:#f1f1f1;
-            border:1px dashed #ccc;
-            border-radius:8px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            margin:auto;
-            color:#888;
-            font-size:11px;
-            font-weight:600;
-        ">
-                            No Logo
-                        </div>
-                        @endif
+                    <td>
+                        <img src="{{ asset('storage/' . $data->image) }}" width="50" height="50">
                     </td>
 
 
@@ -80,22 +55,16 @@
                         </span>
                     </td>
 
-                    <td class="align-middle">
-                        <span>
-                            {{ $data->department->name }}
-                        </span>
-                    </td>
-
 
                     <td>
                         @can('category-edit')
-                        <a class="btn btn-primary btn-sm" href="{{ route('manager.category.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        <a class="btn btn-primary btn-sm" href="{{ route('manager.slider.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                         @endcan
 
                         @can('category-delete')
                         <form id="deleteAdminForm{{ $key }}"
                             method="POST"
-                            action="{{ route('manager.category.destroy', $data->id) }}"
+                            action="{{ route('manager.slider.destroy', $data->id) }}"
                             style="display:inline">
                             @csrf
                             @method('DELETE')

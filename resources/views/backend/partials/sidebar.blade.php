@@ -83,7 +83,33 @@
                     </ul>
                 </li>
                 @endcanany
-                @canany(['admin-create', 'admin-list', 'role-create', 'role-list'])
+
+                @canany(['department-create', 'department-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                        <p>Department <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('department-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.department.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Department</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('department-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.department.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Department</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+                @canany(['category-create', 'category-list'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
                         <p>Category <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
@@ -102,6 +128,57 @@
                             <a href="{{ route('manager.category.index') }}" class="nav-link"> <i
                                     class="nav-icon far fa-circle"></i>
                                 <p>Manage Category</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
+                @canany(['product-create', 'product-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                        <p>Product <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('product-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.product.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Product</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('product-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.product.filter') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Product</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+                @canany(['slider-create', 'slider-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                        <p>Slider <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('slider-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.slider.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Slider</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('slider-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.slider.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Slider</p>
                             </a>
                         </li>
                         @endcan

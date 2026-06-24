@@ -4,18 +4,16 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Auth;
-use App\Models\Category;
 use App\Models\Department;
 use Illuminate\Support\Facades\Storage;
 
-class CategoryController extends Controller
+class DepartmentController extends Controller
 {
     public function index(Request $request)
     {
      
         
-        $query = Category::latest();
+        $query = Department::latest();
         if ($request->has('export')) {
 
             $filename = 'Policies-Category.csv';
@@ -40,13 +38,12 @@ class CategoryController extends Controller
             return response()->stream($callback, 200, $headers);
         }
         $classes = $query->paginate(10);
-        return view('backend.category.index', compact('classes'));
+        return view('backend.department.index', compact('classes'));
     }
 
     public function create()
     {
-        $departments=Department::where('status',1)->get();
-        return view('backend.category.create',['departments'=>$departments]);
+        return view('backend.department.create');
     }
 
     public function store(Request $request)
@@ -55,36 +52,33 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,svg|max:2048',
             'status' => 'required|boolean',
-            'department_id' => 'required',
         ]);
 
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('categories', 'public');
+            $imagePath = $request->file('image')->store('department', 'public');
         }
-
-        category::create([
+      
+        Department::create([
             'name' => $request->name,
             'image' => $imagePath,
             'status' => $request->status,
-            'department_id' => $request->department_id,
         ]);
 
-        return redirect()->route('manager.category.index')
-            ->with('success', 'Category created successfully');
+        return redirect()->route('manager.department.index')
+            ->with('success', 'Department created successfully');
     }
 
     public function edit($id)
-    { 
-        $departments=Department::where('status',1)->get();
-        $category = category::with('department')->findOrFail($id);
-        return view('backend.category.edit', compact('category','departments'));
+    {
+        $class = Department::findOrFail($id);
+        return view('backend.department.edit', compact('class'));
     }
 
     public function update(Request $request, $id)
     {
-        $class = category::with('department')->findOrFail($id);
+        $class = Department::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -100,23 +94,22 @@ class CategoryController extends Controller
                 Storage::disk('public')->delete($class->image);
             }
 
-            $imagePath = $request->file('image')->store('category', 'public');
+            $imagePath = $request->file('image')->store('categoryes', 'public');
         }
 
         $class->update([
             'name' => $request->name,
             'image' => $imagePath,
             'status' => $request->status,
-            'department_id' => $request->department_id,
         ]);
 
-        return redirect()->route('manager.category.index')
-            ->with('success', 'Category updated successfully');
+        return redirect()->route('manager.department.index')
+            ->with('success', 'Department updated successfully');
     }
 
     public function destroy($id)
     {
-        $class = category::findOrFail($id);
+        $class = Department::findOrFail($id);
 
         if ($class->image && Storage::disk('public')->exists($class->image)) {
             Storage::disk('public')->delete($class->image);
@@ -124,14 +117,14 @@ class CategoryController extends Controller
 
         $class->delete();
 
-        return redirect()->route('manager.category.index')
-            ->with('success', 'Category deleted successfully');
+        return redirect()->route('manager.department.index')
+            ->with('success', 'Department deleted successfully');
     }
 
     // 🔥 OPTIONAL: quick toggle active/inactive
     public function toggleStatus($id)
     {
-        $class = category::findOrFail($id);
+        $class = Department::findOrFail($id);
     
         $class->status = !$class->status;
         $class->save();

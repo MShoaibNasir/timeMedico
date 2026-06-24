@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 // use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Requests\Frontend\Auth\LoginRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Models\User;
 use App\Services\UserAuthService;
@@ -11,151 +12,102 @@ use Illuminate\Http\Request;
 
 class RegisterController extends BaseController
 {
-    public function __construct(
-        protected UserAuthService $authService
-    ) {}
 
-    /**
-     * @OA\Post(
-     *     path="/api/authentication/register",
-     *     tags={"Authentication"},
-     *     summary="Register a new user",
-     *     operationId="registerUser",
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *             required={"name", "email", "password", "password_confirmation"},
-     *
-     *             @OA\Property(property="name", type="string", example="Shoaib"),
-     *             @OA\Property(property="email", type="string", format="email", example="shoaib@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123"),
-     *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="User registered successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
-     * )
-     */
-    public function register(RegisterRequest $request)
+
+
+    public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|string|email|max:255',
+            'phone_number' => 'required|string',
+            'fcmToken' => 'required|string',
+            'deviceId' => 'required|string',
+            'phoneModel' => 'required|string',
+            'phoneMake' => 'required|string',
+            'appVersion' => 'required|string',
+        ]);
 
-        $user = $this->authService->register($request->all());
-        $user['token'] = $user->createToken('PICG')->plainTextToken;
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        return $this->sendResponse($user, 'User register successfully.');
+        $validatedData = $validator->validated();
+
+        $otp = rand(1000, 9999);
+
+        $user = User::updateOrCreate(
+            ['email' => $validatedData['email']],
+            [
+                'name'         => $validatedData['name'],
+                'phone_number' => $validatedData['phone_number'],
+                'otp'          => 1234,
+
+                'fcmToken'    => $validatedData['fcmToken'],
+                'deviceId'    => $validatedData['deviceId'],
+                'phoneModel'  => $validatedData['phoneModel'],
+                'phoneMake'   => $validatedData['phoneMake'],
+                'appVersion'  => $validatedData['appVersion'],
+            ]
+        );
+
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP generated successfully',
+            'otp'     => 1234,
+
+        ]);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/authentication/login",
-     *     tags={"Authentication"},
-     *     summary="Login a user",
-     *     operationId="loginUser",
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *             required={"email", "password"},
-     *
-     *             @OA\Property(property="email", type="string", format="email", example="shoaib@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="User login successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
-     * )
-     */
-    public function login(LoginRequest $request)
+
+
+    public function tokenVerify(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email'        => 'required|string|email|max:255',
+            'phone_number' => 'required|string',
+            'otp'          => 'required|digits:4',
+        ]);
 
-        try {
-            $user = $this->authService->login($request->all());
-
-            return $this->sendResponse(json_decode($user), 'User login successfully.');
-        } catch (\Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 400);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
-    }
-    /**
-     * @OA\Get(
-     *     path="/api/email/verify/{id}/{hash}",
-     *     summary="Verify user email address",
-     *     tags={"Authentication"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="User ID",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="hash",
-     *         in="path",
-     *         required=true,
-     *         description="Email verification hash",
-     *         @OA\Schema(type="string", example="fc2398a73dd54d6237c4fdb58fd7d75347cf5af3")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Email verified successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Email verified successfully.")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Email already verified",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Email already verified.")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Invalid verification link",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Invalid verification link.")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found"
-     *     )
-     * )
-     */
 
-    public function verifyEmail(Request $request, $id, $hash)
-    {
-        $user = User::findOrFail($id);
-        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-            return response()->json(['message' => 'Invalid verification link.'], 403);
-        }
-        if ($user->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Email already verified.'], 400);
-        }
-        $user->markEmailAsVerified();
-        event(new \Illuminate\Auth\Events\Verified($user));
+        $user_verify = User::where('email', $request->email)
+            ->where('phone_number', $request->phone_number)
+            ->where('otp', $request->otp)
+            ->first();
 
-        return response()->json(['message' => 'Email verified successfully.'], 200);
+        if (!$user_verify) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid OTP'
+            ], 401);
+        }
+        $token = $user_verify->createToken('TIME')->plainTextToken;
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP verified successfully',
+            'token'   => $token,
+            'data'    => [
+                'id' => $user_verify->id,
+                'name' => $user_verify->name,
+                'email' => $user_verify->email,
+                'phone_number' => $user_verify->phone_number,
+                'fcmToken' => $user_verify->fcmToken,
+                'deviceId' => $user_verify->deviceId,
+                'phoneModel' => $user_verify->phoneModel,
+                'phoneMake' => $user_verify->phoneMake,
+                'appVersion' => $user_verify->appVersion,
+            ]
+        ]);
     }
 }

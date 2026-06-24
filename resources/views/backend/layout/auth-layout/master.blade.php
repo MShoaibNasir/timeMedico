@@ -4,12 +4,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PICG Director Management System</title>
-    <link rel="icon" href="{{ asset('backend/assets/images/picg-logo.png') }}">
+     <link rel="icon" href="{{ asset('frontend/images/logo/timemedico.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="PSPC">
-    <meta name="author" content="PSPC">
-    <meta name="description" content="Pakistan Institute of Corporate Governance">
-    <meta name="keywords" content="Pakistan Institute of Corporate Governance">
+    <meta name="title" content="Time Medico">
+    <meta name="author" content="Time Medico">
+    <meta name="description" content="Time Medico">
+    <meta name="keywords" content="Time Medico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     @stack('specific_css')

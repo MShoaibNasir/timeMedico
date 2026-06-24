@@ -4,15 +4,16 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Create Category</h1>
+                <h1>Edit Slider</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{url('/manager')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Create Category</li>
+                    <li class="breadcrumb-item active">Edit Slider</li>
                 </ol>
             </div>
         </div>
+        
         @if (count($errors) > 0)
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -23,46 +24,39 @@
             </ul>
         </div>
         @endif
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Create Category</h3>
+                        <h3 class="card-title">Edit Slider</h3>
                     </div>
-                    <form action="{{ route('manager.category.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('manager.slider.update', $class->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="card-body">
+                        @method('PUT') <div class="card-body">
                             <div class="form-group mb-3">
-                                <strong>Name:</strong>
-                                <input type="text" name="name" placeholder="Enter Class Name" class="form-control">
+                                <strong>Image:</strong>
+                                <input type="file" name="image" class="form-control mb-2">
+                                
+                                @if($class->image)
+                                    <div class="mt-2">
+                                        <p class="text-muted mb-1">Current Image:</p>
+                                        <img src="{{ asset('storage/' . $class->image) }}" alt="Slider Image" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
+                                    </div>
+                                @endif
                             </div>
-                            <div class="form-group mb-3">
-                                <strong>Department:</strong>
-                                <select name="department_id" class="form-control">
-                                    <option value="">Select Option</option>
-                                    @foreach ($departments as $data)
-                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                    @endforeach
 
-                                </select>
-                            </div>
-                            <!-- Logo -->
-                            <div class="mt-2">
-                                <div class="form-group">
-                                    <strong>Image:</strong>
-                                    <input type="file" name="image" class="form-control">
-                                </div>
-                            </div>
                             <div class="form-group mb-3">
                                 <strong>Status:</strong>
                                 <select name="status" class="form-control">
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value="1" @selected($class->status == 1)>Active</option>
+                                    <option value="0" @selected($class->status == 0)>Inactive</option>
                                 </select>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-dark">Submit</button>
+                            <button type="submit" class="btn btn-dark">Update</button>
+                            <a href="{{ route('manager.slider.index') }}" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

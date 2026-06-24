@@ -5,10 +5,13 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EmailSenderController;
 use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\DepartmentController;
+use App\Http\Controllers\Backend\HomeSliderController;
 use App\Http\Controllers\CVController;
 use App\Http\Controllers\ForumChatController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +34,38 @@ Route::prefix('manager')->name('manager.')->group(function () {
         Route::prefix('dashboard/category')->name('category.')->controller(CategoryController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+
+        Route::prefix('dashboard/department')->name('department.')->controller(DepartmentController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+        
+        Route::prefix('dashboard/slider')->name('slider.')->controller(HomeSliderController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+
+        Route::prefix('admin/dashboard/product')->name('product.')->controller(ProductController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::post('/list', 'list')->name('list');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/filter', 'filter')->name('filter');
             Route::post('/store', 'store')->name('store');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::put('/update/{id}', 'update')->name('update');
