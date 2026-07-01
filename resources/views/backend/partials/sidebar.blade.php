@@ -8,7 +8,7 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark"> <!--begin::Sidebar Brand-->
     <div class="sidebar-brand">
         <a href="{{ url('/manager') }}" class="brand-link">
-            <img src="{{ asset('frontend/images/logo/timemedico.png') }}" alt="AdminLTE Logo"
+            <img src="{{ asset('frontend/images/timemedico.png') }}" alt="AdminLTE Logo"
                 class="brand-image opacity-75 shadow">
 
         </a>
@@ -103,6 +103,33 @@
                             <a href="{{ route('manager.department.index') }}" class="nav-link"> <i
                                     class="nav-icon far fa-circle"></i>
                                 <p>Manage Department</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
+                
+                @canany(['type-create', 'type-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                        <p>Type <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('type-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.type.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Type</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('type-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.type.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Type</p>
                             </a>
                         </li>
                         @endcan

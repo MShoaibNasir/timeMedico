@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>PICG Director Management System</title>
+    <title>Time Medico</title>
      <link rel="icon" href="{{ asset('frontend/images/logo/timemedico.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="Time Medico">

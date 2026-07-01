@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Auth;
@@ -23,8 +24,9 @@ class ProductController extends Controller
 
     public function filter()
     {
-        $Classes = Category::latest()->get();
-        return view('backend.product.filter', compact('Classes'));
+        $Classes = Category::where('status', 1)->latest()->get();
+        $types = Type::where('status', 1)->latest()->get();
+        return view('backend.product.filter', compact('Classes', 'types'));
     }
 
 
@@ -33,7 +35,7 @@ class ProductController extends Controller
     public function list(Request $request)
     {
 
-
+        $type = $request->type;
         $page = $request->get('ayis_page', 1);
         $qty = $request->get('qty', 10);
 
@@ -44,10 +46,13 @@ class ProductController extends Controller
         $product_name = $request->get('product_name');
         $custom_pagination_path = '';
 
-        $product = Product::query();
+        $product = Product::query()->with('type_data');
 
         if (!empty($category_id)) {
             $product->where('category_id', $category_id);
+        }
+        if (!empty($type)) {
+            $product->where('type', $type);
         }
         if (!empty($product_name)) {
             $product->where('name', 'like', '%' . $product_name . '%');
@@ -69,7 +74,8 @@ class ProductController extends Controller
     public function create()
     {
         $classes = Category::where('status', 1)->get();
-        return view('backend.product.create', compact('classes'));
+        $type = Type::where('status', 1)->get();
+        return view('backend.product.create', compact('classes', 'type'));
     }
     public function store(Request $request)
     {
@@ -78,27 +84,29 @@ class ProductController extends Controller
         $request->validate([
             'category_id' => 'required',
             'name'        => 'required|string|max:255',
-            'image'        => 'nullable|image|mimes:jpg,png,jpeg,svg|max:2048',
+            'image'        => 'required|image|mimes:jpg,png,jpeg,svg|max:2048',
             'status'      => 'required|boolean',
             'sku'         => 'required',
             'price'       => 'required',
             'discount'  => 'required',
             'quantity'    => 'required',
-          
+            'type'    => 'required',
             'company_name'    => 'required',
+            'generic_name'    => 'required',
+            'unit'    => 'required',
 
         ]);
         $in_stock = $request->in_stock;
         if ($in_stock == 'on' && isset($in_stock)) {
             $in_stock = 1;
-        }else{
+        } else {
             $in_stock = 0;
         }
 
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('productes', 'public');
+            $imagePath = $request->file('image')->store('products', 'public');
         }
 
         // Generate Barcode
@@ -117,6 +125,9 @@ class ProductController extends Controller
             'quantity'    => $request->quantity,
             'company_name'    => $request->company_name ?? null,
             'admin_id'    => Auth::guard('admin')->id(),
+            'type'    => $request->type,
+            'generic_name'    => $request->generic_name,
+            'unit'    => $request->unit
         ]);
 
         return redirect()->route('manager.product.filter')
@@ -126,10 +137,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-
+        $type = Type::where('status', 1)->get();
         $category = Category::where('status', 1)->get();
 
-        return view('backend.product.edit', compact('product', 'category'));
+        return view('backend.product.edit', compact('product', 'category', 'type'));
     }
 
     public function update(Request $request, $id)
@@ -146,6 +157,7 @@ class ProductController extends Controller
             'discount'  => 'required',
             'quantity'    => 'required',
             'company_name'    => 'required',
+            'type'    => 'required',
         ]);
 
 
@@ -154,10 +166,10 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
 
             if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+                // Storage::disk('public')->delete($product->image);
             }
 
-            $imagePath = $request->file('image')->store('productes', 'public');
+            $imagePath = $request->file('image')->store('products', 'public');
         }
         $in_stock = $request->in_stock;
         if ($in_stock == 'on' && isset($in_stock)) {
@@ -180,6 +192,7 @@ class ProductController extends Controller
             'company_name'    => $request->company_name ?? null,
             'product_description' => $request->product_description ?? null,
             'in_stock'  => $in_stock,
+            'type'    => $request->type,
         ]);
 
         return redirect()->route('manager.product.filter')

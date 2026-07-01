@@ -189,9 +189,21 @@
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">{{ __('Search By Category') }}</label>
                                         <div class="">
-                                            <select name="" id="main_class" class="form-control">
+                                            <select name="main_class" id="main_class" class="form-control">
                                                 <option value="">Select Category</option>
                                                 @foreach ($Classes as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">{{ __('Search By Type') }}</label>
+                                        <div class="">
+                                            <select name="" id="type" class="form-control">
+                                                <option value="">Select Type</option>
+                                                @foreach ($types as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
 
@@ -334,6 +346,7 @@
                 var product_name = $("#product_name").val();
                 var qty = $("#qty").val();
                 var main_class = $("#main_class").val();
+                var type = $("#type").val();
 
 
                 var district = $("#district").val();
@@ -367,6 +380,7 @@
                         product_name: product_name,
                         qty: qty,
                         main_class: main_class,
+                        type: type,
                         ayis_page: ayis_page,
                         _token: '{{csrf_token()}}'
                     },
@@ -374,7 +388,7 @@
 
 
                     beforeSend: function() {
-                        $('.filter_data').html('<center><img src="{{ asset("frontend/images/logo/loader.png") }}" width="300" alt="Loader" /></center>');
+                        $('.filter_data').html('<center><img src="{{ asset("frontend/images/loader.png") }}" width="300" alt="Loader" /></center>');
                     },
                     success: function(data) {
 
@@ -409,7 +423,7 @@
 
 
 
-            $('body').on('change', '#sorting, #direction, #qty,#main_class, #district, #tehsil_id, #uc_id,#bank_name', function(e) {
+            $('body').on('change', '#sorting, #direction, #qty,#main_class,#type, #district, #tehsil_id, #uc_id,#bank_name', function(e) {
                 e.preventDefault();
 
                 filter_data();

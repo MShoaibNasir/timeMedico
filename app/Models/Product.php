@@ -22,5 +22,10 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id')->withTrashed();
     }
+    public function type_data()
+    {
+        return $this->HasOne(Type::class, 'id', 'type')->withTrashed();
+    }
+   
   
 }

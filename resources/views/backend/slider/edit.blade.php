@@ -13,7 +13,7 @@
                 </ol>
             </div>
         </div>
-        
+
         @if (count($errors) > 0)
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -34,15 +34,26 @@
                     <form action="{{ route('manager.slider.update', $class->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT') <div class="card-body">
+                            <div class="alert alert-info" role="alert">
+                                <strong>Slider Image Guidelines</strong><br>
+                                Please upload slider images using the recommended dimensions below to ensure optimal display across all devices:
+                                <ul class="mb-0 mt-2">
+                                    <li><strong>Mobile Slider:</strong> 1520 × 704 pixels</li>
+                                    <li><strong>Website Slider:</strong> 1760 × 608 pixels</li>
+                                </ul>
+                                <small class="d-block mt-2">
+                                    Images uploaded in these dimensions will provide the best visual appearance and responsiveness.
+                                </small>
+                            </div>
                             <div class="form-group mb-3">
                                 <strong>Image:</strong>
                                 <input type="file" name="image" class="form-control mb-2">
-                                
+
                                 @if($class->image)
-                                    <div class="mt-2">
-                                        <p class="text-muted mb-1">Current Image:</p>
-                                        <img src="{{ asset('storage/' . $class->image) }}" alt="Slider Image" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
-                                    </div>
+                                <div class="mt-2">
+                                    <p class="text-muted mb-1">Current Image:</p>
+                                    <img src="{{ asset('storage/' . $class->image) }}" alt="Slider Image" style="max-width: 200px; height: auto; border: 1px solid #ddd; padding: 5px;">
+                                </div>
                                 @endif
                             </div>
 
@@ -51,6 +62,13 @@
                                 <select name="status" class="form-control">
                                     <option value="1" @selected($class->status == 1)>Active</option>
                                     <option value="0" @selected($class->status == 0)>Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <strong>Media Type:</strong>
+                                <select name="type" class="form-control">
+                                    <option value="website" {{ $class->type=='website' ? 'selected' : '' }}>Web</option>
+                                    <option value="mobile" {{ $class->type=='mobile' ? 'selected' : '' }}>Mobile</option>
                                 </select>
                             </div>
                         </div>

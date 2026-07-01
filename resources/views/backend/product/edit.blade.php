@@ -41,18 +41,13 @@
                         <h3 class="card-title">Edit Product</h3>
                     </div>
 
-                    <form action="{{ route('manager.product.update', $product->id) }}" method="POST">
+                    <form action="{{ route('manager.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 mt-2">
-                                    <div class="form-group">
-                                        <strong>Name:<span style="color: red;">*</span></strong>
-                                        <input type="text" name="name" value="{{$product->name}}" placeholder="Enter Name" class="form-control">
-                                    </div>
-                                </div>
+
 
                                 <!-- Name -->
                                 <div class="col-md-6 mt-2">
@@ -67,6 +62,47 @@
                                             </option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <div class="form-group">
+                                        <strong>Name:<span style="color: red;">*</span></strong>
+                                        <input type="text" name="name" value="{{$product->name}}" placeholder="Enter Name" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mt-2">
+                                    <div class="form-group">
+                                        <strong>Generic Name:<span style="color: red;">*</span></strong>
+                                        <input type="text" name="generic_name" value="{{$product->generic_name}}" placeholder="Enter Generic Name" class="form-control">
+                                    </div>
+                                </div>
+                                <!-- SKU -->
+                                <div class="col-md-6 mt-2">
+                                    <div class="form-group mb-3">
+                                        <strong>SKU:</strong>
+                                        <input type="text"
+                                            name="sku"
+                                            class="form-control"
+                                            value="{{ $product->sku }}"
+                                            placeholder="Enter SKU">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <div class="form-group">
+                                        <strong>Company Name:<span style="color: red;">*</span></strong>
+                                        <input type="text" name="company_name" value="{{$product->company_name}}" placeholder="Company Name" class="form-control">
+                                    </div>
+                                </div>
+                                <!-- Price -->
+                                <div class="col-md-6 mt-2">
+                                    <div class="form-group mb-3">
+                                        <strong>Price:<span style="color:red;">*</span></strong>
+                                        <input type="number"
+                                            name="price"
+                                            class="form-control"
+                                            value="{{ $product->price }}"
+                                            placeholder="Enter  Price">
                                     </div>
                                 </div>
 
@@ -95,18 +131,15 @@
 
                                     </div>
                                 </div>
-
-                                <!-- SKU -->
+                                <!-- Image -->
                                 <div class="col-md-6 mt-2">
-                                    <div class="form-group mb-3">
-                                        <strong>SKU:</strong>
-                                        <input type="text"
-                                            name="sku"
-                                            class="form-control"
-                                            value="{{ $product->sku }}"
-                                            placeholder="Enter SKU">
+                                    <div class="form-group">
+                                        <strong>Change Image:</strong>
+                                        <input type="file" name="image" class="form-control">
                                     </div>
                                 </div>
+
+
 
                                 <div class="col-md-6 mt-2">
                                     <div class="form-group">
@@ -131,17 +164,7 @@
                                 </div>
 
 
-                                <!-- Price -->
-                                <div class="col-md-6 mt-2">
-                                    <div class="form-group mb-3">
-                                        <strong>Price:<span style="color:red;">*</span></strong>
-                                        <input type="number"
-                                            name="price"
-                                            class="form-control"
-                                            value="{{ $product->price }}"
-                                            placeholder="Enter  Price">
-                                    </div>
-                                </div>
+
 
                                 <!-- Quantity -->
                                 <div class="col-md-6 mt-2">
@@ -155,17 +178,21 @@
                                     </div>
                                 </div>
 
-                                <!-- Image -->
+
+
+
                                 <div class="col-md-6 mt-2">
                                     <div class="form-group">
-                                        <strong>Change Image:</strong>
-                                        <input type="file" name="image" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mt-2">
-                                    <div class="form-group">
-                                        <strong>Company Name:<span style="color: red;">*</span></strong>
-                                        <input type="text" name="company_name" value="{{$product->company_name}}" placeholder="Company Name" class="form-control">
+                                        <strong>Type:<span style="color: red;">*</span></strong>
+                                        <select name="type" class="form-control">
+                                            <option value="">Select Type</option>
+                                            @foreach ($type as $data)
+                                            <option value="{{ $data->id }}"
+                                                {{ $data->id == $product->type ? 'selected' : '' }}>
+                                                {{ $data->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
 
@@ -174,7 +201,7 @@
                                     <div class="form-group">
                                         <strong>Status:<span style="color:red;">*</span></strong>
                                         <select name="status" class="form-control">
-                                            <option value="1" {{$product->status==1 ? 'selected' : ''}}  >Active</option>
+                                            <option value="1" {{$product->status==1 ? 'selected' : ''}}>Active</option>
                                             <option value="0" {{$product->status==0 ? 'selected' : ''}}>Inactive</option>
                                         </select>
                                     </div>

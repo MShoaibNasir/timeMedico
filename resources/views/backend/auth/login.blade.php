@@ -16,7 +16,7 @@
 
                                 <div class="text-center">
 
-                                    <img src="{{ asset('frontend/images/logo/timemedico.png') }}" style="width: 300px;" alt="logo">
+                                    <img src="{{ asset('frontend/images/timemedico.png') }}" style="width: 300px;" alt="logo">
                                     <h4 class="mt-1 mb-5 pb-1">Time Medico Admin Dashboard</h4>
                                 </div>
                                 @if ($errors->any())

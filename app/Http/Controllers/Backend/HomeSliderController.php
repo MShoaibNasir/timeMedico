@@ -12,8 +12,8 @@ class HomeSliderController extends Controller
 {
     public function index(Request $request)
     {
-     
-        
+
+
         $query = HomeSlider::latest();
         if ($request->has('export')) {
 
@@ -49,12 +49,26 @@ class HomeSliderController extends Controller
 
     public function store(Request $request)
     {
-   
-        $request->validate([
-         
-            'image' => 'nullable|file|mimes:jpg,png,jpeg,svg|max:2048',
-            'status' => 'required|boolean',
-        ]);
+        $request->validate(
+            [
+                'image' => [
+                    'required',
+                    'image',
+                    'mimes:jpg,jpeg,png,svg',
+                    'max:2048',
+                    $request->type == 'mobile'
+                        ? 'dimensions:width=1520,height=704'
+                        : 'dimensions:width=1760,height=608',
+                ],
+                'status' => 'required|boolean',
+                'type' => 'required|in:mobile,website',
+            ],
+            [
+                'image.dimensions' => $request->type == 'mobile'
+                    ? 'Mobile slider image must be exactly 852 × 398 pixels.'
+                    : 'Website slider image must be exactly 1760 × 608 pixels.',
+            ]
+        );
 
         $logoPath = null;
 
@@ -65,10 +79,12 @@ class HomeSliderController extends Controller
         HomeSlider::create([
             'image' => $logoPath,
             'status' => $request->status,
-            'admin_id'=>Auth::user()->id
+            'type' => $request->type,
+            'admin_id' => Auth::id(),
         ]);
 
-        return redirect()->route('manager.slider.index')
+        return redirect()
+            ->route('manager.slider.index')
             ->with('success', 'Slider created successfully');
     }
 
@@ -82,27 +98,48 @@ class HomeSliderController extends Controller
     {
         $class = HomeSlider::findOrFail($id);
 
-        $request->validate([
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,svg|max:2048',
-            'status' => 'required|boolean',
-        ]);
+        $request->validate(
+            [
+                'image' => [
+                    'nullable',
+                    'image',
+                    'mimes:jpg,jpeg,png,svg',
+                    'max:2048',
+                    $request->type == 'mobile'
+                        ? 'dimensions:width=1520,height=704'
+                        : 'dimensions:width=1760,height=608',
+                ],
+                'status' => 'required|boolean',
+                'type' => 'required|in:mobile,website',
+            ],
+            [
+                'image.dimensions' => $request->type == 'mobile'
+                    ? 'Mobile slider image must be exactly 852 × 398 pixels.'
+                    : 'Website slider image must be exactly 1760 × 608 pixels.',
+            ]
+        );
 
         $logoPath = $class->image;
-  
 
         if ($request->hasFile('image')) {
 
+            // Delete old image
+            if ($class->image && Storage::disk('public')->exists($class->image)) {
+                Storage::disk('public')->delete($class->image);
+            }
+
             $logoPath = $request->file('image')->store('homeslider', 'public');
-            
         }
 
         $class->update([
-            'image' => $logoPath,
-            'status' => $request->status,
-             'admin_id'=>Auth::user()->id
+            'image'    => $logoPath,
+            'status'   => $request->status,
+            'type'     => $request->type,
+            'admin_id' => Auth::id(),
         ]);
 
-        return redirect()->route('manager.slider.index')
+        return redirect()
+            ->route('manager.slider.index')
             ->with('success', 'Slider updated successfully');
     }
 
@@ -121,7 +158,7 @@ class HomeSliderController extends Controller
     public function toggleStatus($id)
     {
         $class = HomeSlider::findOrFail($id);
-    
+
         $class->status = !$class->status;
         $class->save();
 

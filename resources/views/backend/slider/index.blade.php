@@ -37,6 +37,7 @@
                     <th>No</th>
                     <th>Image</th>
                     <th>status</th>
+                    <th>Media Type</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -52,6 +53,12 @@
                     <td class="align-middle">
                         <span class="badge {{ $data->status == 1 ? 'bg-success' : 'bg-danger' }}">
                             {{ $data->status == 1 ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+
+                    <td class="align-middle">
+                        <span class="badge {{ $data->type == 'website' ? 'bg-success' : 'bg-danger' }}">
+                            {{ $data->type }}
                         </span>
                     </td>
 

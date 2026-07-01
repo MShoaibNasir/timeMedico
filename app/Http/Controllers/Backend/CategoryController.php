@@ -13,8 +13,8 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-     
-        
+
+
         $query = Category::latest();
         if ($request->has('export')) {
 
@@ -45,8 +45,8 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $departments=Department::where('status',1)->get();
-        return view('backend.category.create',['departments'=>$departments]);
+        $departments = Department::where('status', 1)->get();
+        return view('backend.category.create', ['departments' => $departments]);
     }
 
     public function store(Request $request)
@@ -76,10 +76,10 @@ class CategoryController extends Controller
     }
 
     public function edit($id)
-    { 
-        $departments=Department::where('status',1)->get();
+    {
+        $departments = Department::where('status', 1)->get();
         $category = category::with('department')->findOrFail($id);
-        return view('backend.category.edit', compact('category','departments'));
+        return view('backend.category.edit', compact('category', 'departments'));
     }
 
     public function update(Request $request, $id)
@@ -132,7 +132,7 @@ class CategoryController extends Controller
     public function toggleStatus($id)
     {
         $class = category::findOrFail($id);
-    
+
         $class->status = !$class->status;
         $class->save();
 

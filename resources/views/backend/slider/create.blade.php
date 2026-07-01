@@ -23,6 +23,7 @@
             </ul>
         </div>
         @endif
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-dark">
@@ -31,9 +32,20 @@
                     </div>
                     <form action="{{ route('manager.slider.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <div class="alert alert-info" role="alert">
+                            <strong>Slider Image Guidelines</strong><br>
+                            Please upload slider images using the recommended dimensions below to ensure optimal display across all devices:
+                            <ul class="mb-0 mt-2">
+                                <li><strong>Mobile Slider:</strong> 1520 × 704 pixels</li>
+                                <li><strong>Website Slider:</strong> 1760 × 608 pixels</li>
+                            </ul>
+                            <small class="d-block mt-2">
+                                Images uploaded in these dimensions will provide the best visual appearance and responsiveness.
+                            </small>
+                        </div>
                         <div class="card-body">
                             <div class="form-group mb-3">
-                                <strong>Name:</strong>
+                                <strong>Image:</strong>
                                 <input type="file" name="image" class="form-control">
                             </div>
                             <div class="form-group mb-3">
@@ -41,6 +53,13 @@
                                 <select name="status" class="form-control">
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <strong>Media Type:</strong>
+                                <select name="type" class="form-control">
+                                    <option value="website">Web</option>
+                                    <option value="mobile">Mobile</option>
                                 </select>
                             </div>
                         </div>

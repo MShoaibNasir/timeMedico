@@ -63,11 +63,19 @@
                             </div>
                             <div class="col-md-6 mt-2">
                                 <div class="form-group">
+                                    <strong>Generic Name:<span style="color: red;">*</span></strong>
+                                    <input type="text" name="generic_name" placeholder="Enter Generic Name" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mt-2">
+                                <div class="form-group">
                                     <strong>SKU:<span style="color: red;">*</span></strong>
                                     <input type="text" name="sku" placeholder="Enter Sku Number" class="form-control">
                                 </div>
                             </div>
-                            
+
+
                             <div class="col-md-6 mt-2">
                                 <div class="form-group">
                                     <strong>Price:<span style="color: red;">*</span></strong>
@@ -129,6 +137,28 @@
                                     <select name="status" class="form-control">
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mt-2">
+                                <div class="form-group">
+                                    <strong>Type:<span style="color: red;">*</span></strong>
+                                    <select name="type" class="form-control">
+                                        @foreach ($type as $data)
+                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <div class="form-group">
+                                    <strong>Unit:<span style="color: red;">*</span></strong>
+                                    <select name="unit" class="form-control">
+                                        <option value="box">Box</option>
+                                        <option value="strip">Strip</option>
+                                        <option value="bottle">Bottle</option>
+                                        <option value="piece">Piece</option>
                                     </select>
                                 </div>
                             </div>

@@ -17,5 +17,13 @@ class Category extends Model
     {
         return $this->belongsTo(Department::class, 'department_id', 'id')->withTrashed();
     }
+     public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id')->withTrashed();
+    }
+     public function products_with_out_trashed()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
 
 }

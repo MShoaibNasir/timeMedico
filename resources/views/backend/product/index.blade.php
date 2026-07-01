@@ -17,6 +17,7 @@
                         <th>No</th>
                         <th>Category Name</th>
                         <th>Product Name</th>
+                        <th>Type</th>
                         <th>Image</th>
                         <th>SKU</th>
                         <th>Price</th>
@@ -30,6 +31,7 @@
                 <tbody>
 
                     @foreach ($data as $key=>$item)
+                    
 
                     <tr>
 
@@ -44,6 +46,11 @@
                         <td class="align-middle">
                             {{ $item->name }}
                         </td>
+                        <td class="align-middle">
+                            {{ $item->type_data->name }}
+                        </td>
+
+                    
 
                         <td class="align-middle">
                             @if($item->image)

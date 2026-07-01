@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\Backend\TypeController;
 
 
 
@@ -42,6 +43,15 @@ Route::prefix('manager')->name('manager.')->group(function () {
         });
 
         Route::prefix('dashboard/department')->name('department.')->controller(DepartmentController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+        Route::prefix('dashboard/type')->name('type.')->controller(TypeController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::post('/store', 'store')->name('store');
@@ -94,21 +104,10 @@ Auth::routes();
 
 Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->group(function () {
     Route::get('/', 'index')->name('home.page');
-    Route::get('edit/profile', 'editProfile')->name('editProfile');
-    Route::post('update/profile', 'updateProfile')->name('updateProfile');
-    Route::post('add/education/list', 'addEducationList')->name('addEducationList');
-    Route::post('save/education', 'saveEducation')->name('saveEducation');
-    Route::post('delete/education', 'deleteEducation')->name('deleteEducation');
-    Route::get('director/meet/event', 'directorMeetEvent')->name('directorMeetEvent');
-    Route::get('speeking', 'speeking')->name('speeking');
-    Route::post('store/speeking', 'Storespeeking')->name('Storespeeking');
-    Route::post('store/writing', 'Storewriting')->name('Storewriting');
-    Route::get('about-us', 'aboutUs')->name('aboutUs');
-    Route::get('contact-us', 'contactUs')->name('contactUs');
-    Route::post('upload/contact', 'uploadContact')->name('uploadContact');
-    Route::get('calendar', 'calendar')->name('calendar');
-    Route::post('/calender/view', 'calendarView')->name("calendarView");
+    Route::get('/singleShop', 'singleShop')->name('singleShop');
 
+    Route::get('about-us', 'aboutUs')->name('aboutUs');
+  
     // Khalid route  start
     Route::get('corporate-laws', 'corporatelaws')->name('corporatelaws');
     Route::get('sustainably', 'sustainably')->name('sustainably');
