@@ -8,10 +8,10 @@
                         @foreach ($on_sale_items as $item)
                         <div class="product-list-item">
                             <div class="product-list-img">
-                                <a href="shop-single"><img src="{{ asset('storage/'.$item->image) }}" alt="#"></a>
+                                <a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}"><img src="{{ asset('storage/'.$item->image) }}" alt="#"></a>
                             </div>
                             <div class="product-list-content">
-                                <h4><a href="shop-single">{{$item->name}}</a></h4>
+                                <h4><a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}">{{$item->name}}</a></h4>
                                 <div class="product-list-rate">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -36,10 +36,10 @@
                         @foreach ($best_seller_items as $item)
                           <div class="product-list-item">
                             <div class="product-list-img">
-                                <a href="shop-single"><img src="{{ asset('storage/'.$item->image) }}" alt="#"></a>
+                                <a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}"><img src="{{ asset('storage/'.$item->image) }}" alt="#"></a>
                             </div>
                             <div class="product-list-content">
-                                <h4><a href="shop-single">{{$item->name}}</a></h4>
+                                <h4><a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}">{{$item->name}}</a></h4>
                                 <div class="product-list-rate">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
@@ -63,10 +63,10 @@
                         @foreach ($top_rated as $item)
                        <div class="product-list-item">
                             <div class="product-list-img">
-                                <a href="shop-single"><img src="{{ asset('storage/'.$item->image) }}" alt="#"></a>
+                                <a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}"><img src="{{ asset('storage/'.$item->image) }}" alt="#"></a>
                             </div>
                             <div class="product-list-content">
-                                <h4><a href="shop-single">{{$item->name}}</a></h4>
+                                <h4><a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}">{{$item->name}}</a></h4>
                                 <div class="product-list-rate">
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>

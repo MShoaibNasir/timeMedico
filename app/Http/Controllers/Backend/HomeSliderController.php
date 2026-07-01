@@ -65,7 +65,7 @@ class HomeSliderController extends Controller
             ],
             [
                 'image.dimensions' => $request->type == 'mobile'
-                    ? 'Mobile slider image must be exactly 852 × 398 pixels.'
+                    ? 'Mobile slider image must be exactly 852 × 704 pixels.'
                     : 'Website slider image must be exactly 1760 × 608 pixels.',
             ]
         );
@@ -114,7 +114,7 @@ class HomeSliderController extends Controller
             ],
             [
                 'image.dimensions' => $request->type == 'mobile'
-                    ? 'Mobile slider image must be exactly 852 × 398 pixels.'
+                    ? 'Mobile slider image must be exactly 1520 × 704 pixels.'
                     : 'Website slider image must be exactly 1760 × 608 pixels.',
             ]
         );

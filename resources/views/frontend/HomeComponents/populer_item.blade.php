@@ -43,10 +43,7 @@
                                     <div class="col-md-6 col-lg-4 col-xl-3">
                                         <div class="product-item">
                                             <div class="product-img">
-                                       
-                                                 
-                                                
-                                                <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
+                                                <a href="{{ route('frontend.singleShop', [Crypt::encryptString($product->id)]) }}">
                                                     <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->product_name }}">
                                                 </a>
                                                 <div class="product-action-wrap">
@@ -59,7 +56,7 @@
                                             </div>
                                             <div class="product-content">
                                                 <h3 class="product-title">
-                                                    <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug) }}">
+                                                    <a href="{{ route('frontend.singleShop', [Crypt::encryptString($product->id)]) }}">
                                                         {{ $product->name }}
                                                     </a>
                                                 </h3>

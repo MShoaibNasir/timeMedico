@@ -104,25 +104,11 @@ Auth::routes();
 
 Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->group(function () {
     Route::get('/', 'index')->name('home.page');
-    Route::get('/singleShop', 'singleShop')->name('singleShop');
-
+    Route::get('/singleShop/{id}', 'singleShop')->name('singleShop');
     Route::get('about-us', 'aboutUs')->name('aboutUs');
-  
-    // Khalid route  start
-    Route::get('corporate-laws', 'corporatelaws')->name('corporatelaws');
-    Route::get('sustainably', 'sustainably')->name('sustainably');
-    Route::get('soes-government-entities', 'soesgovernmententities')->name('soesgovernmententities');
-    Route::get('sector-specific-laws', 'sectorspecificlaws')->name('sectorspecificlaws');
-    Route::get('reporting-standards', 'reportingstandards')->name('reportingstandards');
-    Route::get('report', 'report')->name('report');
-    Route::get('picg-thought-leadership', 'picgthoughtleadership')->name('picgthoughtleadership');
-    Route::get('picg-quorum', 'picgquorum')->name('picgquorum');
-    Route::get('oecd', 'oecd')->name('oecd');
-    Route::get('esg', 'esg')->name('esg');
-    Route::get('best-practices', 'bestpractices')->name('bestpractices');
-    Route::get('ai-cybersecurity', 'aicybersecurity')->name('aicybersecurity');
-    Route::get('free-discounted-workshops', 'freediscountedworkshops')->name('freediscountedworkshops');
-    Route::get('directors-meets-events', 'directorsmeetsevents')->name('directorsmeetsevents');
+    Route::get('categories/{id}', 'categories')->name('categories');
+    Route::get('productFilter/{id}', 'productFilter')->name('productFilter');
+    Route::post('productlist', 'productlist')->name('productlist');
     // Khalid End
 
 

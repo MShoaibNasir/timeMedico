@@ -4463,7 +4463,10 @@ a.dwnld-btn {
   border-radius: 0;
   border-radius: 50px;
 }
-
+.categories_row{
+  display: flex;
+  justify-content: center;
+}
 .item-tab .nav-item:last-child .nav-link{
   margin-right: 0;
 }

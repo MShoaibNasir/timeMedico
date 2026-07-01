@@ -15,7 +15,9 @@
                     @foreach ($tranding_items as $item)
                     <div class="product-item">
                         <div class="product-img">
-                            <a href="shop-single"><img src="{{ asset('storage/'.$item->image) }}" alt="image"></a>
+                                                    
+
+                            <a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}"><img src="{{ asset('storage/'.$item->image) }}" alt="image"></a>
                             <div class="product-action-wrap">
                                 <div class="product-action">
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
@@ -25,7 +27,7 @@
                             </div>
                         </div>
                         <div class="product-content">
-                            <h3 class="product-title"><a href="shop-single">{{$item->name}}</a></h3>
+                            <h3 class="product-title"><a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}">{{$item->name}}</a></h3>
                             <div class="product-rate">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>

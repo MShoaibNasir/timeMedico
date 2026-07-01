@@ -12,14 +12,13 @@
             <div class="category-slider owl-carousel owl-theme wow fadeInUp" data-wow-delay=".25s">
                 @foreach ($departments as $department)
                 <div class="category-item">
-                    <a href="category">
+                    <a href="{{ route('frontend.categories', [Crypt::encryptString($department->id)]) }}">
                         <div class="category-info">
                             <div class="icon">
                                 <img src="{{ asset('storage/'.$department->image) }}" alt="image">
                             </div>
                             <div class="content">
                                 <h4>{{$department->name}}</h4>
-
                             </div>
                         </div>
                     </a>

@@ -9,7 +9,7 @@ class SliderController extends BaseController
 
     public function index(Request $request)
     {
-        $data = HomeSlider::where('status', 1)->select('id', 'image')->get();
+        $data = HomeSlider::where('status', 1)->where('type','mobile')->select('id', 'image')->get();
         return $data;
     }
 }

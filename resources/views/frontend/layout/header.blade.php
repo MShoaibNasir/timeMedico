@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="keywords" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- title -->
     <title>Time Medico</title>
@@ -22,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/nice-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/flex-slider.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
