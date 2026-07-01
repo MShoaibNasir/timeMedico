@@ -29,7 +29,7 @@
                     <div class="card-header">
                         <h3 class="card-title">Edit Department</h3>
                     </div>
-                    <form action="{{ route('manager.department.update', $class->id) }}" method="POST">
+                    <form action="{{ route('manager.department.update', $class->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="card-body">
@@ -37,6 +37,36 @@
                                 <strong>Name:</strong>
                                 <input type="text" name="name" class="form-control"
                                     value="{{ $class->name }}" placeholder="Enter Class Name">
+                            </div>
+
+                               <div class="col-md-6 mt-2">
+                                    <div class="form-group mb-3">
+                                        <strong>Current Image:</strong><br>
+
+                                        @if($class->image)
+                                        <img src="{{ asset('storage/'.$class->image) }}"
+                                            width="80"
+                                            height="80"
+                                            style="object-fit: cover; border-radius: 8px; border:1px solid #ddd;">
+                                        @else
+                                        <div style="width:80px;height:80px;
+                                                        display:flex;align-items:center;
+                                                        justify-content:center;
+                                                        border:1px dashed #ccc;
+                                                        border-radius:8px;
+                                                        color:#888;font-size:12px;
+                                                        background:#f5f5f5;">
+                                            No Image
+                                        </div>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            <div class=" mt-2">
+                                <div class="form-group">
+                                    <strong>Change Image:</strong>
+                                    <input type="file" name="image" class="form-control">
+                                </div>
                             </div>
                             <div class="form-group mb-3">
                                 <strong>Status:</strong>

@@ -91,10 +91,10 @@ class DepartmentController extends Controller
         if ($request->hasFile('image')) {
 
             if ($class->image && Storage::disk('public')->exists($class->image)) {
-                Storage::disk('public')->delete($class->image);
+               // Storage::disk('public')->delete($class->image);
             }
 
-            $imagePath = $request->file('image')->store('categoryes', 'public');
+            $imagePath = $request->file('image')->store('department', 'public');
         }
 
         $class->update([
