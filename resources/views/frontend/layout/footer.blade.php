@@ -6,7 +6,7 @@
                  <div class="col-md-6 col-lg-3">
                      <div class="footer-widget-box about-us">
                          <a href="index.html" class="footer-logo">
-                             <img src="assets/images/timemedio-logo.png" alt="">
+                             <img src="{{ asset('frontend/images/timemedio-logo.png') }}" alt="">
                          </a>
                          <p class="mb-3">
                              We are many variations of the passages available but the majoro have suffered alteration
@@ -200,7 +200,54 @@
  <script src="{{ asset('frontend/js/flex-slider.js') }}"></script>
  <script src="{{ asset('frontend/js/main.js') }}"></script>
 
+ <script>
+     < script src = "https://cdn.jsdelivr.net/npm/sweetalert2@11" >
+ </script>
 
+ @if(session('success'))
+ <script>
+     Swal.fire({
+         icon: 'success',
+         title: 'Success!',
+         text: "{{ session('success') }}",
+         confirmButtonText: 'OK'
+     });
+ </script>
+ @endif
+
+ @if(session('error'))
+ <script>
+     Swal.fire({
+         icon: 'error',
+         title: 'Error!',
+         text: "{{ session('error') }}",
+         confirmButtonText: 'OK'
+     });
+ </script>
+ @endif
+
+ @if(session('warning'))
+ <script>
+     Swal.fire({
+         icon: 'warning',
+         title: 'Warning!',
+         text: "{{ session('warning') }}",
+         confirmButtonText: 'OK'
+     });
+ </script>
+ @endif
+
+ @if(session('info'))
+ <script>
+     Swal.fire({
+         icon: 'info',
+         title: 'Information',
+         text: "{{ session('info') }}",
+         confirmButtonText: 'OK'
+     });
+ </script>
+ @endif
+ </script>
 
  </body>
 

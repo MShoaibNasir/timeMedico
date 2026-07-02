@@ -8,11 +8,12 @@
 
     <title>PICG</title>
     <meta name="keywords" content="PICG">
-    <meta name="description" content="PICG">
+    <meta name="description" content="Time Medico">
     <meta name="author" content="">
 
     <!-- Fonts -->
     <link rel="stylesheet" href="{{ asset('frontend/fonts/fonts.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('frontend/fonts/font-icons.css') }}">
@@ -28,7 +29,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/swiper-bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/styles.css') }}">
-
+    <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" href="{{asset('frontend/images/logo/picg-logoo.png')}}" type="image/png">

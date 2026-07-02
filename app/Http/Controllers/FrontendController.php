@@ -6,17 +6,23 @@ use App\Models\Category;
 use App\Models\Department;
 use App\Models\HomeSlider;
 use App\Models\Product;
+use App\Models\UserDataFotOTP;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Jenssegers\Agent\Agent;
+use Illuminate\Validation\ValidationException;
 
 class FrontendController extends Controller
 {
 
     public function index()
     {
+        // dd(Auth::guard('web')->check());
         $sliders = HomeSlider::where('type', 'website')->where('status', 1)->get();
         $departments = Department::where('status', 1)->get();
         $tranding_items = Product::where('status', 1)->where('type', 10)->get();
@@ -71,6 +77,106 @@ class FrontendController extends Controller
     public function productlist(Request $request)
     {
         $product = Product::with('category', 'type_data')->where('category_id', $request->category_id)->where('status', 1)->get();
-        return view('frontend.productList',['product'=>$product]);
+        return view('frontend.productList', ['product' => $product]);
+    }
+
+    public function register()
+    {
+        return view('frontend.register');
+    }
+
+
+
+    public function signup(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'name'  => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email',
+                'phone_number' => [
+                    'required',
+                    'regex:/^03[0-9]{2}-[0-9]{7}$/',
+                    'unique:users,phone_number'
+                ],
+            ], [
+                'name.required'   => 'Please enter your full name.',
+                'email.required'  => 'Please enter your email address.',
+                'email.email'     => 'Please enter a valid email address.',
+                'email.unique'    => 'This email address is already registered.',
+                'phone_number.required'  => 'Please enter your phone number.',
+                'phone_number.regex'     => 'Phone number must be in the format 03XX-XXXXXXX.',
+                'phone_number.unique'    => 'This phone number is already registered.',
+            ]);
+
+            $otp = rand(1000, 9999);
+
+            UserDataFotOTP::create([
+                'name'         => $request->name,
+                'email'        => $request->email,
+                'phone_number' => $request->phone_number,
+                'otp'          => 1234 // Changed from hardcoded 12345 to your dynamic $otp
+            ]);
+
+            $email = $request->email;
+            $phone = $request->phone_number;
+
+            return response()->json([
+                'success' => true,
+                'html' => view('frontend.otpModal', compact('phone', 'email'))->render()
+            ]);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Throwable $th) {
+            Log::error('Signup Error: ' . $th->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again later.'
+            ], 500);
+        }
+    }
+    public function verifyotp(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'otp_phone' => 'required',
+                'otp_email' => 'required'
+            ]);
+            $data = UserDataFotOTP::where([
+                'email' => $request->otp_email,
+                'phone_number' => $request->otp_phone,
+                'otp' => $request->otp
+            ])->first();
+            if (!$data) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Otp Not Verified!'
+                ]);
+            }
+            $agent = new Agent();
+            $user = User::create([
+                'name'         => $data->name,
+                'email'        => $data->email,
+                'phone_number' => $data->phone_number,
+                'ip_address'   => request()->ip(),
+                'browser'      => $agent->browser(),
+                'os'           => $agent->platform(),
+                'user_agent'   => request()->userAgent(),
+            ]);
+
+            // Login user
+            Auth::guard('web')->login($user);
+            return response()->json([
+                'success' => true,
+                'message' => 'Otp Verified and Login Successfully!'
+            ]);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Throwable $th) {
+            Log::error('Signup Error: ' . $th->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 }

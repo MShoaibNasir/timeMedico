@@ -31,7 +31,7 @@ Route::prefix('category')->middleware('api.secret')->controller(CategoryControll
     Route::post('/list', 'index');
 });
 Route::prefix('product')->middleware('api.secret')->controller(ProductController::class)->group(function () {
-    Route::post('/list', 'index');
+    Route::get('/list', 'index');
     Route::post('/detail', 'detail');
 });
 

@@ -18,7 +18,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TypeController;
 
 
@@ -109,6 +109,9 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
     Route::get('categories/{id}', 'categories')->name('categories');
     Route::get('productFilter/{id}', 'productFilter')->name('productFilter');
     Route::post('productlist', 'productlist')->name('productlist');
+    Route::get('register', 'register')->name('register');
+    Route::post('signup', 'signup')->name('signup');
+    Route::post('verifyotp', 'verifyotp')->name('verifyotp');
     // Khalid End
 
 
