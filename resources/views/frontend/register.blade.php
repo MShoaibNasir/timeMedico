@@ -25,7 +25,7 @@
                 <div class="login-form">
                     <div class="login-header">
                         <img src="{{asset('frontend/images/timemedio-logo.png')}}" alt="">
-                        <p>Create your free account</p>
+                        <p>Welcome! Enter your details to continue.</p>
                     </div>
                     <form action="#" method="POST" id="registerForm">
                         @CSRF
@@ -60,9 +60,9 @@
                         </div>
                     </form>
                     <div class="login-footer">
-                        <p>Already have an account? <a href="login">Login.</a></p>
+                        <!-- <p>Already have an account? <a href="{{route('frontend.login')}}">Login.</a></p> -->
                         <div class="social-login">
-                            <span class="social-divider">or</span>
+                            <!-- <span class="social-divider">or</span> -->
                             <!-- <p>Continue with social media</p> -->
                             <div class="social-login-list">
                                 <!-- <a href="#" class="fb-auth"><i class="fab fa-facebook-f"></i> Facebook</a> -->

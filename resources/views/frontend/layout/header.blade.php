@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
     <!-- meta tags -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +26,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/nice-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/flex-slider.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -46,11 +49,11 @@
 
         <div class="header-top">
             <div class="container-fluid">
-            <div class="top-marquee">
-    <marquee behavior="scroll" direction="left" scrollamount="6">
-        This is the official website of Time Medico and other sites that are running under this name have no affiliation with Time Medico.
-    </marquee>
-</div>
+                <div class="top-marquee">
+                    <marquee behavior="scroll" direction="left" scrollamount="6">
+                        This is the official website of Time Medico and other sites that are running under this name have no affiliation with Time Medico.
+                    </marquee>
+                </div>
             </div>
         </div>
 
@@ -94,8 +97,21 @@
                     <div class="col-7 col-lg-3 col-xl-4">
                         <div class="header-middle-right">
                             <ul class="header-middle-list">
+                                @if(Auth::guard('web')->check())
                                 <li>
-                                    <a href="login" class="list-item">
+                                    <a href="{{route('frontend.logout')}}" class="list-item">
+                                        <div class="list-item-icon">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                        </div>
+                                        <div class="list-item-info">
+                                            <h6>Logout</h6>
+
+                                        </div>
+                                    </a>
+                                </li>
+                                @else
+                                <li>
+                                    <a href="{{route('frontend.register')}}" class="list-item">
                                         <div class="list-item-icon">
                                             <i class="far fa-user-circle"></i>
                                         </div>
@@ -105,6 +121,7 @@
                                         </div>
                                     </a>
                                 </li>
+                                @endif
                                 <li>
                                     <a href="wishlist" class="list-item">
                                         <div class="list-item-icon">
@@ -114,7 +131,7 @@
                                             <h6>Wishlist</h6>
                                             <h5>My Items</h5>
                                         </div>
-                                        
+
                                     </a>
                                 </li>
                                 <li class="dropdown-cart">
@@ -126,7 +143,7 @@
                                             <h6>Rs350.00</h6>
                                             <h5>My Cart</h5>
                                         </div>
-                                        
+
                                     </a>
                                     <div class="dropdown-cart-menu">
                                         <div class="dropdown-cart-header">
@@ -200,7 +217,7 @@
                             <i class="fas fa-list-ul"></i><span>All Categories</span>
                         </button>
                         <ul class="main-category">
-                            
+
                             <li><a href="shop"><img src="{{ asset('frontend/images/health-care.svg') }}" alt=""><span>Medicine</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/health-care.svg') }}" alt=""><span>Healthcare</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/beauty-care.svg') }}" alt=""><span>Beauty Care</span></a></li>
@@ -236,15 +253,15 @@
                         </div>
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1">
-                                
+
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="{{route('frontend.home.page')}}">Home</a>
-                                    
+
                                 </li>
                                 <li class="nav-item"><a class="nav-link" href="about-us">About</a></li>
-                                
-                                
-                                
+
+
+
                                 <li class="nav-item mega-menu dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
                                     <div class="dropdown-menu fade-down">
@@ -309,23 +326,23 @@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                   <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Products</a>
-                                   <ul class="dropdown-menu fade-down">
-                                       <li><a class="dropdown-item" href="shop-single">Allergies & Sinus</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">E.N.T Preparations</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Eye Preparations</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Vitamin & Nutritional</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Fever & Pain Relief</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Dermatological</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Biopsy Tools</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Monitoring</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Infusion Stands</a></li>
-                                       <li><a class="dropdown-item" href="shop-single">Lighting</a></li>
+                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Products</a>
+                                    <ul class="dropdown-menu fade-down">
+                                        <li><a class="dropdown-item" href="shop-single">Allergies & Sinus</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">E.N.T Preparations</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Eye Preparations</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Vitamin & Nutritional</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Fever & Pain Relief</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Dermatological</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Biopsy Tools</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Monitoring</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Infusion Stands</a></li>
+                                        <li><a class="dropdown-item" href="shop-single">Lighting</a></li>
                                         <li><a class="dropdown-item" href="shop-single">Machines</a></li>
-                                </ul>
+                                    </ul>
                                 </li>
-                               
-                                
+
+
                                 <li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>
                                 <li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>
                                 <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
@@ -333,7 +350,7 @@
                             <!-- nav-right -->
                             <div class="nav-right">
                                 <a href="shop" class="theme-btn dwnld-btn">Download the App<i class="fab fa-google-play"></i></a>
-                                 <a class="nav-right-link" href="prescription"><i class="fal fa-upload"></i> Upload Prescription</a> 
+                                <a class="nav-right-link" href="prescription"><i class="fal fa-upload"></i> Upload Prescription</a>
                             </div>
                         </div>
                     </div>
@@ -357,4 +374,3 @@
         </form>
     </div>
     <!-- mobile popup search end -->
-

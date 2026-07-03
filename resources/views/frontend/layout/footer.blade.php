@@ -201,54 +201,57 @@
  <script src="{{ asset('frontend/js/main.js') }}"></script>
 
  <script>
-     < script src = "https://cdn.jsdelivr.net/npm/sweetalert2@11" >
- </script>
+     < script src = "https://cdn.jsdelivr.net/npm/sweetalert2@11" > </script>
+<script>
+    // Create a reusable Toast configuration
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+</script>
 
- @if(session('success'))
- <script>
-     Swal.fire({
-         icon: 'success',
-         title: 'Success!',
-         text: "{{ session('success') }}",
-         confirmButtonText: 'OK'
-     });
- </script>
- @endif
+@if(session('success'))
+<script>
+    Toast.fire({
+        icon: 'success',
+        title: "{{ session('success') }}"
+    });
+</script>
+@endif
 
- @if(session('error'))
- <script>
-     Swal.fire({
-         icon: 'error',
-         title: 'Error!',
-         text: "{{ session('error') }}",
-         confirmButtonText: 'OK'
-     });
- </script>
- @endif
+@if(session('error'))
+<script>
+    Toast.fire({
+        icon: 'error',
+        title: "{{ session('error') }}"
+    });
+</script>
+@endif
 
- @if(session('warning'))
- <script>
-     Swal.fire({
-         icon: 'warning',
-         title: 'Warning!',
-         text: "{{ session('warning') }}",
-         confirmButtonText: 'OK'
-     });
- </script>
- @endif
+@if(session('warning'))
+<script>
+    Toast.fire({
+        icon: 'warning',
+        title: "{{ session('warning') }}"
+    });
+</script>
+@endif
 
- @if(session('info'))
- <script>
-     Swal.fire({
-         icon: 'info',
-         title: 'Information',
-         text: "{{ session('info') }}",
-         confirmButtonText: 'OK'
-     });
- </script>
- @endif
- </script>
-
+@if(session('info'))
+<script>
+    Toast.fire({
+        icon: 'info',
+        title: "{{ session('info') }}"
+    });
+</script>
+@endif
  </body>
 
  </html>

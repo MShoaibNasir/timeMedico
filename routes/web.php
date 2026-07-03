@@ -110,8 +110,12 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
     Route::get('productFilter/{id}', 'productFilter')->name('productFilter');
     Route::post('productlist', 'productlist')->name('productlist');
     Route::get('register', 'register')->name('register');
+    Route::get('login', 'login')->name('login');
+    Route::post('login/user', 'loginUser')->name('loginUser');
     Route::post('signup', 'signup')->name('signup');
     Route::post('verifyotp', 'verifyotp')->name('verifyotp');
+    Route::post('saveUser', 'saveUser')->name('saveUser');
+    Route::get('website/logout', 'logout')->name('logout');
     // Khalid End
 
 

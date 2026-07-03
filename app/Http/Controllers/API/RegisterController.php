@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-// use App\Http\Controllers\API\BaseController as BaseController;
-use App\Http\Requests\Frontend\Auth\LoginRequest;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Frontend\Auth\RegisterRequest;
 use App\Models\User;
-use App\Services\UserAuthService;
+use App\Models\UserDataFotOTP;
 use Illuminate\Http\Request;
 
 class RegisterController extends BaseController
@@ -36,25 +33,18 @@ class RegisterController extends BaseController
         }
 
         $validatedData = $validator->validated();
-
         $otp = rand(1000, 9999);
-
-        $user = User::updateOrCreate(
-            ['email' => $validatedData['email']],
-            [
-                'name'         => $validatedData['name'],
-                'phone_number' => $validatedData['phone_number'],
-                'otp'          => 1234,
-                'fcmToken'    => $validatedData['fcmToken'],
-                'deviceId'    => $validatedData['deviceId'],
-                'phoneModel'  => $validatedData['phoneModel'],
-                'phoneMake'   => $validatedData['phoneMake'],
-                'appVersion'  => $validatedData['appVersion'],
-            ]
-        );
-
-
-
+        UserDataFotOTP::create([
+            'name'         => $request->name,
+            'email'        => $request->email,
+            'phone_number' => $request->phone_number,
+            'otp'          => 1234,
+            'fcmToken' => $request->fcmToken,
+            'deviceId' => $request->deviceId,
+            'phoneModel' => $request->phoneModel,
+            'phoneMake' => $request->phoneMake,
+            'appVersion' => $request->appVersion
+        ]);
         return response()->json([
             'success' => true,
             'message' => 'OTP sent to your email ' . $request->email . '.',
@@ -79,32 +69,55 @@ class RegisterController extends BaseController
             ], 422);
         }
 
-        $user_verify = User::where('email', $request->email)
-            ->where('phone_number', $request->phone_number)
-            ->where('otp', $request->otp)
-            ->first();
+        $data = UserDataFotOTP::where([
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'otp' => $request->otp
+        ])->latest()->first();
 
-        if (!$user_verify) {
+        if (!$data) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid OTP. Please enter the correct code.'
+                'message' => ''
             ], 401);
         }
-        $token = $user_verify->createToken('TIME')->plainTextToken;
+
+
+
+
+        $user = User::updateOrCreate(
+            [
+                'email' => $data->email,
+            ],
+            [
+                'name'         => $data->name,
+                'phone_number' => $data->phone_number,
+                'fcmToken' => $data->fcmToken,
+                'deviceId' => $data->deviceId,
+                'phoneModel' => $data->phoneModel,
+                'phoneMake' => $data->phoneMake,
+                'appVersion' => $data->appVersion
+
+
+
+            ]
+        );
+
+        $token = $user->createToken('TIME')->plainTextToken;
         return response()->json([
             'success' => true,
             'message' => 'OTP Verified Successfully',
             'token'   => $token,
             'data'    => [
-                'id' => $user_verify->id,
-                'name' => $user_verify->name,
-                'email' => $user_verify->email,
-                'phone_number' => $user_verify->phone_number,
-                'fcmToken' => $user_verify->fcmToken,
-                'deviceId' => $user_verify->deviceId,
-                'phoneModel' => $user_verify->phoneModel,
-                'phoneMake' => $user_verify->phoneMake,
-                'appVersion' => $user_verify->appVersion,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone_number' => $user->phone_number,
+                'fcmToken' => $user->fcmToken,
+                'deviceId' => $user->deviceId,
+                'phoneModel' => $user->phoneModel,
+                'phoneMake' => $user->phoneMake,
+                'appVersion' => $user->appVersion,
             ]
         ]);
     }

@@ -43,7 +43,7 @@
         border-radius: 10px;
         padding: 12px;
         font-weight: 600;
-        color: #ffff !important;
+        color: #ffffff !important;
     }
 
     .modal-content {
@@ -55,18 +55,16 @@
         color: #EE1B21;
     }
 </style>
+
 <div class="modal fade" id="otpModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0 pb-0">
-                <h4 class="modal-title fw-bold w-100 text-center">
-                    OTP Verification
-                </h4>
+                <h4 class="modal-title fw-bold w-100 text-center">OTP Verification</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body text-center">
-
                 <div class="otp-icon mb-3">
                     <i class="fas fa-shield-alt"></i>
                 </div>
@@ -76,10 +74,11 @@
                 <p class="text-muted mb-4">
                     We have sent a 4-digit verification code to your registered email.
                 </p>
-                <form id="verify_otp">
+
+                <form id="otpSubmitForm" method="post" action="{{route('frontend.saveUser')}}">
                     @csrf
-                    <input type="hidden" id="otp_phone" value="{{$phone}}">
-                    <input type="hidden" id="otp_email" value="{{$email}}">
+                    <input type="hidden" id="otp_phone" name="phone" value="{{$phone}}">
+                    <input type="hidden" id="otp_email" name="email" value="{{$email}}">
 
                     <div class="otp-container">
                         <input type="text" class="otp-input" maxlength="1">
@@ -93,15 +92,12 @@
                     Didn't receive the code?
                     <a href="#" class="fw-bold r_otp">Resend OTP</a>
                 </small>
-
             </div>
 
             <div class="modal-footer border-0 justify-content-center">
-                <button type="button" style="background:#EE1B21;colour:white;"
-                    class="btn verify-btn"
-                    id="verifyOtpBtn">
+                <!-- <button type="button" style="background:#EE1B21; color:white;" class="btn verify-btn" id="verifyOtpBtn">
                     Verify OTP
-                </button>
+                </button> -->
             </div>
         </div>
     </div>
@@ -109,31 +105,58 @@
 
 <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
 <script>
-    let otpModal = new bootstrap.Modal(
-        document.getElementById('otpModal')
-    );
-    otpModal.show();
+    // Initialize Modal
+    if (!window.myOtpModalInstance) {
+        window.myOtpModalInstance = new bootstrap.Modal(document.getElementById('otpModal'));
+    }
+    window.myOtpModalInstance.show();
 
-
-    $('#verifyOtpBtn').click(function(e) {
-
-        e.preventDefault();
-
+    // Helper function to extract typed OTP string
+    function getOtpValue() {
         let otp = '';
-
         $('.otp-input').each(function() {
-            otp += $(this).val();
+            otp += $(this).val().trim();
         });
+        return otp;
+    }
 
+    // Input Restrictions (Numbers only) & Auto Focus Next
+    $(document).on('input', '.otp-input', function() {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Ensure only numbers are typed
+
+        if (this.value.length >= 1) {
+            $(this).next('.otp-input').focus();
+        }
+
+        let otp = getOtpValue();
+        if (otp.length === 4) {
+            verifyOTP(otp);
+        }
+    });
+
+    // Backspace Navigation
+    $(document).on('keydown', '.otp-input', function(e) {
+        if (e.key === "Backspace" && this.value.length === 0) {
+            $(this).prev('.otp-input').focus();
+        }
+    });
+
+    // Manual Button Click Verification Trigger
+    $(document).on('click', '#verifyOtpBtn', function() {
+        let otp = getOtpValue();
         if (otp.length !== 4) {
             Swal.fire({
                 icon: 'warning',
-                title: 'Invalid OTP',
-                text: 'Please enter 4 digit OTP'
+                title: 'Incomplete OTP',
+                text: 'Please enter all 4 digits.'
             });
             return;
         }
+        verifyOTP(otp);
+    });
 
+    // Main Verification Function
+    function verifyOTP(otp) {
         const otp_phone = $('#otp_phone').val();
         const otp_email = $('#otp_email').val();
 
@@ -141,7 +164,6 @@
             url: "{{ route('frontend.verifyotp') }}",
             type: "POST",
             dataType: "json",
-
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 'Accept': 'application/json'
@@ -151,9 +173,7 @@
                 otp_email: otp_email,
                 otp: otp
             },
-
             beforeSend: function() {
-
                 Swal.fire({
                     title: 'Verifying OTP...',
                     text: 'Please wait',
@@ -162,39 +182,27 @@
                         Swal.showLoading();
                     }
                 });
-
                 $('#verifyOtpBtn').prop('disabled', true);
             },
-
             success: function(response) {
-                console.log(response);
-
                 Swal.close();
                 if (response.success) {
-                    otpModal.hide();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message || 'OTP verified successfully!'
-                    });
+                    // 1. Append OTP value dynamically to the form
+                    $('#otpSubmitForm').append('<input type="hidden" name="otp" value="' + otp + '">');
 
-                    $('#registerForm')[0].reset();
-
+                    // 2. Submit the form to target `frontend.saveUser`
+                    $('#otpSubmitForm').submit();
                 } else {
-
                     Swal.fire({
                         icon: 'error',
                         title: 'Invalid OTP',
                         text: response.message || 'OTP verification failed.'
                     });
-
+                    clearOtpInputs();
                 }
             },
-
             error: function(xhr) {
-
                 Swal.close();
-
                 let errors = xhr.responseJSON?.errors;
                 let errorMessage = '';
 
@@ -211,52 +219,16 @@
                     title: 'Error',
                     html: errorMessage
                 });
+                clearOtpInputs();
             },
-
             complete: function() {
                 $('#verifyOtpBtn').prop('disabled', false);
             }
         });
+    }
 
-    });
-
-
-
-
-
-
-
-
-    $('.otp-input').on('input', function() {
-        if (this.value.length >= 1) {
-            $(this).next('.otp-input').focus();
-        }
-    });
-
-    $('.otp-input').on('keydown', function(e) {
-        if (e.key === "Backspace" && this.value.length === 0) {
-            $(this).prev('.otp-input').focus();
-        }
-    });
-
-    $('.otp-input').on('keypress', function(e) {
-        if (e.which < 48 || e.which > 57) {
-            e.preventDefault();
-        }
-    });
-
-    // 2. VERIFY OTP BUTTON CLICK
-    $('#verifyOtpBtn').click(function() {
-        let otp = '';
-        $('.otp-input').each(function() {
-            otp += $(this).val();
-        });
-
-        if (otp.length !== 4) {
-            alert('Please enter 4 digit OTP');
-            return;
-        }
-        console.log(otp);
-
-    });
+    function clearOtpInputs() {
+        $('.otp-input').val('');
+        $('.otp-input').first().focus();
+    }
 </script>

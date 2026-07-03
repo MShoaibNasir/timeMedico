@@ -84,6 +84,10 @@ class FrontendController extends Controller
     {
         return view('frontend.register');
     }
+    public function login()
+    {
+        return view('frontend.login');
+    }
 
 
 
@@ -92,20 +96,17 @@ class FrontendController extends Controller
         try {
             $validatedData = $request->validate([
                 'name'  => 'required|string|max:255',
-                'email' => 'required|email|max:255|unique:users,email',
+                'email' => 'required|email|max:255',
                 'phone_number' => [
                     'required',
-                    'regex:/^03[0-9]{2}-[0-9]{7}$/',
-                    'unique:users,phone_number'
+                    'regex:/^03[0-9]{2}-[0-9]{7}$/'
                 ],
             ], [
                 'name.required'   => 'Please enter your full name.',
                 'email.required'  => 'Please enter your email address.',
                 'email.email'     => 'Please enter a valid email address.',
-                'email.unique'    => 'This email address is already registered.',
                 'phone_number.required'  => 'Please enter your phone number.',
                 'phone_number.regex'     => 'Phone number must be in the format 03XX-XXXXXXX.',
-                'phone_number.unique'    => 'This phone number is already registered.',
             ]);
 
             $otp = rand(1000, 9999);
@@ -145,30 +146,35 @@ class FrontendController extends Controller
                 'email' => $request->otp_email,
                 'phone_number' => $request->otp_phone,
                 'otp' => $request->otp
-            ])->first();
+            ])->latest()->first();
             if (!$data) {
                 return response()->json([
-                    'success' => false,
+                    'info' => true,
                     'message' => 'Otp Not Verified!'
                 ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Otp Verified!'
+                ]);
             }
-            $agent = new Agent();
-            $user = User::create([
-                'name'         => $data->name,
-                'email'        => $data->email,
-                'phone_number' => $data->phone_number,
-                'ip_address'   => request()->ip(),
-                'browser'      => $agent->browser(),
-                'os'           => $agent->platform(),
-                'user_agent'   => request()->userAgent(),
-            ]);
+            // $agent = new Agent();
+            // $user = User::create([
+            //     'name'         => $data->name,
+            //     'email'        => $data->email,
+            //     'phone_number' => $data->phone_number,
+            //     'ip_address'   => request()->ip(),
+            //     'browser'      => $agent->browser(),
+            //     'os'           => $agent->platform(),
+            //     'user_agent'   => request()->userAgent(),
+            // ]);
 
-            // Login user
-            Auth::guard('web')->login($user);
-            return response()->json([
-                'success' => true,
-                'message' => 'Otp Verified and Login Successfully!'
-            ]);
+            // // Login user
+            // Auth::guard('web')->login($user);
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Otp Verified and Login Successfully!'
+            // ]);
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Throwable $th) {
@@ -178,5 +184,56 @@ class FrontendController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+
+    public function saveUser(Request $request)
+    {
+        $data = UserDataFotOTP::where([
+            'email'        => $request->email,
+            'phone_number' => $request->phone,
+            'otp'          => $request->otp
+        ])->latest()->first();
+        if (!$data) {
+            return redirect()->back()->withErrors(['otp' => 'Invalid or expired OTP.']);
+        }
+        $agent = new Agent();
+        $user = User::updateOrCreate(
+          
+            [
+                'email' => $data->email,
+            ],
+         
+            [
+                'name'         => $data->name,
+                'phone_number' => $data->phone_number,
+                'ip_address'   => request()->ip(),
+                'browser'      => $agent->browser(),
+                'os'           => $agent->platform(),
+                'user_agent'   => request()->userAgent(),
+            ]
+        );
+
+        Auth::guard('web')->login($user);
+        return redirect()->route('frontend.home.page')->with(['success' => 'OTP verified and logged in successfully!']);
+    }
+
+
+
+
+
+    public function loginUser(Request $request)
+    {
+        $user = User::where('email', $request->email)->where('phone_number', $request->phone_number)->first();
+        Auth::guard('web')->login($user);
+        return redirect()->route('frontend.home.page')->with(['success' => 'Logged in Successfully!']);
+    }
+
+
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('frontend.home.page')->with('success', 'Logged out successfully.');
     }
 }
