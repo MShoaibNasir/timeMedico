@@ -31,7 +31,7 @@ class RegisterController extends BaseController
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'message' => $validator->errors()
             ], 422);
         }
 
@@ -45,7 +45,6 @@ class RegisterController extends BaseController
                 'name'         => $validatedData['name'],
                 'phone_number' => $validatedData['phone_number'],
                 'otp'          => 1234,
-
                 'fcmToken'    => $validatedData['fcmToken'],
                 'deviceId'    => $validatedData['deviceId'],
                 'phoneModel'  => $validatedData['phoneModel'],
@@ -58,9 +57,8 @@ class RegisterController extends BaseController
 
         return response()->json([
             'success' => true,
-            'message' => 'OTP generated successfully',
+            'message' => 'OTP sent to your email ' . $request->email . '.',
             'otp'     => 1234,
-
         ]);
     }
 
@@ -89,13 +87,13 @@ class RegisterController extends BaseController
         if (!$user_verify) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid OTP'
+                'message' => 'Invalid OTP. Please enter the correct code.'
             ], 401);
         }
         $token = $user_verify->createToken('TIME')->plainTextToken;
         return response()->json([
             'success' => true,
-            'message' => 'OTP verified successfully',
+            'message' => 'OTP Verified Successfully',
             'token'   => $token,
             'data'    => [
                 'id' => $user_verify->id,

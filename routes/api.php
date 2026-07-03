@@ -6,9 +6,9 @@ use App\Http\Controllers\API\BioProfileController;
 use App\Http\Controllers\API\BoardComitteeMemberController;
 use App\Http\Controllers\API\DirectorShipController;
 use App\Http\Controllers\API\DTPController;
-use App\Http\Controllers\API\EducationController;
-use App\Http\Controllers\API\EventController;
-use App\Http\Controllers\API\ProfessionalExperienceController;
+use App\Http\Controllers\API\ImageController;
+use App\Http\Controllers\API\CustomerAddressController;
+use App\Http\Controllers\API\PrescriptionController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\CategoryController;
@@ -30,8 +30,26 @@ Route::prefix('department')->middleware('api.secret')->controller(DepartmentCont
 Route::prefix('category')->middleware('api.secret')->controller(CategoryController::class)->group(function () {
     Route::post('/list', 'index');
 });
+
 Route::prefix('product')->middleware('api.secret')->controller(ProductController::class)->group(function () {
     Route::get('/list', 'index');
+    Route::post('data', 'data');
     Route::post('/detail', 'detail');
 });
 
+
+
+
+//  token required apis
+Route::prefix('Prescription') ->middleware(['api.secret', 'auth:sanctum'])->controller(PrescriptionController::class)->group(function () {
+    Route::post('/upload', 'upload');
+});
+Route::prefix('image') ->middleware(['api.secret', 'auth:sanctum'])->controller(ImageController::class)->group(function () {
+    Route::post('/upload', 'upload');
+});
+
+Route::prefix('address') ->middleware(['api.secret', 'auth:sanctum'])->controller(CustomerAddressController::class)->group(function () {
+    Route::post('/add', 'add');
+    Route::post('/make_primary', 'is_primary');
+    Route::post('/list', 'list');
+});
