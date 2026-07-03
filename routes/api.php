@@ -41,14 +41,14 @@ Route::prefix('product')->middleware('api.secret')->controller(ProductController
 
 
 //  token required apis
-Route::prefix('Prescription') ->middleware(['api.secret', 'auth:sanctum'])->controller(PrescriptionController::class)->group(function () {
+Route::prefix('Prescription')->middleware(['api.secret', 'auth:sanctum'])->controller(PrescriptionController::class)->group(function () {
     Route::post('/upload', 'upload');
 });
-Route::prefix('image') ->middleware(['api.secret', 'auth:sanctum'])->controller(ImageController::class)->group(function () {
+Route::prefix('image')->middleware(['api.secret', 'auth:sanctum'])->controller(ImageController::class)->group(function () {
     Route::post('/upload', 'upload');
 });
 
-Route::prefix('address') ->middleware(['api.secret', 'auth:sanctum'])->controller(CustomerAddressController::class)->group(function () {
+Route::prefix('address')->middleware(['api.secret', 'auth:sanctum'])->controller(CustomerAddressController::class)->group(function () {
     Route::post('/add', 'add');
     Route::post('/make_primary', 'is_primary');
     Route::post('/list', 'list');
