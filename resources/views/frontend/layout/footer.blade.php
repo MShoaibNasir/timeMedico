@@ -130,53 +130,8 @@
 
 
  <!-- modal quick shop-->
- <div class="modal quickview fade" id="quickview" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickview" aria-hidden="true">
-     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-         <div class="modal-content">
-             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="far fa-xmark"></i></button>
-             <div class="modal-body">
-                 <div class="row">
-                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                         <div class="quickview-img">
-                             <img src="assets/images/04_1.png" alt="#">
-                         </div>
-                     </div>
-                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                         <div class="quickview-content">
-                             <h4 class="quickview-title">Surgical Face Mask</h4>
-                             <div class="quickview-rating">
-                                 <i class="fas fa-star"></i>
-                                 <i class="fas fa-star"></i>
-                                 <i class="fas fa-star"></i>
-                                 <i class="fas fa-star-half-alt"></i>
-                                 <i class="far fa-star"></i>
-                                 <span class="rating-count"> (4 Customer Reviews)</span>
-                             </div>
-                             <div class="quickview-price">
-                                 <h5><del>$860</del><span>$740</span></h5>
-                             </div>
-                             <ul class="quickview-list">
-                                 <li>Brand:<span>Medica</span></li>
-                                 <li>Category:<span>Healthcare</span></li>
-                                 <li>Stock:<span class="stock">Available</span></li>
-                                 <li>Code:<span>789FGDF</span></li>
-                             </ul>
-                             <div class="quickview-cart">
-                                 <a href="#" class="theme-btn">Add to cart</a>
-                             </div>
-                             <div class="quickview-social">
-                                 <span>Share:</span>
-                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                 <a href="#"><i class="fab fa-x-twitter"></i></a>
-
-                                 <a href="#"><i class="fab fa-instagram"></i></a>
-                                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
+ <div class="modal quickview fade " id="quickview" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickview" aria-hidden="true">
+     <div class="modal-dialog modal-lg modal-dialog-centered quickViewModal" role="document">
      </div>
  </div>
  <!-- modal quick shop end -->
@@ -199,59 +154,289 @@
  <script src="{{ asset('frontend/js/wow.min.js') }}"></script>
  <script src="{{ asset('frontend/js/flex-slider.js') }}"></script>
  <script src="{{ asset('frontend/js/main.js') }}"></script>
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
  <script>
-     < script src = "https://cdn.jsdelivr.net/npm/sweetalert2@11" > </script>
-<script>
-    // Create a reusable Toast configuration
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
-</script>
+     // Create a reusable Toast configuration
+     const Toast = Swal.mixin({
+         toast: true,
+         position: 'top-end',
+         showConfirmButton: false,
+         timer: 3000,
+         timerProgressBar: true,
+         didOpen: (toast) => {
+             toast.addEventListener('mouseenter', Swal.stopTimer)
+             toast.addEventListener('mouseleave', Swal.resumeTimer)
+         }
+     });
 
-@if(session('success'))
-<script>
-    Toast.fire({
-        icon: 'success',
-        title: "{{ session('success') }}"
-    });
-</script>
-@endif
+     function showWishList() {
 
-@if(session('error'))
-<script>
-    Toast.fire({
-        icon: 'error',
-        title: "{{ session('error') }}"
-    });
-</script>
-@endif
 
-@if(session('warning'))
-<script>
-    Toast.fire({
-        icon: 'warning',
-        title: "{{ session('warning') }}"
-    });
-</script>
-@endif
+         $.ajax({
+             url: "{{ route('frontend.wishlist.show') }}",
+             type: "POST",
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             success: function(response) {
+                 $('.wishlist_count_show').html(response);
+             },
 
-@if(session('info'))
-<script>
-    Toast.fire({
-        icon: 'info',
-        title: "{{ session('info') }}"
-    });
-</script>
-@endif
+             error: function(xhr) {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Error',
+                     text: xhr.responseJSON?.message || 'Something went wrong.'
+                 });
+             }
+         });
+     }
+     showWishList()
+
+
+     function viewCart() {
+
+         $.ajax({
+             url: "{{ route('frontend.viewCart') }}",
+             type: "POST",
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+
+
+             success: function(response) {
+                 $('.dropdown-cart').html(response)
+             },
+
+             error: function(xhr) {
+
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Oops...',
+                     text: xhr.responseJSON?.message || 'Something went wrong.'
+                 });
+
+             }
+         });
+
+
+     }
+     viewCart();
+
+
+
+
+
+
+
+
+
+
+
+
+     // wish list code
+
+     $(document).on('click', '.wishlist', function() {
+
+         let product_id = $(this).data('product-id');
+         let btn = $(this);
+
+         $.ajax({
+             url: "{{ route('frontend.wishlist.add') }}",
+             type: "POST",
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data: {
+                 product_id: product_id
+             },
+
+
+             success: function(response) {
+
+                 Swal.close();
+
+                 if (response.action === 'added') {
+
+                     btn.find('span')
+                         .removeClass('far')
+                         .addClass('fas');
+                     btn.css('background-color', 'red');
+
+                 } else {
+
+                     btn.find('span')
+                         .removeClass('fas')
+                         .addClass('far');
+                     btn.css('background-color', '');
+                 }
+                 showWishList()
+
+                 Swal.fire({
+                     toast: true,
+                     position: 'top-end',
+                     icon: 'success',
+                     title: response.message,
+                     showConfirmButton: false,
+                     timer: 1200,
+                     timerProgressBar: true
+                 });
+
+                 $('#wishlist-count').text(response.wishlist_count);
+             },
+
+             error: function(xhr) {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Error',
+                     text: xhr.responseJSON?.message || 'Something went wrong.'
+                 });
+             }
+         });
+     });
+     $(document).on('click', '.quickeView', function() {
+
+         let product_id = $(this).data('product-id');
+         let btn = $(this);
+         $.ajax({
+             url: "{{ route('frontend.quickeView') }}",
+             type: "POST",
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data: {
+                 product_id: product_id
+             },
+
+
+             success: function(response) {
+                 console.log(response);
+
+                 $('.quickViewModal').html(response);
+
+                 //  $('#wishlist-count').text(response.wishlist_count);
+             },
+
+             error: function(xhr) {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Error',
+                     text: xhr.responseJSON?.message || 'Something went wrong.'
+                 });
+             }
+         });
+     });
+
+     $(document).on('click', '.product-cart-btn', function() {
+
+         let product_id = $(this).data('product-id');
+         let btn = $(this);
+
+         $.ajax({
+             url: "{{ route('frontend.addToCart') }}",
+             type: "POST",
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data: {
+                 product_id: product_id
+             },
+
+             success: function(response) {
+                 if (response.status) {
+
+                     Swal.fire({
+                         icon: 'warning',
+                         title: 'Login Required',
+                         text: response.message,
+                         confirmButtonText: 'OK'
+                     });
+
+                 }
+                 Toast.fire({
+                     icon: 'success',
+                     title: 'Product Add to Cart Successfully!'
+                 });
+                 viewCart();
+
+                 //  $('.dropdown-cart').html(response)
+             },
+
+             error: function(xhr) {
+
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Oops...',
+                     text: xhr.responseJSON?.message || 'Something went wrong.'
+                 });
+
+             }
+         });
+
+     });
+     $(document).on('click', '.cart-remove', function(e) {
+
+         e.preventDefault();
+
+         let product_id = $(this).data('product-id');
+
+         $.ajax({
+             url: "{{ route('frontend.removeFromCart') }}",
+             type: "POST",
+             data: {
+                 _token: $('meta[name="csrf-token"]').attr('content'),
+                 product_id: product_id
+             },
+             success: function(response) {
+
+                 if (response.status) {
+
+                     viewCart(); 
+
+                     toastr.success(response.message);
+                 }
+             }
+         });
+
+     });
+ </script>
+
+ @if(session('success'))
+ <script>
+     Toast.fire({
+         icon: 'success',
+         title: "{{ session('success') }}"
+     });
+ </script>
+ @endif
+
+ @if(session('error'))
+ <script>
+     Toast.fire({
+         icon: 'error',
+         title: "{{ session('error') }}"
+     });
+ </script>
+ @endif
+
+ @if(session('warning'))
+ <script>
+     Toast.fire({
+         icon: 'warning',
+         title: "{{ session('warning') }}"
+     });
+ </script>
+ @endif
+
+ @if(session('info'))
+ <script>
+     Toast.fire({
+         icon: 'info',
+         title: "{{ session('info') }}"
+     });
+ </script>
+ @endif
  </body>
 
  </html>

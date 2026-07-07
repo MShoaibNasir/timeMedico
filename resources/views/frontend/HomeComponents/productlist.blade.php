@@ -20,7 +20,7 @@
                                     <i class="far fa-star"></i>
                                 </div>
                                 <div class="product-list-price">
-                                    <span>RsRs {{number_format($item->price,2)}}</span>
+                                    <span>Rs {{number_format($item->price,2)}}</span>
                                 </div>
                             </div>
                             <a href="#" class="product-list-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart"><i class="far fa-shopping-bag"></i></a>

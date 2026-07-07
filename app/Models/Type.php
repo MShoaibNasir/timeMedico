@@ -20,6 +20,10 @@ class Type extends Model
     {
         return $this->hasMany(Product::class, 'type', 'id')->withTrashed();
     }
+     public function product_with_out_trashed()
+    {
+        return $this->hasMany(Product::class, 'type', 'id')->withTrashed();
+    }
 
   
 }

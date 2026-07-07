@@ -65,7 +65,7 @@ class RegisterController extends BaseController
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
+                'message' => $validator->errors()
             ], 422);
         }
 
@@ -78,7 +78,7 @@ class RegisterController extends BaseController
         if (!$data) {
             return response()->json([
                 'success' => false,
-                'message' => ''
+                'message' => 'Invalid OTP. Please enter the correct code.'
             ], 401);
         }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 03, 2026 at 07:57 AM
+-- Generation Time: Jul 03, 2026 at 12:03 PM
 -- Server version: 9.3.0
 -- PHP Version: 7.4.33
 
@@ -33,6 +33,11 @@ CREATE TABLE `user_data_for_otp` (
   `email` varchar(255) DEFAULT NULL,
   `phone_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `otp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `fcmToken` varchar(255) DEFAULT NULL,
+  `deviceId` varchar(255) DEFAULT NULL,
+  `phoneModel` varchar(255) DEFAULT NULL,
+  `phoneMake` varchar(255) DEFAULT NULL,
+  `appVersion` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -41,18 +46,10 @@ CREATE TABLE `user_data_for_otp` (
 -- Dumping data for table `user_data_for_otp`
 --
 
-INSERT INTO `user_data_for_otp` (`id`, `name`, `email`, `phone_number`, `otp`, `created_at`, `updated_at`) VALUES
-(2, 'Vladimir Best', 'cijud@mailinator.com', '0321-6905568', '61904', '2026-07-02 06:29:42', '2026-07-02 06:29:42'),
-(3, 'Felix Burch', 'ralaboqyd@mailinator.com', '0321-6905568', '1234', '2026-07-02 06:30:20', '2026-07-02 06:30:20'),
-(4, 'Doris Pate', 'sopyvu@mailinator.com', '0321-6905569', '1234', '2026-07-02 06:37:27', '2026-07-02 06:37:27'),
-(5, 'Emmanuel Langley', 'qykoc@mailinator.com', '0321-6904458', '1234', '2026-07-02 06:38:43', '2026-07-02 06:38:43'),
-(6, 'Eugenia Hahn', 'suwihu@mailinator.com', '0321-4444444', '1234', '2026-07-02 06:42:09', '2026-07-02 06:42:09'),
-(7, 'Zena Pena', 'haqo@mailinator.com', '0321-6905588', '1234', '2026-07-02 06:46:40', '2026-07-02 06:46:40'),
-(8, 'Dane Gomez', 'copove@mailinator.com', '0321-6905777', '1234', '2026-07-02 06:48:01', '2026-07-02 06:48:01'),
-(9, 'Urielle Watson', 'wunovyjasa@mailinator.com', '0321-5545578', '1234', '2026-07-02 06:52:03', '2026-07-02 06:52:03'),
-(10, 'Dominic Chase', 'jalyno@mailinator.com', '0321-5554875', '1234', '2026-07-02 06:54:01', '2026-07-02 06:54:01'),
-(11, 'Inga Whitfield', 'bufupukot@mailinator.com', '0324-5878888', '1234', '2026-07-02 06:59:38', '2026-07-02 06:59:38'),
-(12, 'Cole Gonzales', 'hopekurym@mailinator.com', '0324-5875555', '1234', '2026-07-03 01:01:39', '2026-07-03 01:01:39');
+INSERT INTO `user_data_for_otp` (`id`, `name`, `email`, `phone_number`, `otp`, `fcmToken`, `deviceId`, `phoneModel`, `phoneMake`, `appVersion`, `created_at`, `updated_at`) VALUES
+(1, 'Muhammad Shoaib Nasir', 'shoaibnasir315@gmail.com', '0321-6905568', '1234', NULL, NULL, NULL, NULL, NULL, '2026-07-03 06:20:36', '2026-07-03 06:20:36'),
+(2, 'Gage Smith', 'shoaibnasir315@gmail.com', '0321-4555555', '1234', NULL, NULL, NULL, NULL, NULL, '2026-07-03 06:46:35', '2026-07-03 06:46:35'),
+(3, 'Shannon Peterson', 'shoaibnasir315@gmail.com', '0321-6905568', '1234', NULL, NULL, NULL, NULL, NULL, '2026-07-03 06:47:09', '2026-07-03 06:47:09');
 
 --
 -- Indexes for dumped tables
@@ -72,7 +69,7 @@ ALTER TABLE `user_data_for_otp`
 -- AUTO_INCREMENT for table `user_data_for_otp`
 --
 ALTER TABLE `user_data_for_otp`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

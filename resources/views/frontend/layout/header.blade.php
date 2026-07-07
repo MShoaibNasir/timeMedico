@@ -27,10 +27,14 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/flex-slider.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('frontend/js/jquery-3.7.1.min.js') }}"></script>
+
 
 </head>
 
 <body>
+
+
 
     <!-- preloader -->
     <div class="preloader">
@@ -122,81 +126,12 @@
                                     </a>
                                 </li>
                                 @endif
-                                <li>
-                                    <a href="wishlist" class="list-item">
-                                        <div class="list-item-icon">
-                                            <i class="far fa-heart"></i><span>0</span>
-                                        </div>
-                                        <div class="list-item-info">
-                                            <h6>Wishlist</h6>
-                                            <h5>My Items</h5>
-                                        </div>
-
-                                    </a>
+                                <li class="wishlist_count_show">
                                 </li>
+                                @if(Auth::guard('web')->check())
                                 <li class="dropdown-cart">
-                                    <a href="cart" class="shop-cart list-item">
-                                        <div class="list-item-icon">
-                                            <i class="far fa-shopping-bag"></i><span>3</span>
-                                        </div>
-                                        <div class="list-item-info">
-                                            <h6>Rs350.00</h6>
-                                            <h5>My Cart</h5>
-                                        </div>
-
-                                    </a>
-                                    <div class="dropdown-cart-menu">
-                                        <div class="dropdown-cart-header">
-                                            <span>03 Items</span>
-                                            <a href="cart">View Cart</a>
-                                        </div>
-                                        <ul class="dropdown-cart-list">
-                                            <li>
-                                                <div class="dropdown-cart-item">
-                                                    <div class="cart-img">
-                                                        <a href="shop-single"><img src="{{ asset('frontend/images/01_1.png') }}" alt="#"></a>
-                                                    </div>
-                                                    <div class="cart-info">
-                                                        <h4><a href="shop-single">Surgical Face Mask</a></h4>
-                                                        <p class="cart-qty">1x - <span class="cart-amount">Rs200.00</span></p>
-                                                    </div>
-                                                    <a href="#" class="cart-remove" title="Remove this item"><i class="far fa-times-circle"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-cart-item">
-                                                    <div class="cart-img">
-                                                        <a href="shop-single"><img src="{{ asset('frontend/images/02_3.png') }}" alt="#"></a>
-                                                    </div>
-                                                    <div class="cart-info">
-                                                        <h4><a href="shop-single">Surgical Face Mask</a></h4>
-                                                        <p class="cart-qty">1x - <span class="cart-amount">Rs120.00</span></p>
-                                                    </div>
-                                                    <a href="#" class="cart-remove" title="Remove this item"><i class="far fa-times-circle"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-cart-item">
-                                                    <div class="cart-img">
-                                                        <a href="shop-single"><img src="{{ asset('frontend/images/03_2.png') }}" alt="#"></a>
-                                                    </div>
-                                                    <div class="cart-info">
-                                                        <h4><a href="shop-single">Surgical Face Mask</a></h4>
-                                                        <p class="cart-qty">1x - <span class="cart-amount">Rs330.00</span></p>
-                                                    </div>
-                                                    <a href="#" class="cart-remove" title="Remove this item"><i class="far fa-times-circle"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="dropdown-cart-bottom">
-                                            <div class="dropdown-cart-total">
-                                                <span>Total</span>
-                                                <span class="total-amount">Rs650.00</span>
-                                            </div>
-                                            <a href="#" class="theme-btn">Checkout</a>
-                                        </div>
-                                    </div>
                                 </li>
+                                @endif
                             </ul>
                         </div>
                     </div>

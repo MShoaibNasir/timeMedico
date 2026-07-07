@@ -1,7 +1,13 @@
 @extends('frontend.layout.master')
 @section('content')
+@php
+$wishlist = session('wishlist', []);
+$originalPrice = $product->price;
+$discountPercentage = $product->discount;
+$discountAmount = ($originalPrice * $discountPercentage) / 100;
+$finalPrice = $originalPrice - $discountAmount;
+@endphp
 <main class="main">
-
     <!-- breadcrumb -->
     <div class="site-breadcrumb">
         <div class="site-breadcrumb-bg" style="background-image: url('{{ asset('frontend/images/about-01.jpg') }}');"></div>
@@ -33,13 +39,6 @@
                         </div>
                     </div>
                 </div>
-                @php
-                $originalPrice = $product->price;
-                $discountPercentage = $product->discount;
-
-                $discountAmount = ($originalPrice * $discountPercentage) / 100;
-                $finalPrice = $originalPrice - $discountAmount;
-                @endphp
                 <div class="col-md-12 col-lg-6 col-xxl-6">
                     <div class="shop-single-info">
                         <h4 class="shop-single-title">{{ $product->name }}</h4>
@@ -83,13 +82,27 @@
                                 <li>Type: <a href="#">{{ $product->type_data->name}}</a>
                             </ul>
                         </div>
+
                         <div class="shop-single-action">
                             <div class="row align-items-center">
                                 <div class="col-md-6 col-lg-12 col-xl-6">
                                     <div class="shop-single-btn">
                                         <a href="cart" class="theme-btn"><span class="far fa-shopping-bag"></span>Add To Cart</a>
-                                        <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" aria-label="Add To Wishlist" data-bs-original-title="Add To Wishlist"><span class="far fa-heart"></span></a>
+                                        @if(in_array($product->id, $wishlist))
+                                        <a class="theme-btn theme-btn2 wishlist"
+                                            style="background-color:red;"
+                                            data-product-id="{{$product->id}}">
+                                            <span class="fas fa-heart"></span>
+                                        </a>
 
+                                        @else
+
+                                        <a class="theme-btn theme-btn2 wishlist"
+                                            data-product-id="{{$product->id}}">
+                                            <span class="far fa-heart"></span>
+                                        </a>
+
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-12 col-xl-6">

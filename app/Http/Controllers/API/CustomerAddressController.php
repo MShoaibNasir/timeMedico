@@ -13,7 +13,7 @@ class CustomerAddressController extends BaseController
     {
         $validator = Validator::make($request->all(), [
             'address'      => 'required|string',
-            'address_type' => 'required|integer',
+            'address_type' => 'required|string',
             'user_id' => 'required|integer',
             //'is_primary'   => 'nullable|boolean',
         ]);
@@ -77,6 +77,6 @@ class CustomerAddressController extends BaseController
             ], 422);
         }
         
-        return CustomerAddress::where('user_id', $request->user_id)->get();
+        return CustomerAddress::latest()->where('user_id', $request->user_id)->get();
     }
 }

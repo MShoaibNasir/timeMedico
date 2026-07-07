@@ -14,12 +14,13 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TypeController;
+use App\Http\Controllers\WishlistController;
 
 
 
@@ -60,7 +61,7 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
         });
-        
+
         Route::prefix('dashboard/slider')->name('slider.')->controller(HomeSliderController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -116,108 +117,37 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
     Route::post('verifyotp', 'verifyotp')->name('verifyotp');
     Route::post('saveUser', 'saveUser')->name('saveUser');
     Route::get('website/logout', 'logout')->name('logout');
+    Route::post('quickeView', 'quickeView')->name('quickeView');
+    Route::post('addToCart', 'addToCart')->name('addToCart');
+    Route::post('viewCart', 'viewCart')->name('viewCart');
+    Route::post('removeFromCart', 'removeFromCart')->name('removeFromCart');
     // Khalid End
 
 
-
-
-    Route::get('refresh-your-dtp', 'refresh_your_dtp')->name('refresh_your_dtp');
-    Route::post('upload/refresh-your-dtp', 'uploadRefreshyourdtp')->name('uploadRefreshyourdtp');
-    Route::get('writing', 'writing')->name('writing');
-    Route::get('resource_library', 'resource_library')->name('resource_library');
-    Route::get('/resource_library/{slug}', 'sectionShow')->name('section.show');
-    //Route::get('forum', 'forum')->name('forum');
-
-
-    Route::post('add/experience/list', 'addExperienceList')->name('addExperienceList');
-    Route::post('save/experience', 'saveExperience')->name('saveExperience');
-    Route::post('experience/list', 'experienceList')->name('experienceList');
-    Route::post('experience/delete', 'experienceDelete')->name('experienceDelete');
-
-
-    // directorship
-    Route::post('add/directorship', 'saveDirector')->name('saveDirector');
-    Route::post('directorList', 'directorList')->name('directorList');
-    Route::post('directorDelete', 'directorDelete')->name('director.delete');
-
-    // board of member
-    Route::post('add/board', 'saveBoardMember')->name('saveBoardMember');
-    Route::post('boardList', 'boardList')->name('boardList');
-    Route::post('boardDelete', 'boardDelete')->name('board.data.delete');
-
-    // saveAdditional
-    Route::post('add/additional/certificate', 'saveAdditionCertificate')->name('saveAdditionCertificate');
-    Route::post('/certificate/list', 'certificateList')->name('certificateList');
-    Route::post('certificate/delete', 'certificateDelete')->name('certificate.data.delete');
-
-
-
-    // for skills
-    Route::post('skills', 'skills')->name('skills');
-    Route::post('save/skill', 'saveSkill')->name('saveSkill');
-    Route::post('delete/skill', 'deleteSkill')->name('deleteSkill');
-
-
-
-    // publications 
-    Route::post('save/publications', 'savePublications')->name('savePublications');
-    Route::post('publications/list', 'publicationList')->name('publications.list');
-    Route::post('publications/delete', 'publicationDelete')->name('publications.delete');
-
-
-    // award
-
-    Route::post('save/award', 'saveAward')->name('saveAward');
-    Route::post('award/list', 'AwardList')->name('award.list');
-    Route::post('award/delete', 'AwardDelete')->name('award.delete');
-
-
-    Route::post('register', 'register')->name('user.register');
-    Route::post('login', 'login')->name('user.login');
-    Route::get('checkLogin', 'checkLogin')->name('checkLogin');
-    Route::get('verify/email/{id}', 'verifyEmail')->name('verify.email');
-    Route::get('picg/logout', 'logout')->name('logout');
-    Route::post('forget/password', 'forgetPassword')->name('forget.password');
-    Route::get('reset/password/{id}', 'resetPassword')->name('resetPassword');
-    Route::post('update/password', 'updatePassword')->name('updatePassword');
 });
 
 
-Route::prefix('notifications/')->name('notifications.')->controller(NotificationsController::class)->group(function () {
-    Route::post('show', 'showNotifications')->name('show');
-});
-
-Route::prefix('pay-fast')->name('payment.')->controller(PaymentController::class)->group(function () {
-    Route::get('/payment', 'payment')->name('payment');
-    Route::get('/success', 'success')->name('success');
-    Route::get('/failure', 'failure')->name('failure');
-    Route::get('/checkout', 'checkout')->name('checkout');
-    Route::get('/paymentThroughEmail', 'paymentThroughEmail')->name('paymentThroughEmail');
+Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistController::class)->group(function () {
+    Route::post('add/', 'add')->name('add');
+    Route::post('show/', 'show')->name('show');
+    Route::get('/', 'WishList')->name('WishList');
+    Route::post('product_list/', 'product_list')->name('product_list');
 });
 
 
-Route::prefix('/profile')->name('profile.')->controller(ProfileController::class)->group(function () {
-    Route::get('/', 'view')->name('view');
+
+Route::prefix('user-dashboard/')->name('frontend.dashboard')->controller(UserDashboardController::class)->group(function () {
+    Route::get('/', 'show')->name('show');
 });
 
 
-Route::prefix('/cv')->name('cv.')->controller(CVController::class)->group(function () {
-    Route::get('/', 'view')->name('view');
-    Route::get('/download/cv', 'downloadCV')->name('downloadCV');
-});
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//forum
-Route::post('/forum/{id}/subscribe', [ForumController::class, 'subscribe'])->name('forum.subscribe');
-Route::resource('forum', ForumController::class);
 
-//forum chat 
-Route::prefix('/forum')->controller(ForumChatController::class)->group(function () {
-    Route::get('/{forum}/chat', 'showChatRoom')->name('forumChatRoom');
-    Route::post('/{topic}/send', 'sendMessage')->name('sendMessage');
-});
+
+
+
 
 
 

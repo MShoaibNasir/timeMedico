@@ -22,6 +22,13 @@ class FrontendController extends Controller
 
     public function index()
     {
+        if (Auth::guard('web')->check()) {
+            $userId = Auth::guard('web')->id();
+            $wishlist = session('wishlist', []);
+            $userWishlist = $wishlist[$userId] ?? [];
+            // dd($userWishlist);
+        }
+
         // dd(Auth::guard('web')->check());
         $sliders = HomeSlider::where('type', 'website')->where('status', 1)->get();
         $departments = Department::where('status', 1)->get();
@@ -198,11 +205,11 @@ class FrontendController extends Controller
         }
         $agent = new Agent();
         $user = User::updateOrCreate(
-          
+
             [
                 'email' => $data->email,
             ],
-         
+
             [
                 'name'         => $data->name,
                 'phone_number' => $data->phone_number,
@@ -235,5 +242,78 @@ class FrontendController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('frontend.home.page')->with('success', 'Logged out successfully.');
+    }
+
+    public function quickeView(Request $request)
+    {
+        $product = Product::with('category')->where('id', $request->product_id)->first();
+        return view('frontend.Components.quickViewModal', ['product' => $product]);
+    }
+
+    public function addToCart(Request $request)
+    {
+        if (!Auth::guard('web')->check()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Please login first.'
+            ]);
+        }
+        $product = Product::find($request->product_id);
+        if (!$product) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Product not found.'
+            ]);
+        }
+        $cart = session()->get('cart', []);
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity'] += ($request->quantity ?? 1);
+        } else {
+
+            $cart[$product->id] = [
+                'id'       => $product->id,
+                'name'     => $product->name,
+                'price'    => $product->price,
+                'image'    => $product->image,
+                'quantity' => ($request->quantity ?? 1),
+            ];
+        }
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'status' => false
+        ]);
+    }
+
+    public function viewCart()
+    {
+        $cart = session()->get('cart', []);
+
+        $total = collect($cart)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
+
+
+        return view('frontend.Components.mycart', ['cart' => $cart, 'total' => $total]);
+    }
+
+
+    public function removeFromCart(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$request->product_id])) {
+            unset($cart[$request->product_id]);
+            session()->put('cart', $cart);
+            return response()->json([
+                'status' => true,
+                'message' => 'Product removed from cart',
+                'count' => count($cart)
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Product not found in cart'
+        ]);
     }
 }
