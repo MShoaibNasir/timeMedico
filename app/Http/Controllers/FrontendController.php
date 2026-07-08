@@ -84,6 +84,7 @@ class FrontendController extends Controller
     public function productlist(Request $request)
     {
         $product = Product::with('category', 'type_data')->where('category_id', $request->category_id)->where('status', 1)->get();
+ 
         return view('frontend.productList', ['product' => $product]);
     }
 

@@ -110,7 +110,7 @@
                 </li>
                 @endcanany
 
-                
+
                 @canany(['type-create', 'type-list'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
@@ -187,6 +187,7 @@
                     </ul>
                 </li>
                 @endcanany
+
                 @canany(['slider-create', 'slider-list'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
@@ -206,6 +207,31 @@
                             <a href="{{ route('manager.slider.index') }}" class="nav-link"> <i
                                     class="nav-icon far fa-circle"></i>
                                 <p>Manage Slider</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+                @canany(['area-create', 'area-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                        <p>Area <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('area-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.area.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add area</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('area-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.area.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Area</p>
                             </a>
                         </li>
                         @endcan

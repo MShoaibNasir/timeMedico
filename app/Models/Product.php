@@ -26,6 +26,10 @@ class Product extends Model
     {
         return $this->HasOne(Type::class, 'id', 'type')->withTrashed();
     }
+     public function reviews()
+    {
+        return $this->hasMany(Review::class, 'product_id', 'id');
+    }
    
   
 }

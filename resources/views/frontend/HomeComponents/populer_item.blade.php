@@ -41,48 +41,7 @@
                                 
                                 @forelse($category->products_with_out_trashed as $product)
                                     <div class="col-md-6 col-lg-4 col-xl-3">
-                                        <div class="product-item">
-                                            <div class="product-img">
-                                                <a href="{{ route('frontend.singleShop', [Crypt::encryptString($product->id)]) }}">
-                                                    <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->product_name }}">
-                                                </a>
-                                                <div class="product-action-wrap">
-                                                    <div class="product-action">
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-bs-placement="top" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                        <a href="#" data-bs-placement="top" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                        <a href="#" data-bs-placement="top" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h3 class="product-title">
-                                                    <a href="{{ route('frontend.singleShop', [Crypt::encryptString($product->id)]) }}">
-                                                        {{ $product->name }}
-                                                    </a>
-                                                </h3>
-                                                <div class="product-rate">
-                                                    <!-- Static stars: Replace with real rating logic if available in database -->
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                </div>
-                                                <div class="product-bottom">
-                                                    <div class="product-price">
-                                                        @if($product->discount_price)
-                                                            <del>Rs{{ number_format($product->selling_price, 2) }}</del>
-                                                            <span>Rs{{ number_format($product->discount_price, 2) }}</span>
-                                                        @else
-                                                            <span>Rs{{ number_format($product->price, 2) }}</span>
-                                                        @endif
-                                                    </div>
-                                                    <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                        <i class="far fa-shopping-bag"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @include('frontend.Components.product',['item'=>$product])
                                     </div>
                                 @empty
                                     <div class="col-12 text-center py-4">

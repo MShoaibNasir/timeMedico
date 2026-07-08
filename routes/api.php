@@ -5,7 +5,7 @@ use App\Http\Controllers\API\AwardController;
 use App\Http\Controllers\API\BioProfileController;
 use App\Http\Controllers\API\BoardComitteeMemberController;
 use App\Http\Controllers\API\DirectorShipController;
-use App\Http\Controllers\API\DTPController;
+use App\Http\Controllers\API\AreaController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\CustomerAddressController;
 use App\Http\Controllers\API\PrescriptionController;
@@ -35,6 +35,7 @@ Route::prefix('product')->middleware('api.secret')->controller(ProductController
     Route::get('/list', 'index');
     Route::post('data', 'data');
     Route::post('/detail', 'detail');
+    Route::post('/data/with-respect-type', 'productDataWithRespectType');
 });
 
 
@@ -52,4 +53,7 @@ Route::prefix('address')->middleware(['api.secret', 'auth:sanctum'])->controller
     Route::post('/add', 'add');
     Route::post('/make_primary', 'is_primary');
     Route::post('/list', 'list');
+});
+Route::prefix('area')->middleware(['api.secret'])->controller(AreaController::class)->group(function () {
+    Route::get('/list', 'list');
 });

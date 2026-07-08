@@ -7,13 +7,9 @@ use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\DepartmentController;
 use App\Http\Controllers\Backend\HomeSliderController;
-use App\Http\Controllers\CVController;
-use App\Http\Controllers\ForumChatController;
-use App\Http\Controllers\ForumController;
+use App\Http\Controllers\Backend\AreaController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Backend\ProductController;
-use App\Http\Controllers\NotificationsController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -73,6 +69,18 @@ Route::prefix('manager')->name('manager.')->group(function () {
         });
 
         Route::prefix('admin/dashboard/product')->name('product.')->controller(ProductController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::post('/list', 'list')->name('list');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/filter', 'filter')->name('filter');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+
+        Route::prefix('admin/dashboard/area')->name('area.')->controller(AreaController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
             Route::post('/list', 'list')->name('list');
             Route::get('/create', 'create')->name('create');

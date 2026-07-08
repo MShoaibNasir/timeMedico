@@ -19,6 +19,7 @@ class ProductController extends BaseController
 
         $types = Type::with(['product_with_out_trashed' => function ($query) {
             $query->where('status', 1)
+
                 ->select(
                     'id',
                     'type',
@@ -39,11 +40,11 @@ class ProductController extends BaseController
                 'id'       => $type->id,
                 'title'    => $type->name,
                 'type'     => strtolower(str_replace(' ', '_', $type->name)),
-                'products' => $type->product->map(function ($product) {
+                'products' => $type->product_with_out_trashed->map(function ($product) {
                     return [
                         'id'    => $product->id,
                         'name'  => $product->name,
-                        'price' => $product->price,
+                        'price' => number_format($product->price, 2),
                         'image' => $product->image,
                         'stock' => (bool) $product->in_stock,
                     ];
@@ -63,38 +64,54 @@ class ProductController extends BaseController
             'id'  => 'required'
 
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
             ], 422);
         }
-        $data = Product::where('id', $request->id)->select('id', 'name', 'image', 'price', 'quantity', 'company_name', 'in_stock', 'product_description', 'discount')->first();
+        $data = Product::with('category', 'reviews')->where('id', $request->id)->select('id', 'name', 'generic_name', 'category_id', 'rating', 'company_name as brand_name', 'image', 'price', 'quantity', 'company_name', 'in_stock', 'product_description', 'discount', 'sku')->first();
+        if ($data) {
+            $data->price = number_format($data->price, 2, '.', '');
+        }
         return $data;
     }
 
 
-public function data(Request $request)
-{
-    $perPage = $request->input('per_page', 1);
+    public function data(Request $request)
+    {
+        $perPage = $request->input('per_page', 1);
 
-    $products = Product::where('status', 1);
+        $products = Product::with('category')->where('status', 1);
 
-    if ($request->filled('category_id')) {
-        $products->where('category_id', $request->category_id);
+        if ($request->filled('category_id')) {
+            $products->where('category_id', $request->category_id);
+        }
+
+        $products = $products->paginate($perPage);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Products fetched successfully',
+            'data' => $products
+        ]);
     }
+    public function productDataWithRespectType(Request $request)
+    {
+        $perPage = $request->input('per_page', 1);
 
-    $products = $products->paginate($perPage);
+        $products = Product::with('category')->where('status', 1);
 
-    return response()->json([
-        'status' => true,
-        'message' => 'Products fetched successfully',
-        'data' => $products
-    ]);
-}
+        if ($request->filled('type')) {
+            $products->where('type', $request->type_id);
+        }
 
+        $products = $products->paginate($perPage);
 
-
-
+        return response()->json([
+            'status' => true,
+            'message' => 'Products fetched successfully',
+            'data' => $products
+        ]);
+    }
 }

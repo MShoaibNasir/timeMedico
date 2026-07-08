@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="shop-item-wrap item-4">
-                        
+
                         <div class="row g-4" id="productlist"></div>
                     </div>
                     <!-- pagination -->
@@ -126,20 +126,21 @@
         </div>
     </div>
 
-<input type="hidden"  value="{{$id}}" id="category_id">
+    <input type="hidden" value="{{$id}}" id="category_id">
 </main>
 
 <script src="https://code.jquery.com/jquery-4.0.0.js"></script>
 <script>
-    let category_id=$('#category_id').val();
+    let category_id = $('#category_id').val();
     $.ajax({
         url: "{{ route('frontend.productlist') }}",
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        data:{category_id:category_id},
-
+        data: {
+            category_id: category_id
+        },
         beforeSend: function() {
             Swal.fire({
                 title: 'Loading...',
@@ -153,8 +154,13 @@
         },
 
         success: function(response) {
-           
+
+            console.log('Success');
+            console.log(response);
             $('#productlist').html(response);
+            console.log('Before Close');
+            Swal.close();
+            console.log('After Close');
         },
 
         complete: function() {
@@ -167,7 +173,7 @@
                 title: 'Oops!',
                 text: 'Something went wrong.'
             });
-     
+
         }
     });
 </script>

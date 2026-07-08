@@ -24,11 +24,16 @@ class CustomerAddressController extends BaseController
                 'message' => $validator->errors()->all()
             ], 422);
         }
+        $first_address=CustomerAddress::where('user_id',$request->user_id)->first();
+        $is_primary=0;
+        if(!$first_address){
+            $is_primary=1;
+        }
         $address = CustomerAddress::create([
             'user_id'      => $request->user_id,
             'address'      => $request->address,
             'address_type' => $request->address_type,
-            // 'is_primary'   => $request->is_primary ?? 0,
+            'is_primary'   => $is_primary,
         ]);
 
         return response()->json([
