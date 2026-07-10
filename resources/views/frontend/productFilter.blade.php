@@ -129,7 +129,6 @@
     <input type="hidden" value="{{$id}}" id="category_id">
 </main>
 
-<script src="https://code.jquery.com/jquery-4.0.0.js"></script>
 <script>
     let category_id = $('#category_id').val();
     $.ajax({
@@ -141,17 +140,7 @@
         data: {
             category_id: category_id
         },
-        beforeSend: function() {
-            Swal.fire({
-                title: 'Loading...',
-                text: 'Please wait while fetch products.',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-        },
+       
 
         success: function(response) {
 
@@ -160,6 +149,8 @@
             $('#productlist').html(response);
             console.log('Before Close');
             Swal.close();
+            console.log(Swal.version);
+          
             console.log('After Close');
         },
 
