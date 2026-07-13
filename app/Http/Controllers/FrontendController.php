@@ -39,7 +39,7 @@ class FrontendController extends Controller
         $top_rated = Product::where('status', 1)->where('type', 14)->get();
         $polular_item_categories = Category::with('products_with_out_trashed')->where('status', 1)->take(5)->latest()->get();
 
-   
+
         return view('frontend.index')->with([
             'sliders' => $sliders,
             'departments' => $departments,
@@ -81,11 +81,64 @@ class FrontendController extends Controller
 
         return view('frontend.productFilter', ['id' => $id]);
     }
+
     public function productlist(Request $request)
     {
-        $product = Product::with('category', 'type_data')->where('category_id', $request->category_id)->where('status', 1)->get();
- 
-        return view('frontend.productList', ['product' => $product]);
+
+        $page = $request->get('ayis_page', 1);
+        $qty = $request->get('qty', 12);
+
+        $product = Product::with(['category', 'type_data'])->where('status', 1);
+
+        // 1. Category Filter
+        if ($request->filled('category_id')) {
+            $product->where('category_id', $request->category_id);
+        }
+
+        // 2. Search Filter
+        if ($request->filled('search_product')) {
+            $product->where('name', 'LIKE', '%' . $request->search_product . '%');
+        }
+
+        // 3. Price Range Filter
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $product->whereRaw(
+                '(price - ((price * discount) / 100)) BETWEEN ? AND ?',
+                [
+                    $request->min_price,
+                    $request->max_price
+                ]
+            );
+        }
+
+        $sorting = 'id';
+        $order = 'desc';
+
+        if ($request->filled('sort_val')) {
+            switch ($request->sort_val) {
+                case 'latest':
+                    $sorting = 'created_at';
+                    $order = 'desc';
+                    break;
+                case 'price_low':
+                    $sorting = 'price';
+                    $order = 'asc';
+                    break;
+                case 'price_high':
+                    $sorting = 'price';
+                    $order = 'desc';
+                    break;
+                default:
+                    $sorting = 'id';
+                    $order = 'desc';
+                    break;
+            }
+        }
+
+        $product = $product->orderBy($sorting, $order)
+            ->paginate($qty, ['*'], 'page', $page);
+
+        return view('frontend.productList', compact('product'));
     }
 
     public function register()

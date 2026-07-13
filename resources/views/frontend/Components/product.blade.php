@@ -1,6 +1,5 @@
 @php
 $wishlist = session('wishlist', []);
-
 @endphp
 <div class="product-item">
     <div class="product-img">
@@ -9,7 +8,6 @@ $wishlist = session('wishlist', []);
             <div class="product-action">
                 <a href="#" data-bs-toggle="modal" data-product-id="{{$item->id}}" data-bs-target="#quickview" class="quickeView" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
                 @if(in_array($item->id, $wishlist))
-
                 <a style="background-color:red;" data-product-id="{{$item->id}}" data-tooltip="tooltip" title="Add To Wishlist" class="wishlist"><span class="fas fa-heart"></span></a>
                 @else
                 <a data-product-id="{{$item->id}}" class="wishlist" data-tooltip="tooltip" title="Add To Wishlist"><span class="far fa-heart"></span></a>

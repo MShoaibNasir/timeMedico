@@ -99,7 +99,6 @@ class ProductController extends BaseController
 
         if ($data) {
             $data->price = number_format($data->price, 2, '.', '');
-         
         }
 
         return response()->json([
@@ -152,6 +151,29 @@ class ProductController extends BaseController
         if ($request->filled('category_id')) {
             $products->where('category_id', $request->category_id);
         }
+        if ($request->filled('name')) {
+            $search = trim($request->name);
+
+            $products->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            });
+        }
+        $products = $products->paginate($perPage);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Products fetched successfully',
+            'data' => $products
+        ]);
+    }
+    public function typeSearch(Request $request)
+    {
+        $perPage = $request->input('per_page', 1);
+        $products = Product::with('category')->where('status', 1);
+
+        if ($request->filled('type_id')) {
+            $products->where('type', $request->type_id);
+        }
 
         if ($request->filled('name')) {
             $search = trim($request->name);
@@ -160,11 +182,9 @@ class ProductController extends BaseController
                 $query->where('name', 'LIKE', "%{$search}%");
             });
         }
-
         $products = $products->paginate($perPage);
-
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Products fetched successfully',
             'data' => $products
         ]);

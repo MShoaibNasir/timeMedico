@@ -1,4 +1,4 @@
-     <a href="wishlist" class="list-item">
+     <a href="{{route('frontend.wishlist.WishList')}}" class="list-item">
          <div class="list-item-icon">
              <i class="far fa-heart"></i><span>{{ $count_wishlist }}</span>
          </div>
