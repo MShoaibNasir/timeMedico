@@ -260,33 +260,25 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Products</a>
-                                    <ul class="dropdown-menu fade-down">
-                                        <li><a class="dropdown-item" href="shop-single">Allergies & Sinus</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">E.N.T Preparations</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Eye Preparations</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Vitamin & Nutritional</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Fever & Pain Relief</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Dermatological</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Biopsy Tools</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Monitoring</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Infusion Stands</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Lighting</a></li>
-                                        <li><a class="dropdown-item" href="shop-single">Machines</a></li>
-                                    </ul>
-                                </li>
+
 
 
                                 <li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>
                                 <li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>
                                 <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
+                                @if(Auth::guard('web')->check())
+                                <li class="nav-item"><a class="nav-link" href="{{route('frontend.customer.address.show')}}">Upload Address</a></li>
+                                @endif
                             </ul>
                             <!-- nav-right -->
+
                             <div class="nav-right">
                                 <a href="shop" class="theme-btn dwnld-btn">Download the App<i class="fab fa-google-play"></i></a>
-                                <a class="nav-right-link" href="prescription"><i class="fal fa-upload"></i> Upload Prescription</a>
+                                @if(Auth::guard('web')->check())
+                                <a class="nav-right-link" href="{{route('frontend.prescription.show')}}"><i class="fal fa-upload"></i> Upload Prescription</a>
+                                @endif
                             </div>
+
                         </div>
                     </div>
                 </div>

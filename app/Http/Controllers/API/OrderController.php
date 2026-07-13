@@ -23,7 +23,7 @@ class OrderController extends Controller
             'total_amount'       => 'required|numeric|min:0',
             'delivery_charges'   => 'nullable|numeric|min:0',
             'discount'           => 'nullable|numeric|min:0',
-            'payment_type'       => 'required|in:Cash,JazzCash,EasyPaisa,Bank Transfer',
+            'payment_type'       => 'required|in:Cash,JazzCash,EasyPaisa,Bank Transfer,COD,Online',
             'image_payment_slip' => 'nullable|string',
             'items'              => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
@@ -74,15 +74,15 @@ class OrderController extends Controller
                     'quantity'   => $item['quantity'],
                     'price'      => $item['price'],
                     'discount_percentage' => $item['discount_percentage'],
-                    'price_after_dicount' => $item['price_after_dicount'],
-                    'subtotal'   => $item['quantity'] * $item['price_after_dicount']
+                    'price_after_discount' => $item['price_after_discount'],
+                    'subtotal'   => $item['quantity'] * $item['price_after_discount']
                 ]);
             }
 
             DB::commit();
 
             return response()->json([
-                'status' => true,
+                'success' => true,
                 'message' => 'Order placed successfully',
                 'data' => [
                     'id' => $order->id,

@@ -1,9 +1,6 @@
 @php
 $wishlist = session('wishlist', []);
-$originalPrice = $item->price;
-$discountPercentage = $item->discount;
-$discountAmount = ($originalPrice * $discountPercentage) / 100;
-$finalPrice = $originalPrice - $discountAmount;
+
 @endphp
 <div class="product-item">
     <div class="product-img">
@@ -31,7 +28,11 @@ $finalPrice = $originalPrice - $discountAmount;
         </div>
         <div class="product-bottom">
             <div class="product-price">
+                @if($item->discount_amount > 0)
+                <span>Rs <del>{{number_format($item->price,2)}}</del> {{number_format($item->final_price,2)}}</span>
+                @else
                 <span>Rs {{number_format($item->price,2)}}</span>
+                @endif
             </div>
             <button type="button" class="product-cart-btn" data-product-id="{{$item->id}}" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
                 <i class="far fa-shopping-bag"></i>

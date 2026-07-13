@@ -1,9 +1,4 @@
-@php
-$originalPrice = $product->price;
-$discountPercentage = $product->discount ?? 0;
-$discountAmount = ($originalPrice * $discountPercentage) / 100;
-$finalPrice = $originalPrice - $discountAmount;
-@endphp
+
 
 <div class="modal-content">
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
@@ -36,11 +31,11 @@ $finalPrice = $originalPrice - $discountAmount;
 
                     <div class="quickview-price">
                         <h5>
-                            @if($discountPercentage > 0)
-                            <del>Rs {{ number_format($originalPrice,2) }}</del>
-                            <span>Rs {{ number_format($finalPrice,2) }}</span>
+                            @if($product->discount_amount > 0)
+                            <del>Rs {{ number_format($product->price,2) }}</del>
+                            <span>Rs {{ number_format($product->final_price,2) }}</span>
                             @else
-                            <span>Rs {{ number_format($originalPrice,2) }}</span>
+                            <span>Rs {{ number_format($product->price,2) }}</span>
                             @endif
                         </h5>
                     </div>
