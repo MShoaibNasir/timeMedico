@@ -4,26 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Type extends Model
 {
     use HasFactory;
-    use SoftDeletes; 
+    use SoftDeletes;
 
 
     protected $table = 'types';
-    protected $guarded =['id'];
+    protected $guarded = ['id'];
 
-     public function product()
+    public function product()
     {
         return $this->hasMany(Product::class, 'type', 'id')->withTrashed();
     }
-     public function product_with_out_trashed()
+    public function product_with_out_trashed()
     {
         return $this->hasMany(Product::class, 'type', 'id');
     }
-
-  
 }
