@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Jenssegers\Agent\Agent;
 use Illuminate\Validation\ValidationException;
+use App\Mail\ContactFormSubmission;
+use Spatie\Sitemap\Sitemap;
 
 class FrontendController extends Controller
 {
@@ -316,5 +318,53 @@ class FrontendController extends Controller
             'status' => false,
             'message' => 'Product not found in cart'
         ]);
+    }
+
+
+
+
+
+
+    public function contact(){
+        return view('frontend.contact');
+    }
+
+    public function contactPost(Request $request){
+            $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            //'phone'   => 'required|string|max:20',
+            'email'   => 'required|email',
+            'subject' => 'required|string|max:255',
+            //'type'    => 'required|in:Query,Feedback,Complaint',
+            'message' => 'required|string',
+        ]);
+
+        Mail::to(env('CONTACT_EMAIL', 'ayaz@a2zcreatorz.com'))->send(new ContactFormSubmission($validated));
+
+        return redirect()->back()->with('success', 'Your message has been sent!');
+    }
+	
+	
+	
+	public function sitemap(){
+
+	   // Manually create sitemap
+        $sitemap = Sitemap::create();
+
+        // Static pages
+        $sitemap->add('/');
+        $sitemap->add('/contact-us');
+
+        // Dynamic pages
+        /*
+        $pages = Page::all();
+        foreach ($pages as $page) {
+            $sitemap->add("/page/{$page->slug}");
+        }
+        */
+
+         return $sitemap;
+        //$sitemap->writeToFile(public_path('sitemap.xml'));
+
     }
 }

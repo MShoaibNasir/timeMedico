@@ -131,7 +131,12 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
     Route::post('addToCart', 'addToCart')->name('addToCart');
     Route::post('viewCart', 'viewCart')->name('viewCart');
     Route::post('removeFromCart', 'removeFromCart')->name('removeFromCart');
-    // Khalid End
+
+    //Added By Ayaz
+    Route::get('/contact-us', 'contact')->name('contact');
+    Route::post('/contact-us', 'contactPost')->name('contact.post');
+    Route::get('/sitemap', 'sitemap')->name('sitemap');
+    // Frontend End
 
 
 });
