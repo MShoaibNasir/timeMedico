@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TypeController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\CustomerAddressController;
 
 
 
@@ -146,6 +148,20 @@ Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistContr
 
 Route::prefix('user-dashboard/')->name('frontend.dashboard')->controller(UserDashboardController::class)->group(function () {
     Route::get('/', 'show')->name('show');
+});
+
+Route::prefix('prescription/')->name('frontend.prescription.')->controller(PrescriptionController::class)->group(function () {
+    Route::get('/', 'show')->name('show');
+    Route::get('/list', 'list')->name('list');
+    Route::post('upload', 'upload')->name('upload');
+
+});
+
+Route::prefix('customer-address/')->name('frontend.customer.address.')->controller(CustomerAddressController::class)->group(function () {
+    Route::get('/', 'show')->name('show');
+    Route::get('/list', 'list')->name('list');
+    Route::post('upload', 'upload')->name('upload');
+    Route::get('make-primary/{id}', 'makePrimary')->name('makePrimary');
 });
 
 

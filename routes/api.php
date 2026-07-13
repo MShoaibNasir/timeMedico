@@ -1,10 +1,9 @@
 <?php
-
 use App\Http\Controllers\API\AdditionalCertificateController;
 use App\Http\Controllers\API\AwardController;
 use App\Http\Controllers\API\BioProfileController;
 use App\Http\Controllers\API\BoardComitteeMemberController;
-use App\Http\Controllers\API\DirectorShipController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\AreaController;
 use App\Http\Controllers\API\ImageController;
 use App\Http\Controllers\API\CustomerAddressController;
@@ -20,7 +19,6 @@ Route::prefix('authentication')->middleware('api.secret')->name('authentication.
     Route::post('emailLogin', 'register');
     Route::post('emailVerification', 'tokenVerify');
 });
-
 Route::prefix('slider')->middleware('api.secret')->controller(SliderController::class)->group(function () {
     Route::get('/list', 'index');
 });
@@ -36,10 +34,8 @@ Route::prefix('product')->middleware('api.secret')->controller(ProductController
     Route::post('data', 'data');
     Route::post('/detail', 'detail');
     Route::post('/data/with-respect-type', 'productDataWithRespectType');
+    Route::post('/search', 'search');
 });
-
-
-
 
 //  token required apis
 Route::prefix('Prescription')->middleware(['api.secret', 'auth:sanctum'])->controller(PrescriptionController::class)->group(function () {
@@ -54,6 +50,16 @@ Route::prefix('address')->middleware(['api.secret', 'auth:sanctum'])->controller
     Route::post('/make_primary', 'is_primary');
     Route::post('/list', 'list');
 });
-Route::prefix('area')->middleware(['api.secret'])->controller(AreaController::class)->group(function () {
+
+
+
+Route::prefix('Orders')->middleware(['api.secret', 'auth:sanctum'])->controller(OrderController
+::class)->group(function () {
+    Route::post('/place', 'placeOrder');
+    Route::get('/get', 'getUserOrders');
+});
+
+
+Route::prefix('area')->middleware(['api.secret', 'auth:sanctum'])->controller(AreaController::class)->group(function () {
     Route::get('/list', 'list');
 });

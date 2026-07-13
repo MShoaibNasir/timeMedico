@@ -39,7 +39,7 @@ class FrontendController extends Controller
         $top_rated = Product::where('status', 1)->where('type', 14)->get();
         $polular_item_categories = Category::with('products_with_out_trashed')->where('status', 1)->take(5)->latest()->get();
 
-
+   
         return view('frontend.index')->with([
             'sliders' => $sliders,
             'departments' => $departments,

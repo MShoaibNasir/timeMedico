@@ -14,9 +14,13 @@ class Product extends Model
 
 
     protected $table = 'products';
-    protected $guarded =['id'];
+    protected $guarded = ['id'];
+    protected $appends = [
+        'discount_amount',
+        'final_price',
+    ];
 
- 
+
 
     public function category()
     {
@@ -26,10 +30,20 @@ class Product extends Model
     {
         return $this->HasOne(Type::class, 'id', 'type')->withTrashed();
     }
-     public function reviews()
+    public function reviews()
     {
         return $this->hasMany(Review::class, 'product_id', 'id');
     }
-   
-  
+    public function getDiscountAmountAttribute()
+    {
+        $price = (float) $this->price;
+        $discount = (float) $this->discount;
+        return ($price * $discount) / 100;
+    }
+    public function getFinalPriceAttribute()
+    {
+        $price = (float) $this->price;
+        $discountAmount = ($price * (float) $this->discount) / 100;
+        return $price - $discountAmount;
+    }
 }

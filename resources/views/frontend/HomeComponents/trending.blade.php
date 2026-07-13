@@ -15,6 +15,7 @@
                 <div class="product-slider owl-carousel owl-theme">
 
                     @foreach ($tranding_items as $item)
+              
                     @include('frontend.Components.product',['item'=>$item])
                     @endforeach
 

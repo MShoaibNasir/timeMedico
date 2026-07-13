@@ -264,12 +264,19 @@
                                 
                                 <li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>
                                 <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
+                                @if(Auth::guard('web')->check())
+                                <li class="nav-item"><a class="nav-link" href="{{route('frontend.customer.address.show')}}">Upload Address</a></li>
+                                @endif
                             </ul>
                             <!-- nav-right -->
+
                             <div class="nav-right">
                                 <a href="shop" class="theme-btn dwnld-btn">Download the App<i class="fab fa-google-play"></i></a>
-                                <a class="nav-right-link" href="prescription"><i class="fal fa-upload"></i> Upload Prescription</a>
+                                @if(Auth::guard('web')->check())
+                                <a class="nav-right-link" href="{{route('frontend.prescription.show')}}"><i class="fal fa-upload"></i> Upload Prescription</a>
+                                @endif
                             </div>
+
                         </div>
                     </div>
                 </div>

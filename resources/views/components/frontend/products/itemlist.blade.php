@@ -12,7 +12,11 @@
 			<i class="far fa-star"></i>
 		</div>
 		<div class="product-list-price">
-			<span>Rs {{number_format($item->price,2)}}</span>
+			@if($item->discount_amount>0)
+			<span>Rs <del>{{number_format($item->price,2)}}</del>  {{number_format($item->final_price,2)}}</span>
+			@else
+			<span>Rs{{number_format($item->price,2)}}</span>
+			@endif
 		</div>
 	</div>
 	<button type="button" class="product-list-btn product-cart-btn" data-product-id="{{$item->id}}" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
