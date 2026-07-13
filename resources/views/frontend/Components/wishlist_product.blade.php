@@ -13,6 +13,18 @@
                 <div class="product-action-wrap">
                     <div class="product-action">
 
+
+<a 
+href="#" 
+data-bs-toggle="modal" 
+data-product-id="{{$item->id}}" 
+data-bs-target="#quickview" 
+class="quickeView" 
+data-tooltip="tooltip" 
+title="Quick View">
+<i class="far fa-eye"></i>
+</a>
+                        {{--
                         <a
                             style="cursor: pointer;"
                             data-bs-toggle="modal"
@@ -22,7 +34,7 @@
                             title="Quick View">
                             <i class="far fa-eye"></i>
                         </a>
-
+--}}
                         <a
                             style="cursor: pointer;"
                             class="remove-wishlist wishlist"

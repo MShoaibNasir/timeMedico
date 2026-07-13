@@ -152,7 +152,12 @@
                             <i class="fas fa-list-ul"></i><span>All Categories</span>
                         </button>
                         <ul class="main-category">
-
+{{--@dump($departments->toArray())--}}
+{{--@dump($categories->toArray())--}}
+@foreach($departments as $department)
+<li><a href="{{ route('frontend.categories', [Crypt::encryptString($department->id)]) }}"><img src="{{ asset('storage/'.$department->image) }}" alt="{{ $department->name }}"><span>{{ $department->name }}</span></a></li>
+@endforeach
+                            {{--                            
                             <li><a href="shop"><img src="{{ asset('frontend/images/health-care.svg') }}" alt=""><span>Medicine</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/health-care.svg') }}" alt=""><span>Healthcare</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/beauty-care.svg') }}" alt=""><span>Beauty Care</span></a></li>
@@ -165,6 +170,7 @@
                             <li><a href="shop"><img src="{{ asset('frontend/images/medical-equipements.svg') }}" alt=""><span>Medical Equipments</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/medical-supplies.svg') }}" alt=""><span>Medical Supplies</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/pet-care.svg') }}" alt=""><span>Pet Care</span></a></li>
+                            --}}
                         </ul>
                     </div>
                     <div class="mobile-menu-right">
@@ -198,69 +204,46 @@
 
 
                                 <li class="nav-item mega-menu dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
-                                    <div class="dropdown-menu fade-down">
-                                        <div class="mega-content">
-                                            <div class="container-fluid px-lg-0">
-                                                <div class="row">
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Medicine</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item" href="shop-single">Allergies & Sinus</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">E.N.T Preparations</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Eye Preparations</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Vitamin & Nutritional</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Fever & Pain Relief</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Dermatological</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Equipment</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item" href="shop-single">Biopsy Tools</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Monitoring</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Infusion Stands</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="shop-single">Lighting</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="shop-single">Machines</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Thermometer</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Wound Care</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item" href="shop-single">Surgical Sutures</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Bandages</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Patches and Tapes</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Stomatology</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Wound Healing</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Uniforms</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Higiene</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item" href="shop-single">Face Masks</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Sterilization</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Surgical Foils</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Disposable Products</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Protective Covers</a></li>
-                                                            <li><a class="dropdown-item" href="shop-single">Diagnostic Tests</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-4">
-                                                        <div class="mega-menu-img">
-                                                            <a href="#"><img src="{{ asset('frontend/images/mega-menu-banner.jpg') }}" alt=""></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
+    <div class="dropdown-menu fade-down">
+        <div class="mega-content">
+            <div class="container-fluid px-lg-0">
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                    <div class="row row-cols-2 row-cols-lg-4 g-3">
+                    @foreach ($departments as $department)
+                        <div class="col">
+                            <h5 class="mega-menu-title">{{ $department->name }}</h5>
+                            <ul class="mega-menu-item">
+                                @forelse ($department->categories as $category)
+                                    <li>
+                                        <a class="dropdown-item"
+                                           href="{{ route('frontend.productFilter', [Crypt::encryptString($category->id)]) }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    </li>
+                                @empty
+                                    <li><span class="dropdown-item disabled">No categories yet</span></li>
+                                @endforelse
+                            </ul>
+                        </div>
+                    @endforeach
+                    </div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="mega-menu-img">
+                            <a href="#"><img src="{{ asset('frontend/images/mega-menu-banner.jpg') }}" alt="Shop banner"></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+                                    {{--                                
+                                    <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Products</a>
                                     <ul class="dropdown-menu fade-down">
                                         <li><a class="dropdown-item" href="shop-single">Allergies & Sinus</a></li>
@@ -276,9 +259,9 @@
                                         <li><a class="dropdown-item" href="shop-single">Machines</a></li>
                                     </ul>
                                 </li>
-
-
-                                <li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>
+                                --}}
+                                {{--<li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>--}}
+                                
                                 <li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>
                                 <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
                             </ul>

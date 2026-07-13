@@ -12,5 +12,11 @@ class Department extends Model
     use SoftDeletes; 
     protected $guarded = ['id'];
     protected $table='departments';
+	
+	
+	public function categories()
+    {
+        return $this->hasMany(Category::class, 'department_id', 'id')->withTrashed();
+    }
 
 }
