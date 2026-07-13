@@ -35,6 +35,7 @@ class ProductController extends Controller
     public function list(Request $request)
     {
 
+
         $type = $request->type;
         $page = $request->get('ayis_page', 1);
         $qty = $request->get('qty', 10);

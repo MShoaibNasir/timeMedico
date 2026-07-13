@@ -87,8 +87,9 @@ $finalPrice = $originalPrice - $discountAmount;
                             <div class="row align-items-center">
                                 <div class="col-md-6 col-lg-12 col-xl-6">
                                     <div class="shop-single-btn">
-                                        <a href="cart" class="theme-btn"><span class="far fa-shopping-bag"></span>Add To Cart</a>
-                                        @if(in_array($product->id, $wishlist))
+                                        <button type="button" class="product-cart-btn" data-product-id="{{$product->id}}" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
+                                            <i class="far fa-shopping-bag"></i>
+                                        </button> @if(in_array($product->id, $wishlist))
                                         <a class="theme-btn theme-btn2 wishlist"
                                             style="background-color:red;"
                                             data-product-id="{{$product->id}}">

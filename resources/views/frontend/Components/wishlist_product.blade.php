@@ -14,27 +14,15 @@
                     <div class="product-action">
 
 
-<a 
-href="#" 
-data-bs-toggle="modal" 
-data-product-id="{{$item->id}}" 
-data-bs-target="#quickview" 
-class="quickeView" 
-data-tooltip="tooltip" 
-title="Quick View">
-<i class="far fa-eye"></i>
-</a>
-                        {{--
                         <a
-                            style="cursor: pointer;"
                             data-bs-toggle="modal"
+                            data-product-id="{{$item->id}}"
                             data-bs-target="#quickview"
-                            data-bs-placement="top"
+                            class="quickeView"
                             data-tooltip="tooltip"
                             title="Quick View">
                             <i class="far fa-eye"></i>
                         </a>
---}}
                         <a
                             style="cursor: pointer;"
                             class="remove-wishlist wishlist"
@@ -66,7 +54,11 @@ title="Quick View">
 
                 <div class="product-bottom">
                     <div class="product-price">
-                        <span>Rs {{ number_format($item->price, 2) }}</span>
+                        @if($item->discount_amount > 0)
+                        <span>Rs <del>{{number_format($item->price,2)}}</del> {{number_format($item->final_price,2)}}</span>
+                        @else
+                        <span>Rs {{number_format($item->price,2)}}</span>
+                        @endif
                     </div>
 
                     <button type="button"

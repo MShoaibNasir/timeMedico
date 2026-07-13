@@ -2,8 +2,6 @@
 @section('content')
 
 <main class="main">
-
-
     <!-- breadcrumb -->
     <div class="site-breadcrumb">
         <div class="site-breadcrumb-bg" style="background: url(assets/images/about-01.jpg)"></div>
@@ -19,43 +17,53 @@
     </div>
     <!-- breadcrumb end -->
 
-
     <!-- shop-area -->
     <div class="shop-area bg py-90">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="shop-sidebar">
+                        <!-- Search Filter -->
                         <div class="shop-widget">
                             <div class="shop-search-form">
                                 <h4 class="shop-widget-title">Search</h4>
-                                <form action="#">
+                                <form action="#" onsubmit="return false;">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                        <button type="search"><i class="far fa-search"></i></button>
+                                        <input type="text" class="form-control" placeholder="Search" id="search_product">
                                     </div>
                                 </form>
                             </div>
                         </div>
+
+                        <!-- Category Filter -->
                         <div class="shop-widget">
                             <h4 class="shop-widget-title">Category</h4>
                             <ul class="shop-category-list">
-                                <li><a href="#">Medicine</a></li>
-
+                                <li><a href="#" class="category-filter {{ empty($id) ? 'active' : '' }}" data-id="">All Categories</a></li>
+                                <!-- Agar aap categories dynamic loop kar rahe hain toh aise likhein -->
+                                @if(isset($categories))
+                                    @foreach($categories as $cat)
+                                        <li><a href="#" class="category-filter {{ $id == $cat->id ? 'active' : '' }}" data-id="{{ $cat->id }}">{{ $cat->name }}</a></li>
+                                    @endforeach
+                                @else
+                                    <li><a href="#" class="category-filter {{ $id == 1 ? 'active' : '' }}" data-id="1">Medicine</a></li>
+                                @endif
                             </ul>
                         </div>
 
+                        <!-- Price Range Filter -->
                         <div class="shop-widget">
                             <h4 class="shop-widget-title">Price Range</h4>
                             <div class="price-range-box">
                                 <div class="price-range-input">
                                     <input type="text" id="price-amount" readonly="">
+                                    <input type="hidden" id="min_price" value="0">
+                                    <input type="hidden" id="max_price" value="5000">
                                 </div>
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
-                                    <div class="ui-slider-range ui-corner-all ui-widget-header" style="left: 10%; width: 30%;"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 10%;"></span><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 40%;"></span>
-                                </div>
+                                <div id="price-slider" class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
                             </div>
                         </div>
+
                         <div class="shop-widget-banner mt-30 mb-50">
                             <div class="banner-img" style="background-image:url(assets/images/shop-banner.jpg)"></div>
                             <div class="banner-content">
@@ -66,61 +74,25 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-lg-9">
                     <div class="col-md-12">
                         <div class="shop-sort">
                             <div class="shop-sort-box">
                                 <div class="shop-sorty-label">Sort By:</div>
-                                <select class="select" style="display: none;">
-                                    <option value="1">Default Sorting</option>
-                                    <option value="5">Latest Items</option>
-                                    <option value="2">Best Seller Items</option>
-                                    <option value="3">Price - Low To High</option>
-                                    <option value="4">Price - High To Low</option>
+                                <!-- Sahi select element custom values ke sath -->
+                                <select class="select" id="sorting_dropdown">
+                                    <option value="default">Default Sorting</option>
+                                    <option value="latest">Latest Items</option>
+                                    <option value="price_low">Price - Low To High</option>
+                                    <option value="price_high">Price - High To Low</option>
                                 </select>
-                                <div class="nice-select select" tabindex="0"><span class="current">Default Sorting</span>
-                                    <ul class="list">
-                                        <li data-value="1" class="option selected">Default Sorting</li>
-                                        <li data-value="5" class="option">Latest Items</li>
-                                        <li data-value="2" class="option">Best Seller Items</li>
-                                        <li data-value="3" class="option">Price - Low To High</li>
-                                        <li data-value="4" class="option">Price - High To Low</li>
-                                    </ul>
-                                </div>
-                                <div class="shop-sort-show">Showing 1-10 of 50 Results</div>
-                            </div>
-                            <div class="shop-sort-gl">
-                                <a href="shop" class="shop-sort-grid active"><i class="far fa-grid-round-2"></i></a>
-                                <a href="shop-list" class="shop-sort-list"><i class="far fa-list-ul"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="shop-item-wrap item-4">
-
                         <div class="row g-4" id="productlist"></div>
                     </div>
-                    <!-- pagination -->
-                    <div class="pagination-area mt-50">
-                        <div aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true"><i class="far fa-arrow-left"></i></span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><span class="page-link">...</span></li>
-                                <li class="page-item"><a class="page-link" href="#">10</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true"><i class="far fa-arrow-right"></i></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- pagination end -->
                 </div>
             </div>
         </div>
@@ -130,44 +102,90 @@
 </main>
 
 <script>
-    let category_id = $('#category_id').val();
-    $.ajax({
-        url: "{{ route('frontend.productlist') }}",
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            category_id: category_id
-        },
-       
+$(document).ready(function() {
+    
+    // UI Slider Initialization (Agar jQuery UI use ho raha hai)
+    if($("#price-slider").length > 0) {
+        $("#price-slider").slider({
+            range: true,
+            min: 0,
+            max: 5000,
+            values: [0, 5000],
+            slide: function(event, ui) {
+                $("#price-amount").val(ui.values[0] + " - " + ui.values[1]);
+                $("#min_price").val(ui.values[0]);
+                $("#max_price").val(ui.values[1]);
+            },
+            change: function(event, ui) {
+                filter_data();
+            }
+        });
+        $("#price-amount").val("$" + $("#price-slider").slider("values", 0) + " - $" + $("#price-slider").slider("values", 1));
+    }
 
-        success: function(response) {
+    // Pehli dafa data load karne ke liye
+    filter_data();
 
-            console.log('Success');
-            console.log(response);
-            $('#productlist').html(response);
-            console.log('Before Close');
-            Swal.close();
-            console.log(Swal.version);
-          
-            console.log('After Close');
-        },
+    function filter_data(currentpage) {
+        var action = 'fetch_data';
+        var category_id = $('#category_id').val();
+        var search_product = $("#search_product").val();
+        var min_price = $("#min_price").val();
+        var max_price = $("#max_price").val();
+        var sort_val = $("#sorting_dropdown").val();
+        var ayis_page = currentpage ?? 1;
 
-        complete: function() {
-            Swal.close();
-        },
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('frontend.productlist') }}",
+            data: {
+                action: action,
+                category_id: category_id,
+                search_product: search_product,
+                min_price: min_price,
+                max_price: max_price,
+                sort_val: sort_val,
+                ayis_page: ayis_page,
+                _token: '{{csrf_token()}}'
+            },
+            beforeSend: function() {
+                $('#productlist').html('<center><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></center>');
+            },
+            success: function(data) {
+                $('#productlist').html(data);
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+    }
 
-        error: function(xhr, status, error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops!',
-                text: 'Something went wrong.'
-            });
-
-        }
+    // Search input par filter chalanay ke liye
+    $("#search_product").on('keyup', function() {
+        filter_data();
     });
+
+    // Category links click handler
+    $('.category-filter').on('click', function(e) {
+        e.preventDefault();
+        $('.category-filter').removeClass('active');
+        $(this).addClass('active');
+        $('#category_id').val($(this).data('id'));
+        filter_data();
+    });
+
+    // Sorting dropdown change handler
+    $('body').on('change', '#sorting_dropdown', function(e) {
+        filter_data();
+    });
+
+    // Pagination links handler
+    $('body').on('click', '.pagination a', function(f) {
+        f.preventDefault();
+        var url = $(this).attr('href');
+        var currentpage = url.split('page=')[1];
+        filter_data(currentpage);
+    });
+});
 </script>
-
-
 @endsection
