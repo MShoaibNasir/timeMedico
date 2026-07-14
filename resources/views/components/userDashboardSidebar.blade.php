@@ -31,8 +31,8 @@ $user=Auth::guard('web')->user();
         <ul class="sidebar-list">
             <li><a class="{{ $active=='dashboard' ? 'active' : '' }}" href="{{route('frontend.dashboard.show')}}"><i class="far fa-gauge-high"></i> Dashboard</a></li>
             <li><a class="{{ $active=='profile' ? 'active' : '' }}" href="{{route('frontend.dashboard.profile')}}"><i class="far fa-user"></i> My Profile</a></li>
-            <li><a class="{{ $active=='orderlist' ? 'active' : '' }}" href="{{route('frontend.dashboard.orderlist')}}"><i class="far fa-shopping-bag"></i> My Order List <span class="badge badge-danger">02</span></a></li>
-            <li><a class="{{ $active=='wishlist' ? 'active' : '' }}" href="{{route('frontend.wishlist.WishList')}}"><i class="far fa-heart"></i> My Wishlist <span class="badge badge-danger">02</span></a></li>
+            <li><a class="{{ $active=='orderlist' ? 'active' : '' }}" href="{{route('frontend.dashboard.orderlist')}}"><i class="far fa-shopping-bag"></i> My Order List</a></li>
+            <li><a class="{{ $active=='wishlist' ? 'active' : '' }}" href="{{route('frontend.wishlist.WishList')}}"><i class="far fa-heart"></i> My Wishlist</a></li>
             <li><a class="{{ $active=='trackmyorder' ? 'active' : '' }}" href="{{route('frontend.dashboard.trackingOrder')}}"><i class="far fa-map-location-dot"></i> Track My Order</a></li>
             <li><a href="{{route('frontend.logout')}}"><i class="far fa-sign-out"></i> Logout</a></li>
         </ul>
