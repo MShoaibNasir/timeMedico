@@ -151,8 +151,14 @@ Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistContr
 
 
 
-Route::prefix('user-dashboard/')->name('frontend.dashboard')->controller(UserDashboardController::class)->group(function () {
+Route::prefix('user-dashboard/')->name('frontend.dashboard.')->controller(UserDashboardController::class)->group(function () {
     Route::get('/', 'show')->name('show');
+    Route::get('profile', 'profile')->name('profile');
+    Route::post('update-profile', 'updateProfile')->name('updateProfile');
+    Route::get('order-list', 'orderlist')->name('orderlist');
+    Route::get('order-detail/{id}', 'orderDetail')->name('orderDetail');
+    Route::get('track-order', 'trackingOrder')->name('trackingOrder');
+    Route::post('track-order-data', 'trackOrder')->name('trackOrder');
 });
 
 Route::prefix('prescription/')->name('frontend.prescription.')->controller(PrescriptionController::class)->group(function () {

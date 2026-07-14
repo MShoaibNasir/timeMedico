@@ -21,28 +21,7 @@
     <div class="user-area bg pt-100 pb-80">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="sidebar">
-                        <div class="sidebar-top">
-                            <div class="sidebar-profile-img">
-                                <img src="assets/images/03.jpg" alt="">
-                                <button type="button" class="profile-img-btn"><i class="far fa-camera"></i></button>
-                                <input type="file" class="profile-img-file">
-                            </div>
-                            <h5>Antoni Jonson</h5>
-                            <p>antoni@example.com</p>
-                        </div>
-                        <ul class="sidebar-list">
-                            <li><a href="dashboard"><i class="far fa-gauge-high"></i> Dashboard</a></li>
-                            <li><a href="user-profile"><i class="far fa-user"></i> My Profile</a></li>
-                            <li><a href="order-list"><i class="far fa-shopping-bag"></i> My Order List <span class="badge badge-danger">02</span></a></li>
-                            <li><a class="active" href="wishlist"><i class="far fa-heart"></i> My Wishlist <span class="badge badge-danger">02</span></a></li>
-                            <li><a href="track-order"><i class="far fa-map-location-dot"></i> Track My Order</a></li>
-                            <li><a href="user-setting"><i class="far fa-gear"></i> Settings</a></li>
-                            <li><a href="#"><i class="far fa-sign-out"></i> Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
+                @include('components\userDashboardSidebar',['active'=>'wishlist'])
                 <div class="col-lg-9">
                     <div class="user-wrapper">
                         <div class="row">

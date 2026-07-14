@@ -152,12 +152,12 @@
                             <i class="fas fa-list-ul"></i><span>All Categories</span>
                         </button>
                         <ul class="main-category">
-{{--@dump($departments->toArray())--}}
-{{--@dump($categories->toArray())--}}
-@foreach($departments as $department)
-<li><a href="{{ route('frontend.categories', [Crypt::encryptString($department->id)]) }}"><img src="{{ asset('storage/'.$department->image) }}" alt="{{ $department->name }}"><span>{{ $department->name }}</span></a></li>
-@endforeach
-                            {{--                            
+                            {{--@dump($departments->toArray())--}}
+                            {{--@dump($categories->toArray())--}}
+                            @foreach($departments as $department)
+                            <li><a href="{{ route('frontend.categories', [Crypt::encryptString($department->id)]) }}"><img src="{{ asset('storage/'.$department->image) }}" alt="{{ $department->name }}"><span>{{ $department->name }}</span></a></li>
+                            @endforeach
+                            {{--
                             <li><a href="shop"><img src="{{ asset('frontend/images/health-care.svg') }}" alt=""><span>Medicine</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/health-care.svg') }}" alt=""><span>Healthcare</span></a></li>
                             <li><a href="shop"><img src="{{ asset('frontend/images/beauty-care.svg') }}" alt=""><span>Beauty Care</span></a></li>
@@ -204,45 +204,45 @@
 
 
                                 <li class="nav-item mega-menu dropdown">
-    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
-    <div class="dropdown-menu fade-down">
-        <div class="mega-content">
-            <div class="container-fluid px-lg-0">
-                <div class="row">
-                    <div class="col-12 col-lg-8">
-                    <div class="row row-cols-2 row-cols-lg-4 g-3">
-                    @foreach ($departments as $department)
-                        <div class="col">
-                            <h5 class="mega-menu-title">{{ $department->name }}</h5>
-                            <ul class="mega-menu-item">
-                                @forelse ($department->categories as $category)
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="{{ route('frontend.productFilter', [Crypt::encryptString($category->id)]) }}">
-                                            {{ $category->name }}
-                                        </a>
-                                    </li>
-                                @empty
-                                    <li><span class="dropdown-item disabled">No categories yet</span></li>
-                                @endforelse
-                            </ul>
-                        </div>
-                    @endforeach
-                    </div>
-                    </div>
+                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
+                                    <div class="dropdown-menu fade-down">
+                                        <div class="mega-content">
+                                            <div class="container-fluid px-lg-0">
+                                                <div class="row">
+                                                    <div class="col-12 col-lg-8">
+                                                        <div class="row row-cols-2 row-cols-lg-4 g-3">
+                                                            @foreach ($departments as $department)
+                                                            <div class="col">
+                                                                <h5 class="mega-menu-title">{{ $department->name }}</h5>
+                                                                <ul class="mega-menu-item">
+                                                                    @forelse ($department->categories as $category)
+                                                                    <li>
+                                                                        <a class="dropdown-item"
+                                                                            href="{{ route('frontend.productFilter', [Crypt::encryptString($category->id)]) }}">
+                                                                            {{ $category->name }}
+                                                                        </a>
+                                                                    </li>
+                                                                    @empty
+                                                                    <li><span class="dropdown-item disabled">No categories yet</span></li>
+                                                                    @endforelse
+                                                                </ul>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
 
-                    <div class="col-12 col-lg-4">
-                        <div class="mega-menu-img">
-                            <a href="#"><img src="{{ asset('frontend/images/mega-menu-banner.jpg') }}" alt="Shop banner"></a>
-                        </div>
-                    </div>
+                                                    <div class="col-12 col-lg-4">
+                                                        <div class="mega-menu-img">
+                                                            <a href="#"><img src="{{ asset('frontend/images/mega-menu-banner.jpg') }}" alt="Shop banner"></a>
+                                                        </div>
+                                                    </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-</li>
-                                    {{--                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {{--
                                     <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Products</a>
                                     <ul class="dropdown-menu fade-down">
@@ -261,8 +261,9 @@
                                 </li>
                                 --}}
                                 {{--<li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>--}}
-                                
-                                <li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>
+                                @if(Auth::guard('web')->check())
+                                <li class="nav-item"><a class="nav-link" href="{{route('frontend.dashboard.trackingOrder')}}">Track Order</a></li>
+                                @endif
                                 <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
                                 @if(Auth::guard('web')->check())
                                 <li class="nav-item"><a class="nav-link" href="{{route('frontend.customer.address.show')}}">Upload Address</a></li>
