@@ -19,7 +19,8 @@ use App\Http\Controllers\Backend\TypeController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\CustomerAddressController;
-
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartNewController;
 
 
 
@@ -137,9 +138,25 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
     Route::post('/contact-us', 'contactPost')->name('contact.post');
     Route::get('/sitemap', 'sitemap')->name('sitemap');
     // Frontend End
-
-
 });
+
+
+Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(function () {
+	// Coupon routes 
+    Route::post('coupon', 'applyCoupon')->name('coupon.apply');
+    Route::delete('coupon', 'removeCoupon')->name('coupon.remove');
+	Route::get('checkout', 'checkout')->name('checkout');
+	
+    Route::get('cart', 'index')->name('cart');
+    Route::patch('cart/{product}', 'update')->name('cart.update');
+    Route::delete('cart/{product}', 'remove')->name('cart.remove');
+    Route::delete('cart', 'clear')->name('cart.clear');
+
+    
+});
+
+Route::post('/ajax/add-to-cart', [CartNewController::class, 'add'])->name('frontend.ajax.cart.add');
+
 
 
 Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistController::class)->group(function () {

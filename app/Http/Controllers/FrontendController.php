@@ -328,8 +328,11 @@ class FrontendController extends Controller
 
             $cart[$product->id] = [
                 'id'       => $product->id,
+                'sku'     => $product->sku,
                 'name'     => $product->name,
+                'unit'     => $product->unit,
                 'price'    => $product->price,
+                'discount'    => $product->discount,
                 'image'    => $product->image,
                 'quantity' => ($request->quantity ?? 1),
             ];
@@ -344,7 +347,6 @@ class FrontendController extends Controller
     public function viewCart()
     {
         $cart = session()->get('cart', []);
-
         $total = collect($cart)->sum(function ($item) {
             return $item['price'] * $item['quantity'];
         });
@@ -372,8 +374,6 @@ class FrontendController extends Controller
             'message' => 'Product not found in cart'
         ]);
     }
-
-
 
 
 

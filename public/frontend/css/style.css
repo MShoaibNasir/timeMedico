@@ -3264,7 +3264,7 @@ a.dwnld-btn {
 }
 
 .shop-cart-qty {
-  width: 110px;
+  width: 140px;
 }
 
 .shop-cart-qty button {
@@ -3283,7 +3283,7 @@ a.dwnld-btn {
 }
 
 .shop-cart-qty input {
-  width: 30px;
+  width: 60px;
   border: none;
   background: transparent;
   color: var(--theme-color);

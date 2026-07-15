@@ -389,6 +389,7 @@ Version         : 1.0
 
 
     //cart quantity
+	/*
     $(".plus-btn").on("click", function () {
         var i = $(this).closest(".shop-cart-qty").children(".quantity").get(0).value++,
             c = $(this).closest(".shop-cart-qty").children(".minus-btn");
@@ -397,6 +398,13 @@ Version         : 1.0
     $(".minus-btn").on("click", function () {
         2 == $(this).closest(".shop-cart-qty").children(".quantity").get(0).value-- && $(this).attr("disabled", "disabled");
     })
+	*/
+	
+	//$(document).on('click', '.plus-btn, .minus-btn', function () {
+    //const form = $(this).closest('form');
+    //form.submit();
+    //});
+	
 
 
     // flexslider

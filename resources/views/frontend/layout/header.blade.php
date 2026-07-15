@@ -262,8 +262,8 @@
                                 --}}
                                 {{--<li class="nav-item"><a class="nav-link" href="blog">Blog</a></li>--}}
                                 
-                                <li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>
-                                <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
+                                {{--<li class="nav-item"><a class="nav-link" href="track-order">Track Order</a></li>--}}
+                                <li class="nav-item"><a class="nav-link" href="{{ route('frontend.contact')}}">Contact</a></li>
                                 @if(Auth::guard('web')->check())
                                 <li class="nav-item"><a class="nav-link" href="{{route('frontend.customer.address.show')}}">Upload Address</a></li>
                                 @endif
