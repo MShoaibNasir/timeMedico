@@ -71,7 +71,7 @@
                         </td>
                         <td>{{ $item->created_at->format('d M Y') }}</td>
                         <td>
-                            <a href=""
+                            <a href="#"
                                 class="btn btn-sm btn-primary"
                                 title="View Order">
                                 <i class="fa fa-eye"></i>

@@ -109,6 +109,7 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::put('/update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+            Route::get('/view/{id}', 'view')->name('view');
         });
 
 

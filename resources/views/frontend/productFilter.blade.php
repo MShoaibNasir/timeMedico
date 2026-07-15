@@ -97,7 +97,7 @@
             </div>
         </div>
     </div>
-
+  
     <input type="hidden" value="{{$id}}" id="category_id">
 </main>
 
@@ -129,6 +129,7 @@ $(document).ready(function() {
     function filter_data(currentpage) {
         var action = 'fetch_data';
         var category_id = $('#category_id').val();
+        
         var search_product = $("#search_product").val();
         var min_price = $("#min_price").val();
         var max_price = $("#max_price").val();

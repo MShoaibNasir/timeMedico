@@ -267,7 +267,6 @@
                                 @if(Auth::guard('web')->check())
                                 <li class="nav-item"><a class="nav-link" href="{{route('frontend.dashboard.trackingOrder')}}">Track Order</a></li>
                                 @endif
-                                <li class="nav-item"><a class="nav-link" href="contact-us">Contact</a></li>
                                 @if(Auth::guard('web')->check())
                                 <li class="nav-item"><a class="nav-link" href="{{route('frontend.customer.address.show')}}">Upload Address</a></li>
                                 @endif

@@ -52,4 +52,10 @@ class OrderController extends Controller
             'data' => $orders
         ]);
     }
+
+    public function view($id)
+    {
+        $id = decrypt($id);
+        dd('working on it');
+    }
 }

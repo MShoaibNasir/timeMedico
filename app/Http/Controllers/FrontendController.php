@@ -80,13 +80,13 @@ class FrontendController extends Controller
     public function productFilter($id)
     {
         $id = Crypt::decryptString($id);
-
         return view('frontend.productFilter', ['id' => $id]);
     }
 
     public function productlist(Request $request)
     {
-
+      
+       
         $page = $request->get('ayis_page', 1);
         $qty = $request->get('qty', 12);
 
