@@ -78,7 +78,7 @@ class PrescriptionController extends Controller
             'image'   => $imagePath
         ]);
 
-        return redirect()->route('frontend.prescription.list')->with('success', 'Address uploaded successfully!');
+        return redirect()->route('frontend.prescription.list')->with('success', 'Prescription  uploaded successfully!');
     }
 
     public function list()

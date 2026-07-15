@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function filter(Request $request)
     {
-        return view('backend.Orders.filter');
+        return view('backend.orders.filter');
     }
     public function list(Request $request)
     {
@@ -56,6 +56,19 @@ class OrderController extends Controller
     public function view($id)
     {
         $id = decrypt($id);
-        dd('working on it');
+        $order = Order::with(['items.product'])->findOrFail($id);
+        return view('backend.orders.show', compact('order'));
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Pending,Processing,On The way,Delivered,Rejected,Returned',
+        ]);
+
+        $order = Order::findOrFail($id);
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order status updated successfully.');
     }
 }

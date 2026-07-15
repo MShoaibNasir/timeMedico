@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TypeController;
+use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\CustomerAddressController;
@@ -42,6 +43,26 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
         });
+
+
+
+
+        Route::prefix('dashboard/coupon')->name('coupon.')->controller(CouponController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+
+
+
+
+
+
+
 
         Route::prefix('dashboard/department')->name('department.')->controller(DepartmentController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
@@ -96,9 +117,9 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
         });
 
-    
-        
-        
+
+
+
         Route::prefix('admin/dashboard/orders')->name('order.')->controller(OrderController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
             Route::get('/list', 'list')->name('list');
@@ -110,6 +131,7 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
             Route::get('/view/{id}', 'view')->name('view');
+            Route::put('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
         });
 
 
@@ -159,17 +181,15 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
 
 
 Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(function () {
-	// Coupon routes 
+    // Coupon routes 
     Route::post('coupon', 'applyCoupon')->name('coupon.apply');
     Route::delete('coupon', 'removeCoupon')->name('coupon.remove');
-	Route::get('checkout', 'checkout')->name('checkout');
-	
+    Route::get('checkout', 'checkout')->name('checkout');
+
     Route::get('cart', 'index')->name('cart');
     Route::patch('cart/{product}', 'update')->name('cart.update');
     Route::delete('cart/{product}', 'remove')->name('cart.remove');
     Route::delete('cart', 'clear')->name('cart.clear');
-
-    
 });
 
 Route::post('/ajax/add-to-cart', [CartNewController::class, 'add'])->name('frontend.ajax.cart.add');

@@ -5,7 +5,7 @@
                 <div class="col-12">
                     <div class="site-heading-inline">
                         <h2 class="site-title">Popular Brands</h2>
-                        <a href="#">All Brands <i class="fas fa-angle-double-right"></i></a>
+                        {{--<a href="#">All Brands <i class="fas fa-angle-double-right"></i></a>--}}
                     </div>
                 </div>
             </div>

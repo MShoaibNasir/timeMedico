@@ -7,7 +7,7 @@
                     <div class="col-12 wow fadeInDown" data-wow-delay=".25s">
                         <div class="site-heading-inline">
                             <h2 class="site-title">Popular Items</h2>
-                            <a href="{{ url('shop') }}">All Products <i class="fas fa-angle-double-right"></i></a>
+                           {{--   <a href="{{ url('shop') }}">All Products <i class="fas fa-angle-double-right"></i></a>--}}
                         </div>
                         <div class="item-tab">
                             <ul class="nav nav-pills mt-40 mb-50" id="item-tab" role="tablist">
