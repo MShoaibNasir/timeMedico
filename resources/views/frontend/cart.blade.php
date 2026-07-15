@@ -45,6 +45,7 @@
                                             <th>Image</th>
                                             <th>Product Name</th>
                                             <th>Price</th>
+                                            <th>Discount</th>
                                             <th>Quantity</th>
                                             <th>Sub Total</th>
                                             <th></th>
@@ -67,17 +68,24 @@
                                                                 {{ $data['name'] }}
                                                             </a>
                                                         </h5>
+                                                        {{--
                                                         <div class="shop-cart-info">
                                                             <p class="cart-qty">
                                                                 {{ $data['quantity'] }}x -
                                                                 <span class="cart-amount">{{ money($data['price']) }}</span>
                                                             </p>
                                                         </div>
+                                                        --}}
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="shop-cart-price">
                                                         <span>{{ money($data['price']) }}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <span>{{ money($data['discount']) }}</span>
                                                     </div>
                                                 </td>
                                                 <td>

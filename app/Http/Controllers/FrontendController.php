@@ -332,7 +332,8 @@ class FrontendController extends Controller
                 'name'     => $product->name,
                 'unit'     => $product->unit,
                 'price'    => $product->price,
-                'discount'    => $product->discount,
+                'final_price'    => $product->final_price,
+                'discount'    => $product->discount_amount,
                 'image'    => $product->image,
                 'quantity' => ($request->quantity ?? 1),
             ];

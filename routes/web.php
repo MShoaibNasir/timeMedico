@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EmailSenderController;
 use App\Http\Controllers\Backend\PermissionController;
@@ -95,6 +96,21 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
         });
 
+    
+        
+        
+        Route::prefix('admin/dashboard/orders')->name('order.')->controller(OrderController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/list', 'list')->name('list');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/filter', 'filter')->name('filter');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+
 
         Route::resources([
             'roles' => RoleController::class,
@@ -168,15 +184,20 @@ Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistContr
 
 
 
-Route::prefix('user-dashboard/')->name('frontend.dashboard')->controller(UserDashboardController::class)->group(function () {
+Route::prefix('user-dashboard/')->name('frontend.dashboard.')->controller(UserDashboardController::class)->group(function () {
     Route::get('/', 'show')->name('show');
+    Route::get('profile', 'profile')->name('profile');
+    Route::post('update-profile', 'updateProfile')->name('updateProfile');
+    Route::get('order-list', 'orderlist')->name('orderlist');
+    Route::get('order-detail/{id}', 'orderDetail')->name('orderDetail');
+    Route::get('track-order', 'trackingOrder')->name('trackingOrder');
+    Route::post('track-order-data', 'trackOrder')->name('trackOrder');
 });
 
 Route::prefix('prescription/')->name('frontend.prescription.')->controller(PrescriptionController::class)->group(function () {
     Route::get('/', 'show')->name('show');
     Route::get('/list', 'list')->name('list');
     Route::post('upload', 'upload')->name('upload');
-
 });
 
 Route::prefix('customer-address/')->name('frontend.customer.address.')->controller(CustomerAddressController::class)->group(function () {

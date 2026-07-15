@@ -56,7 +56,7 @@ Route::prefix('address')->middleware(['api.secret', 'auth:sanctum'])->controller
 
 
 
-Route::prefix('Orders')->middleware(['api.secret','auth:sanctum'])->controller(OrderController::class)->group(function () {
+Route::prefix('Orders')->controller(OrderController::class)->group(function () {
     Route::post('/place', 'placeOrder');
     Route::post('/get', 'getUserOrders');
 });
