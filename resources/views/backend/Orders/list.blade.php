@@ -21,7 +21,9 @@
                         <th>Total Amount</th>
                         <th>Status</th>
                         <th>Date</th>
+                        @can('order-show')
                         <th>Action</th>
+                        @endcan
 
                     </tr>
                 </thead>
@@ -44,7 +46,7 @@
                             </span>
 
                             @elseif($item->status == 'Processing')
-                            <span class="badge bg-info text-dark px-3 py-2">
+                            <span class="badge bg-info  px-3 py-2">
                                 <i class="fa fa-spinner me-1"></i> Processing
                             </span>
 
@@ -70,13 +72,15 @@
                             @endif
                         </td>
                         <td>{{ $item->created_at->format('d M Y') }}</td>
+                        @can('order-show')
                         <td>
-                            <a href=""
+                            <a href="{{ route('manager.order.view', [encrypt($item->id)]) }}"
                                 class="btn btn-sm btn-primary"
                                 title="View Order">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>
+                        @endcan
 
                     </tr>
                     @endforeach

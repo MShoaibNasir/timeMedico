@@ -112,7 +112,7 @@ class OrderController extends Controller
     {
         $user_id = $request->id;
 
-        $orders = Order::with('items')
+        $orders = Order::with('items', 'items.product_image')
             ->where('user_id', $user_id)
             ->latest()
             ->get();

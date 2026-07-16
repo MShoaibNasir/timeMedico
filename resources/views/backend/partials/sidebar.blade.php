@@ -86,7 +86,8 @@
 
                 @canany(['department-create', 'department-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-building"></i>
+
                         <p>Department <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -113,7 +114,8 @@
 
                 @canany(['type-create', 'type-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-layer-group"></i>
+
                         <p>Type <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -138,7 +140,8 @@
                 @endcanany
                 @canany(['category-create', 'category-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-tags"></i>
+
                         <p>Category <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -164,7 +167,7 @@
 
                 @canany(['product-create', 'product-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-box-open"></i>
                         <p>Product <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -190,7 +193,8 @@
 
                 @canany(['slider-create', 'slider-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-images"></i>
+
                         <p>Slider <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -215,7 +219,8 @@
                 @endcanany
                 @canany(['area-create', 'area-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-map-location-dot"></i>
+
                         <p>Area <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -238,9 +243,9 @@
                     </ul>
                 </li>
                 @endcanany
-                 @canany(['order-show', 'order-list'])
+                @canany(['order-list'])
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-cart-shopping"></i>
                         <p>Order <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -255,6 +260,24 @@
                     </ul>
                 </li>
                 @endcanany
+                @canany(['coupon-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-ticket"></i>
+                        <p>Coupon <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('coupon-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.coupon.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Coupon List</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
                 <li class="nav-item">
                     <a href="{{ route('manager.logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

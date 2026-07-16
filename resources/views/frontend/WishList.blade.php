@@ -21,7 +21,7 @@
     <div class="user-area bg pt-100 pb-80">
         <div class="container">
             <div class="row">
-                @include('components\userDashboardSidebar',['active'=>'wishlist'])
+                @include('components.userDashboardSidebar',['active'=>'wishlist'])
                 <div class="@auth('web') col-lg-9 @else col-lg-12 @endauth">
                     <div class="user-wrapper">
                         <div class="row">

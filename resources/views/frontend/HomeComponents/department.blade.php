@@ -5,7 +5,7 @@
                 <div class="col-12 wow fadeInDown" data-wow-delay=".25s">
                     <div class="site-heading-inline">
                         <h2 class="site-title">Departments</h2>
-                        <a href="category">View More <i class="fas fa-angle-double-right"></i></a>
+                       {{--   <a href="category">View More <i class="fas fa-angle-double-right"></i></a> --}}
                     </div>
                 </div>
             </div>

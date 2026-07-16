@@ -56,7 +56,7 @@
                         </label>
                     </div> -->
                         <div class="d-flex align-items-center">
-                            <button type="submit" class="theme-btn" id="register_button" style="border: none;"><i class="far fa-paper-plane"></i> Register</button>
+                            <button type="submit" class="theme-btn" id="register_button" style="border: none;"><i class="far fa-paper-plane"></i> Send OTP</button>
                         </div>
                     </form>
                     <div class="login-footer">

@@ -35,6 +35,11 @@ $user=Auth::guard('web')->user();
             <li><a class="{{ $active=='orderlist' ? 'active' : '' }}" href="{{route('frontend.dashboard.orderlist')}}"><i class="far fa-shopping-bag"></i> My Order List</a></li>
             <li><a class="{{ $active=='wishlist' ? 'active' : '' }}" href="{{route('frontend.wishlist.WishList')}}"><i class="far fa-heart"></i> My Wishlist</a></li>
             <li><a class="{{ $active=='trackmyorder' ? 'active' : '' }}" href="{{route('frontend.dashboard.trackingOrder')}}"><i class="far fa-map-location-dot"></i> Track My Order</a></li>
+            <li>
+                <a class="{{ $active=='address' ? 'active' : '' }}" href="{{ route('frontend.customer.address.list') }}">
+                    <i class="far fa-location-dot"></i> Address
+                </a>
+            </li>
             <li><a href="{{route('frontend.logout')}}"><i class="far fa-sign-out"></i> Logout</a></li>
         </ul>
     </div>

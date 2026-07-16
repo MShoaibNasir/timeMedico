@@ -1,15 +1,16 @@
 @extends('frontend.layout.master')
 @section('content')
+
 <main class="main">
     <!-- breadcrumb -->
     <div class="site-breadcrumb">
         <div class="site-breadcrumb-bg" style="background-image: url('{{ asset('frontend/images/about-01.jpg') }}');"></div>
         <div class="container">
             <div class="site-breadcrumb-wrap">
-                <h4 class="breadcrumb-title">My Wishlist</h4>
+                <h4 class="breadcrumb-title">Profile</h4>
                 <ul class="breadcrumb-menu">
                     <li><a href="home"><i class="far fa-home"></i> Home</a></li>
-                    <li class="active">My Wishlist</li>
+                    <li class="active">Profile</li>
                 </ul>
             </div>
         </div>
@@ -21,7 +22,8 @@
     <div class="user-area bg pt-100 pb-80">
         <div class="container">
             <div class="row">
-                @include('components\userDashboardSidebar',['active'=>'profile'])
+                
+                @include('components.userDashboardSidebar',['active'=>'profile'])
                 <div class="col-lg-9">
                     <div class="user-wrapper">
                         <div class="row">

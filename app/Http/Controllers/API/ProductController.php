@@ -46,7 +46,7 @@ class ProductController extends BaseController
                     return [
                         'id'    => $product->id,
                         'name'  => $product->name,
-                        'price' => number_format($product->price, 2),
+                        'price' => number_format($product->price),
                         'image' => $product->image,
                         'stock' => (bool) $product->in_stock,
                         'quantity' => $product->quantity,
@@ -98,7 +98,7 @@ class ProductController extends BaseController
             ->first();
 
         if ($data) {
-            $data->price = number_format($data->price, 2, '.', '');
+            $data->price = number_format($data->price);
         }
 
         return response()->json([
