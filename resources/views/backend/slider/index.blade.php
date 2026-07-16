@@ -64,11 +64,11 @@
 
 
                     <td>
-                        @can('category-edit')
+                        @can('slider-edit')
                         <a class="btn btn-primary btn-sm" href="{{ route('manager.slider.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                         @endcan
 
-                        @can('category-delete')
+                        @can('slider-delete')
                         <form id="deleteAdminForm{{ $key }}"
                             method="POST"
                             action="{{ route('manager.slider.destroy', $data->id) }}"

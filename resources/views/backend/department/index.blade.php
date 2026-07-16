@@ -80,11 +80,11 @@
 
 
                     <td>
-                        @can('category-edit')
+                        @can('department-edit')
                         <a class="btn btn-primary btn-sm" href="{{ route('manager.department.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                         @endcan
 
-                        @can('category-delete')
+                        @can('department-delete')
                         <form id="deleteAdminForm{{ $key }}"
                             method="POST"
                             action="{{ route('manager.department.destroy', $data->id) }}"

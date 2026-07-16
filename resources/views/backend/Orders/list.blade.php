@@ -21,7 +21,9 @@
                         <th>Total Amount</th>
                         <th>Status</th>
                         <th>Date</th>
+                        @can('order-show')
                         <th>Action</th>
+                        @endcan
 
                     </tr>
                 </thead>
@@ -70,6 +72,7 @@
                             @endif
                         </td>
                         <td>{{ $item->created_at->format('d M Y') }}</td>
+                        @can('order-show')
                         <td>
                             <a href="{{ route('manager.order.view', [encrypt($item->id)]) }}"
                                 class="btn btn-sm btn-primary"
@@ -77,6 +80,7 @@
                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>
+                        @endcan
 
                     </tr>
                     @endforeach
