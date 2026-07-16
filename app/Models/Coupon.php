@@ -53,6 +53,8 @@ class Coupon extends Model
         }
 
         if ($this->type === 'percent') {
+            // dump($subTotal);
+            // dump($this->value);
             $discount = $subTotal * ($this->value / 100);
 
             if ($this->max_discount_amount !== null) {
