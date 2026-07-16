@@ -33,7 +33,7 @@ class OrderController extends Controller
             'customer_name'        => ['required', 'string', 'max:255'],
             'customer_email'       => ['required', 'email', 'max:255'],
             'phone'                => ['required', 'string', 'max:20'],
- 
+            'area_id'                => ['required', 'integer'],
             // SECURITY: address_id sirf usi user_id se belong karni chahiye jo
             // request mein diya gaya hai - koi doosre user ka address_id use
             // na ho sake (chahe user_id khud tamper bhi ho jaye, address
@@ -71,7 +71,10 @@ class OrderController extends Controller
         // ===================================================================
         $address = CustomerAddress::findOrFail($validated['address_id']);
         $addressSnapshot = trim("{$address->address_type} - {$address->address}");
- 
+        $area = Area::findOrFail($validated['area_id']);
+        
+
+
         $coupon = null;
         if (! empty($validated['coupon_code'])) {
             $coupon = Coupon::where('code', $validated['coupon_code'])->first();
@@ -133,7 +136,9 @@ class OrderController extends Controller
                 $afterProductDiscount = $subTotal - $productDiscountTotal;
                 $couponDiscount = $coupon ? $coupon->calculateDiscount($afterProductDiscount) : 0;
  
-                $deliveryFee = (float) config('cart.delivery_fee');
+
+                 $deliveryFee = $area->delivery_charges;
+                //$deliveryFee = (float) config('cart.delivery_fee');
                 $platformFee = (float) config('cart.platform_fee');
                 $afterDiscount = max(0, $afterProductDiscount - $couponDiscount);
                 $grandTotal = $afterDiscount + $deliveryFee + $platformFee;
@@ -149,7 +154,7 @@ class OrderController extends Controller
                     'address'               => $addressSnapshot,
                     'delivery_instruction'  => $validated['delivery_instruction'] ?? null,
                     'total_amount'          => $subTotal,
-                    'discount'              => $productDiscountTotal,
+                    'discount'              => $productDiscountTotal + $couponDiscount,
                     'coupon_code'           => $coupon?->code,
                     'coupon_discount'       => $couponDiscount,
                     'after_discount_amount' => $afterDiscount,
