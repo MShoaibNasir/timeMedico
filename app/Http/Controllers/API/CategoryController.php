@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
-  
 
-   
+
+
     public function index(Request $request)
     {
-             $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'department_id'  => 'required'
 
         ]);
@@ -26,9 +26,7 @@ class CategoryController extends BaseController
                 'errors' => $validator->errors()
             ], 422);
         }
-        $data = Category::where('status', 1)->where('department_id',$request->department_id)->select('id','name','image')->get();
+        $data = Category::where('status', 1)->where('department_id', $request->department_id)->select('id', 'name', 'image')->get();
         return $data;
     }
-
-   
 }

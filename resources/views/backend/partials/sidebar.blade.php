@@ -259,8 +259,9 @@
                         @endcan
                     </ul>
                 </li>
+                
                 @endcanany
-                @canany(['coupon-list'])
+                @canany(['coupon-list','coupon-create'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-ticket"></i>
                         <p>Coupon <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
@@ -271,6 +272,14 @@
                             <a href="{{ route('manager.coupon.index') }}" class="nav-link"> <i
                                     class="nav-icon far fa-circle"></i>
                                 <p>Coupon List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('coupon-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.coupon.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Coupon Create</p>
                             </a>
                         </li>
                         @endcan

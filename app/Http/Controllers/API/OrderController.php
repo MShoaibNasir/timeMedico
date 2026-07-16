@@ -8,6 +8,7 @@ use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Area;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class OrderController extends Controller
             'customer_name'        => ['required', 'string', 'max:255'],
             'customer_email'       => ['required', 'email', 'max:255'],
             'phone'                => ['required', 'string', 'max:20'],
-
+            'area_id'                => ['required', 'integer'],
             // SECURITY: address_id sirf usi user_id se belong karni chahiye jo
             // request mein diya gaya hai - koi doosre user ka address_id use
             // na ho sake (chahe user_id khud tamper bhi ho jaye, address
@@ -72,6 +73,9 @@ class OrderController extends Controller
         // ===================================================================
         $address = CustomerAddress::findOrFail($validated['address_id']);
         $addressSnapshot = trim("{$address->address_type} - {$address->address}");
+        $area = Area::findOrFail($validated['area_id']);
+
+
 
         $coupon = null;
         if (! empty($validated['coupon_code'])) {
@@ -90,7 +94,7 @@ class OrderController extends Controller
         // coupon usage sab ek sath succeed/fail hote hain
         // ===================================================================
         try {
-            $order = DB::transaction(function () use ($validated, $addressSnapshot, $coupon) {
+            $order = DB::transaction(function () use ($validated, $addressSnapshot, $coupon,$area) {
 
                 // --- Har item ke liye DB se authoritative price/discount nikalein,
                 // aur stock lock kar ke verify karein (client se koi price accept nahi) ---
@@ -134,7 +138,9 @@ class OrderController extends Controller
                 $afterProductDiscount = $subTotal - $productDiscountTotal;
                 $couponDiscount = $coupon ? $coupon->calculateDiscount($afterProductDiscount) : 0;
 
-                $deliveryFee = (float) config('cart.delivery_fee');
+
+                $deliveryFee = $area->delivery_charges;
+                //$deliveryFee = (float) config('cart.delivery_fee');
                 $platformFee = (float) config('cart.platform_fee');
                 $afterDiscount = max(0, $afterProductDiscount - $couponDiscount);
                 $grandTotal = $afterDiscount + $deliveryFee + $platformFee;
@@ -178,7 +184,10 @@ class OrderController extends Controller
                         'price_after_discount' => $data['price_after_discount'],
                         'subtotal'             => $data['subtotal'],
                     ]);
-
+                    $product = Product::find($data['product']->id);
+                    Product::where('id', $data['product']->id)->update([
+                        'quantity' => $product->quantity - $data['quantity']
+                    ]);
                     if (isset($data['product']->stock)) {
                         $data['product']->decrement('stock', $data['quantity']);
                     }

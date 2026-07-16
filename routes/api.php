@@ -14,6 +14,7 @@ use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DepartmentController;
 use App\Http\Controllers\API\SliderController;
+use App\Http\Controllers\API\CouponController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('authentication')->middleware('api.secret')->name('authentication.')->controller(RegisterController::class)->group(function () {
@@ -59,6 +60,9 @@ Route::prefix('address')->middleware(['api.secret', 'auth:sanctum'])->controller
     Route::post('/add', 'add');
     Route::post('/make_primary', 'is_primary');
     Route::post('/list', 'list');
+});
+Route::prefix('coupon')->middleware(['api.secret', 'auth:sanctum'])->controller(CouponController::class)->group(function () {
+    Route::post('/get', 'getCoupon');
 });
 
 
