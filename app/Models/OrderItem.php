@@ -22,4 +22,8 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+    public function product_image()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id')->select('id','image');
+    }
 }
