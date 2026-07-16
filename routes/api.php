@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('authentication')->middleware('api.secret')->name('authentication.')->controller(RegisterController::class)->group(function () {
     Route::post('emailLogin', 'register');
     Route::post('emailVerification', 'tokenVerify');
+    Route::get('/marquee', 'marquee');
+    Route::get('/privacyPolicy', 'privacyPolicy');
+});
+
+Route::prefix('authentication')->middleware(['api.secret'])->name('authentication.')->controller(RegisterController::class)->group(function () {
+    Route::post('updateProfile', 'updateProfile');
 });
 
 Route::prefix('slider')->middleware('api.secret')->controller(SliderController::class)->group(function () {
@@ -43,6 +49,7 @@ Route::prefix('product')->middleware('api.secret')->controller(ProductController
 //  token required apis
 Route::prefix('Prescription')->middleware(['api.secret', 'auth:sanctum'])->controller(PrescriptionController::class)->group(function () {
     Route::post('/upload', 'upload');
+    Route::post('/get', 'list');
 });
 Route::prefix('image')->middleware(['api.secret', 'auth:sanctum'])->controller(ImageController::class)->group(function () {
     Route::post('/upload', 'upload');

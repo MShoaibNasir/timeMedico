@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\API\BaseController;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\UserDataFotOTP;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends BaseController
 {
@@ -43,7 +45,8 @@ class RegisterController extends BaseController
             'deviceId' => $request->deviceId,
             'phoneModel' => $request->phoneModel,
             'phoneMake' => $request->phoneMake,
-            'appVersion' => $request->appVersion
+            'appVersion' => $request->appVersion,
+
         ]);
         return response()->json([
             'success' => true,
@@ -115,10 +118,81 @@ class RegisterController extends BaseController
                 'phone_number' => $user->phone_number,
                 'fcmToken' => $user->fcmToken,
                 'deviceId' => $user->deviceId,
+                'image' => $user->image,
+                'bio'          => $user->bio,
                 'phoneModel' => $user->phoneModel,
                 'phoneMake' => $user->phoneMake,
                 'appVersion' => $user->appVersion,
             ]
+        ]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone_number' => 'required|string',
+            'name'         => 'required|string',
+            'bio'          => 'required|string',
+            'user_id'      => 'required|exists:users,id',
+            'image'        => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()
+            ], 422);
+        }
+
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User Not Found.'
+            ], 404);
+        }
+
+        $user->update([
+            'name'         => $request->name,
+            'phone_number' => $request->phone_number,
+            'bio'          => $request->bio,
+            'image'        => $request->image,
+        ]);
+
+        $user->refresh();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User Updated Successfully',
+            'data'    => [
+                'id'           => $user->id,
+                'name'         => $user->name,
+                'email'        => $user->email,
+                'phone_number' => $user->phone_number,
+                'bio'          => $user->bio,
+                'image'        => $user->image,
+                'fcmToken'     => $user->fcmToken,
+                'deviceId'     => $user->deviceId,
+                'phoneModel'   => $user->phoneModel,
+                'phoneMake'    => $user->phoneMake,
+                'appVersion'   => $user->appVersion,
+            ]
+        ]);
+    }
+
+    public function marquee()
+    {
+        return 'Welcome to the official Time Medico App. Please use only our official app for a safe and secure experience.';
+    }
+    public function privacyPolicy()
+    {
+        $policy = Setting::where('key', 'privacy_policy')->first();
+
+        return response()->json([
+            'status' => true,
+            'title' => 'Privacy Policy',
+            'content' => $policy?->value,
         ]);
     }
 }

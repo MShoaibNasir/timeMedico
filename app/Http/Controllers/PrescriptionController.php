@@ -87,4 +87,5 @@ class PrescriptionController extends Controller
         $prescription = UploadPrescription::where('user_id', $user_id)->latest()->get();
         return view('frontend.prescriptionList', ['prescription' => $prescription]);
     }
+  
 }
