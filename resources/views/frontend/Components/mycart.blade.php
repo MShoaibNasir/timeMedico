@@ -12,7 +12,7 @@
 <div class="dropdown-cart-menu">
     <div class="dropdown-cart-header">
         <span>{{ count($cart) }} Items</span>
-        <a href="cart">View Cart</a>
+        <a href="{{ route('frontend.cartcheckout') }}">View Cart</a>
     </div>
     <ul class="dropdown-cart-list">
         @foreach ($cart as $data)
@@ -55,6 +55,6 @@
             <span>Total</span>
             <span class="total-amount">Rs{{ number_format($total,2) }}</span>
         </div>
-        <a href="#" class="theme-btn">Checkout</a>
+        <a href="{{ route('frontend.cartcheckout') }}" class="theme-btn">Checkout</a>
     </div>
 </div>

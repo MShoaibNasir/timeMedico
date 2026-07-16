@@ -28,14 +28,18 @@ class CartService
     }
 
     /**
-     * Product-level Discount = sab items ka (discount * quantity) ka sum.
-     * (Ye per-product discount hai, coupon discount se alag)
+     * Product-level Discount = sab items ka percentage-based discount amount sum.
+     * NOTE: 'discount' field product ke against PERCENTAGE hota hai (jaise 10 = 10%),
+     * flat amount NAHI hai - is liye price * quantity * (discount/100) calculate karte hain.
      */
     public function productDiscount(): float
     {
-        return collect($this->items)->sum(
-            fn ($item) => ($item['discount'] ?? 0) * $item['quantity']
-        );
+        return collect($this->items)->sum(function ($item) {
+            $lineTotal = $item['price'] * $item['quantity'];
+            $discountPercent = $item['discount'] ?? 0;
+
+            return $lineTotal * ($discountPercent / 100);
+        });
     }
 
     /**

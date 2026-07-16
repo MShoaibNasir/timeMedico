@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/nice-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/flex-slider.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
+	@stack('styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('frontend/js/jquery-3.7.1.min.js') }}"></script>
 

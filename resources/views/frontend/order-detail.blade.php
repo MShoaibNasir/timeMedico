@@ -90,6 +90,12 @@
                             </div>
 
                             <div class="d-flex justify-content-between mb-2">
+                                <span>Platform Charges</span>
+                                <strong>Rs {{ number_format($order->platform_fee ?? 0) }}</strong>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-2">
                                 <span>Discount</span>
                                 <strong>
                                     Rs {{ number_format($order->discount ?? 0) }}
@@ -101,7 +107,7 @@
                             <div class="d-flex justify-content-between">
                                 <span class="fw-bold">Grand Total</span>
                                 <strong class="text-success fs-5">
-                                    Rs {{ number_format(($order->total_amount + ($order->delivery_charges ?? 0)) - ($order->discount ?? 0)) }}
+                                    Rs {{ number_format($order->grand_total) }}{{-- number_format(($order->total_amount + ($order->delivery_charges ?? 0)) - ($order->discount ?? 0)) --}}
                                 </strong>
                             </div>
 

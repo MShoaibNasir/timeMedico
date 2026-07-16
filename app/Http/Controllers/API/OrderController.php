@@ -23,6 +23,7 @@ class OrderController extends Controller
             'total_amount'       => 'required|numeric|min:0',
             'delivery_charges'   => 'nullable|numeric|min:0',
             'discount'           => 'nullable|numeric|min:0',
+            'after_discount_amount' => 'nullable|numeric|min:0',
             'payment_type'       => 'required|in:Cash,JazzCash,EasyPaisa,Bank Transfer,COD,Online',
             'image_payment_slip' => 'nullable|string',
             'items'              => 'required|array|min:1',
@@ -60,6 +61,7 @@ class OrderController extends Controller
                 'total_amount'     => $request->total_amount,
                 'delivery_charges' => $request->delivery_charges ?? 0,
                 'discount'         => $request->discount ?? 0,
+                'after_discount_amount' =>  $request->after_discount_amount ?? 0,
                 'payment_type'     => $request->payment_type,
                 'image_payment_slip' => $request->image_payment_slip ?? null,
                 'status'           => 'Pending'

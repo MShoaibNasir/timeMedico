@@ -57,7 +57,7 @@
                                                 <tr>
                                                     <th>#Order No</th>
                                                     <th>Purchased Date</th>
-                                                    <th>Total</th>
+                                                    <th>Order Total</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -72,7 +72,7 @@
                                                         {{ $item->created_at->format('F d, Y h:i A') }}
                                                     </td>
                                                     <td>
-                                                        Rs {{ number_format($item->total_amount) }}
+                                                        Rs {{ number_format($item->grand_total,2) }}
                                                     </td>
                                                     <td>
                                                         <span class="badge

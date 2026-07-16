@@ -161,17 +161,24 @@ Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(
 	// Coupon routes 
     Route::post('coupon', 'applyCoupon')->name('coupon.apply');
     Route::delete('coupon', 'removeCoupon')->name('coupon.remove');
-	Route::get('checkout', 'checkout')->name('checkout');
+	//Route::get('checkout', 'checkout')->name('checkout');
 	
-    Route::get('cart', 'index')->name('cart');
+    Route::get('cart-checkout', 'index')->name('cartcheckout');
     Route::patch('cart/{product}', 'update')->name('cart.update');
     Route::delete('cart/{product}', 'remove')->name('cart.remove');
     Route::delete('cart', 'clear')->name('cart.clear');
 
+    Route::post('order/place', 'placeOrderNew')->name('order.place');
+    Route::get('order/thank-you/{order}', 'thankYou')->name('order.thankyou');
+
     
 });
+ 
 
-Route::post('/ajax/add-to-cart', [CartNewController::class, 'add'])->name('frontend.ajax.cart.add');
+
+
+
+//Route::post('/ajax/add-to-cart', [CartNewController::class, 'add'])->name('frontend.ajax.cart.add');
 
 
 

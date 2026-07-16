@@ -1,6 +1,6 @@
 @extends('backend.layout.master')
 @section('content')
-<style>
+<style> 
     .profile-wrapper {
         background: #f4f6f9;
         padding: 20px;

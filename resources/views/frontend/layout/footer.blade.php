@@ -155,7 +155,7 @@
  <script src="{{ asset('frontend/js/flex-slider.js') }}"></script>
  <script src="{{ asset('frontend/js/main.js') }}"></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+@stack('script')
  <script>
      // Create a reusable Toast configuration
      const Toast = Swal.mixin({

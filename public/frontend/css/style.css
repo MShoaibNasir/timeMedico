@@ -3229,7 +3229,7 @@ a.dwnld-btn {
 }
 
 .shop-cart-img {
-  width: 100px;
+  width: 50px;
 }
 
 .shop-cart-img img {
@@ -3563,13 +3563,9 @@ a.dwnld-btn {
   color: var(--body-text-color);
 }
 
-.shop-checkout-payment .checkout-card-img{
+.shop-checkout-payment .checkout-payment-img{
   padding-top: 12px;
   margin-bottom: 12px;
-}
-
-.shop-checkout-payment .checkout-card-img img{
-  width: 34px;
 }
 
 .shop-checkout-payment .checkout-payment-img img{
