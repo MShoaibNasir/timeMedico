@@ -88,7 +88,8 @@ class CartController extends Controller
                 'name'     => $product->name,
                 'unit'     => $product->unit,
                 'price'    => $product->price,
-                'discount'    => $product->discount_amount,
+                'discount'    => $product->discount,
+                'discount_amount'    => $product->discount_amount,
                 'image'    => $product->image,
                 'quantity' => ($request->quantity ?? 1),
             ];
@@ -131,7 +132,7 @@ class CartController extends Controller
 
         $cart[$productId]['quantity'] = $validated['quantity'];
         $cart[$productId]['price']    = $product->price;
-        $cart[$productId]['discount'] = $product->discount_amount;
+        $cart[$productId]['discount'] = $product->discount;
 
         session(['cart' => $cart]);
 
