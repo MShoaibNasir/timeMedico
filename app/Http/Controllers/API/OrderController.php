@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
+use App\Models\Area;
 use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -46,7 +47,8 @@ class OrderController extends Controller
  
             'delivery_instruction' => ['nullable', 'string', 'max:500'],
             'payment_type'         => ['required', 'in:cod,online'],
-            'image_payment_slip'   => ['nullable', 'string', 'max:500'], // pehle se uploaded file ka path/URL
+            //'image_payment_slip'   => ['nullable', 'string', 'max:500'], // pehle se uploaded file ka path/URL
+            'image_payment_slip' => ['nullable','file','mimes:jpg,jpeg,png,pdf','max:2048'],
  
             'coupon_code'          => ['nullable', 'string', 'exists:coupons,code'],
  
@@ -73,6 +75,11 @@ class OrderController extends Controller
         $addressSnapshot = trim("{$address->address_type} - {$address->address}");
         $area = Area::findOrFail($validated['area_id']);
         
+        // Payment slip upload (agar online payment/bank transfer flow ho)
+        $paymentSlipPath = null;
+        if ($request->hasFile('image_payment_slip')) {
+            $paymentSlipPath = $request->file('image_payment_slip')->store('payment-slips', 'public');
+        }
 
 
         $coupon = null;
@@ -92,7 +99,7 @@ class OrderController extends Controller
         // coupon usage sab ek sath succeed/fail hote hain
         // ===================================================================
         try {
-            $order = DB::transaction(function () use ($validated, $addressSnapshot, $coupon) {
+            $order = DB::transaction(function () use ($validated, $addressSnapshot, $area, $coupon, $paymentSlipPath) {
  
                 // --- Har item ke liye DB se authoritative price/discount nikalein,
                 // aur stock lock kar ke verify karein (client se koi price accept nahi) ---
@@ -137,7 +144,7 @@ class OrderController extends Controller
                 $couponDiscount = $coupon ? $coupon->calculateDiscount($afterProductDiscount) : 0;
  
 
-                 $deliveryFee = $area->delivery_charges;
+                 $deliveryFee = (float) str_replace(',', '', $area->delivery_charges);
                 //$deliveryFee = (float) config('cart.delivery_fee');
                 $platformFee = (float) config('cart.platform_fee');
                 $afterDiscount = max(0, $afterProductDiscount - $couponDiscount);
@@ -152,6 +159,7 @@ class OrderController extends Controller
                     'customer_email'        => $validated['customer_email'],
                     'phone'                 => $validated['phone'],
                     'address'               => $addressSnapshot,
+                    'area'                  => $area->name ?? '',
                     'delivery_instruction'  => $validated['delivery_instruction'] ?? null,
                     'total_amount'          => $subTotal,
                     'discount'              => $productDiscountTotal + $couponDiscount,
@@ -162,7 +170,7 @@ class OrderController extends Controller
                     'platform_fee'          => $platformFee,
                     'grand_total'           => $grandTotal,
                     'payment_type'          => $validated['payment_type'],
-                    'image_payment_slip'    => $validated['image_payment_slip'] ?? null,
+                    'image_payment_slip'    => $paymentSlipPath, //$validated['image_payment_slip'] ?? null,
                     'status'                => 'Pending',
                 ]);
  

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Coupon;
+use App\Models\Area;
 use App\Models\CustomerAddress;
 use App\Services\CartService;
 use Illuminate\Http\RedirectResponse;
@@ -53,12 +54,13 @@ class CartController extends Controller
         $coupon = $this->resolveCoupon();
         $cartService = new CartService($cart, $coupon);
         $user = auth('web')->user();
+        $area = Area::where('status', 1)->pluck('name', 'id');
         //$customer_address = CustomerAddress::where('user_id', $user->id)->pluck('address_type', 'id');
         $customer_address = CustomerAddress::where('user_id', $user->id)->get()->mapWithKeys(function ($item) {
             //return [$item->id => "{$item->address_type} - ({$item->address})"];
             return [$item->id => "{$item->address_type} - ({$item->address})"];
         });
-        return view('frontend.cart-checkout', ['cartItems' => $cart,'summary'   => $cartService->summary(), 'user'=> $user, 'customer_address' => $customer_address]);
+        return view('frontend.cart-checkout', ['cartItems' => $cart,'summary'   => $cartService->summary(), 'user'=> $user, 'customer_address' => $customer_address, 'area' => $area]);
     }
 	
 	
@@ -133,6 +135,7 @@ class CartController extends Controller
         $cart[$productId]['quantity'] = $validated['quantity'];
         $cart[$productId]['price']    = $product->price;
         $cart[$productId]['discount'] = $product->discount;
+        $cart[$productId]['discount_amount'] = $product->discount_amount;
 
         session(['cart' => $cart]);
 
@@ -211,6 +214,7 @@ class CartController extends Controller
         return back()->with('success', 'Coupon removed.');
     }
 	
+    /*
 	public function checkout()
     {
         $cart = session()->get('cart', []);
@@ -219,7 +223,20 @@ class CartController extends Controller
         });
         return view('frontend.checkout', ['cart' => $cart, 'total' => $total]);
     }
+    */
 
+    public function cartsummary(Request $request)
+    {
+    $cart = session('cart', []);
+    $coupon = session('applied_coupon')
+        ? Coupon::where('code', session('applied_coupon'))->first()
+        : null;
+
+    $area = Area::find($request->area_id);
+    $summary = (new CartService($cart, $area, $coupon))->summary();
+    return response()->json($summary);
+    
+    }
 
     public function placeOrderNew(Request $request): RedirectResponse
     {
@@ -232,6 +249,7 @@ class CartController extends Controller
             'customer_name'         => ['required', 'string', 'max:255'],
             'customer_email'        => ['required', 'email', 'max:255'],
             'customer_phone'        => ['required', 'string', 'max:20'],
+            'area_id'                => ['required', 'integer'],
             'address_id'            => [
                 'required',
                 'integer',
@@ -239,7 +257,8 @@ class CartController extends Controller
             ],
             'delivery_instruction'  => ['nullable', 'string', 'max:500'],
             'payment_method'        => ['required', 'in:cod,online'],
-            'payment_slip'          => ['nullable', 'file', 'image', 'max:2048'], // actual file upload, string nahi
+            //'payment_slip'          => ['nullable', 'file', 'image', 'max:2048'], // actual file upload, string nahi
+            'payment_slip' => ['nullable','file','mimes:jpg,jpeg,png,pdf','max:2048'],
         ]);
  
         // ===================================================================
@@ -261,14 +280,16 @@ class CartController extends Controller
             $coupon = null;
             session()->forget('applied_coupon');
         }
- 
-        $cartService = new CartService($cart, $coupon);
+
+        $area = Area::findOrFail($validated['area_id']);
+        $cartService = new CartService($cart, $area, $coupon);
         $summary = $cartService->summary();
  
         // Customer address ka snapshot text nikal lein (order table mein history ke liye save hoga)
         $address = CustomerAddress::findOrFail($validated['address_id']);
         $addressSnapshot = trim("{$address->address_type} - {$address->address}");
- 
+        
+
         // Payment slip upload (agar online payment/bank transfer flow ho)
         $paymentSlipPath = null;
         if ($request->hasFile('payment_slip')) {
@@ -286,6 +307,7 @@ class CartController extends Controller
                 $summary,
                 $coupon,
                 $addressSnapshot,
+                $area,
                 $paymentSlipPath
             ) {
                 // --- Order create karein (order_no ek temporary unique placeholder se -
@@ -299,6 +321,7 @@ class CartController extends Controller
                     'customer_email'        => $validated['customer_email'],
                     'phone'                 => $validated['customer_phone'],
                     'address'               => $addressSnapshot,
+                    'area'                  => $area->name ?? '',
                     'delivery_instruction'  => $validated['delivery_instruction'] ?? null,
                     'total_amount'          => $summary['sub_total'],
                     'discount'              => $summary['discount'],

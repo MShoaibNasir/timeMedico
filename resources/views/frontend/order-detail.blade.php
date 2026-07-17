@@ -62,8 +62,8 @@
                             </p>
 
                             <p class="mb-0">
-                                <strong>Address:</strong><br>
-                                {{ $order->address }}
+                                <strong>Email:</strong>
+                                {{ $order->customer_email }}
                             </p>
 
                         </div>
@@ -116,6 +116,80 @@
                 </div>
 
             </div>
+
+            <div class="row">
+            <!--Payment Info-->
+            <div class="col-md-6 mb-4">
+    <div class="card shadow-sm border-0 h-100">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Payment Information</h5>
+        </div>
+
+        <div class="card-body">
+
+            <p class="mb-3">
+                <strong>Payment Method:</strong>
+                {{ ucfirst(str_replace('_', ' ', $order->payment_type)) }}
+            </p>
+
+            @if($order->image_payment_slip)
+                <p class="mb-2">
+                    <strong>Payment Slip:</strong>
+                </p>
+
+                @php
+                    $extension = strtolower(pathinfo($order->image_payment_slip, PATHINFO_EXTENSION));
+                @endphp
+
+                @if(in_array($extension, ['jpg','jpeg','png','webp']))
+                    <a href="{{ asset('storage/'.$order->image_payment_slip) }}" target="_blank">
+                        <img src="{{ asset('storage/'.$order->image_payment_slip) }}"
+                             class="img-fluid rounded border"
+                             style="max-width:80px;">
+                    </a>
+                @elseif($extension == 'pdf')
+                    <a href="{{ asset('storage/'.$order->image_payment_slip) }}"
+                       target="_blank"
+                       class="btn btn-outline-danger">
+                        View Payment Slip (PDF)
+                    </a>
+                @endif
+            @else
+            {{--    
+            <p class="text-muted mb-0">
+                    No payment slip uploaded.
+                </p>
+                --}}
+            @endif
+
+        </div>
+    </div>
+</div>
+
+<!--Delivery Info-->
+<!-- Customer Details -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Delivery Address</h5>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="mb-2">
+                                <strong>Area:</strong>
+                                {{ $order->area ?? '' }}
+                            </p>
+
+                            <p class="mb-0">
+                                <strong>Address:</strong>
+                                {{ $order->address }}
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Order Items -->
             <div class="card shadow-sm border-0">

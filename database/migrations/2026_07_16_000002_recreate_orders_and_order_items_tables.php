@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('customer_email');
             $table->string('phone');
-            $table->text('address'); // delivery address ka snapshot text
+            $table->text('area'); // delivery address ka snapshot text
+			$table->text('address'); // delivery address ka snapshot text
             $table->text('delivery_instruction')->nullable();
 
             $table->decimal('total_amount', 10, 2)->default(0);       // sub total (discount se pehle)

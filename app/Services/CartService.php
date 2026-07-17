@@ -2,18 +2,23 @@
 
 namespace App\Services;
 
+use App\Models\Area;
 use App\Models\Coupon;
+
+
 
 class CartService
 {
     protected array $items;
+    protected ?Area $area;
     protected ?Coupon $coupon;
 
-    public function __construct(array $cart, ?Coupon $coupon = null)
+    public function __construct(array $cart, ?Area $area = null, ?Coupon $coupon = null)
     {
         // $cart wahi array hai jo session mein store ho raha hai:
         // [$product->id => ['id','sku','name','unit','price','discount','image','quantity'], ...]
         $this->items  = $cart;
+        $this->area = $area;
         $this->coupon = $coupon;
     }
 
@@ -75,12 +80,15 @@ class CartService
 
     public function deliveryFee(): float
     {
-        return (float) config('cart.delivery_fee');
+        //return (float) config('cart.delivery_fee');
+        //return (float) ($this->area->delivery_charges ?? 0);
+        return (float) str_replace(',', '', $this->area->delivery_charges ?? 0);
     }
 
     public function platformFee(): float
     {
         return (float) config('cart.platform_fee');
+        
     }
 
     /**

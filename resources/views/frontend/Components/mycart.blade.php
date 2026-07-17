@@ -1,4 +1,4 @@
-<a href="cart" class="shop-cart list-item">
+<a href="{{ route('frontend.cartcheckout') }}" class="shop-cart list-item">
     <div class="list-item-icon">
         <i class="far fa-shopping-bag"></i><span>{{ count($cart) }}</span>
     </div>
