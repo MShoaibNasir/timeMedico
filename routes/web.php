@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EmailSenderController;
@@ -18,11 +19,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\TypeController;
 use App\Http\Controllers\Backend\CouponController;
+use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\CustomerAddressController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CartNewController;
+use App\Http\Controllers\BlogsController;
+use App\Http\Controllers\BrandsController;
 
 
 
@@ -108,6 +111,29 @@ Route::prefix('manager')->name('manager.')->group(function () {
         Route::prefix('admin/dashboard/area')->name('area.')->controller(AreaController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
             Route::post('/list', 'list')->name('list');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/filter', 'filter')->name('filter');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+
+        Route::prefix('admin/dashboard/blog')->name('blog.')->controller(BlogController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/list', 'list')->name('list');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/filter', 'filter')->name('filter');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::put('/update/{id}', 'update')->name('update');
+            Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+            Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+        });
+        Route::prefix('admin/dashboard/brand')->name('brand.')->controller(BrandController::class)->group(function () {
+            Route::get('/index', 'index')->name('index');
+            Route::get('/list', 'list')->name('list');
             Route::get('/create', 'create')->name('create');
             Route::get('/filter', 'filter')->name('filter');
             Route::post('/store', 'store')->name('store');
@@ -211,6 +237,13 @@ Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistContr
     Route::post('show/', 'show')->name('show');
     Route::get('/', 'WishList')->name('WishList');
     Route::post('product_list/', 'product_list')->name('product_list');
+});
+
+Route::prefix('blog/')->name('frontend.blog.')->controller(BlogsController::class)->group(function () {
+    Route::get('{id}/', 'show')->name('show');
+});
+Route::prefix('brand/')->name('frontend.brand.')->controller(BrandsController::class)->group(function () {
+    Route::get('{id}/', 'show')->name('show');
 });
 
 

@@ -1,5 +1,4 @@
 @extends('backend.layout.master')
-
 @section('content')
 
 <section class="content mt-3">
@@ -47,7 +46,7 @@
 
                     <td class="align-middle">
                         @if($data->image)
-                            <img src="{{ asset('storage/'.$data->image) }}"
+                            <img src="{{ asset($data->image) }}"
                                  width="60"
                                  height="60"
                                  style="object-fit: cover; border-radius: 8px; border:1px solid #ddd; padding:2px;">
@@ -61,7 +60,6 @@
                                 display:flex;
                                 align-items:center;
                                 justify-content:center;
-                                margin:auto;
                                 color:#888;
                                 font-size:11px;
                                 font-weight:600;">
@@ -71,7 +69,7 @@
                     </td>
 
                     <td>
-                        {{ \Illuminate\Support\Str::limit(strip_tags($data->description), 100) }}
+                        {{ \Illuminate\Support\Str::limit(strip_tags($data->description), 80) }}
                     </td>
 
                     <td class="align-middle">

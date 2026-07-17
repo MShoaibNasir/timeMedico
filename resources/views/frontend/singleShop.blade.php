@@ -2,10 +2,7 @@
 @section('content')
 @php
 $wishlist = session('wishlist', []);
-$originalPrice = $product->price;
-$discountPercentage = $product->discount;
-$discountAmount = ($originalPrice * $discountPercentage) / 100;
-$finalPrice = $originalPrice - $discountAmount;
+
 @endphp
 <main class="main">
     <!-- breadcrumb -->
@@ -42,18 +39,9 @@ $finalPrice = $originalPrice - $discountAmount;
                 <div class="col-md-12 col-lg-6 col-xxl-6">
                     <div class="shop-single-info">
                         <h4 class="shop-single-title">{{ $product->name }}</h4>
-                        <div class="shop-single-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <i class="far fa-star"></i>
-                            <span class="rating-count"> (4 Customer Reviews)</span>
-                        </div>
+                      
                         <div class="shop-single-price">
-                            <del>Rs{{ number_format($originalPrice) }}</del>
-                            <span class="amount">Rs{{ number_format($finalPrice) }}</span>
-                            <span class="discount-percentage">{{ $discountPercentage }}% Off</span>
+                            <span class="amount">Rs{{ number_format($product->price,2) }}</span>
                         </div>
                         <p class="mb-3">
                             {{ $product->product_description }}
@@ -106,15 +94,7 @@ $finalPrice = $originalPrice - $discountAmount;
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-12 col-xl-6">
-                                    <div class="shop-single-share">
-                                        <span>Share:</span>
-                                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#"><i class="fab fa-x-twitter"></i></a>
-                                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                    </div>
-                                </div>
+                             
                             </div>
                         </div>
                     </div>

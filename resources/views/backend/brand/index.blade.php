@@ -1,5 +1,4 @@
 @extends('backend.layout.master')
-
 @section('content')
 
 <section class="content mt-3">
@@ -8,14 +7,14 @@
 ```
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>Blog List</h1>
+            <h1>Brand List</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item">
                     <a href="{{ url('/manager') }}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Blog List</li>
+                <li class="breadcrumb-item active">Brand List</li>
             </ol>
         </div>
     </div>
@@ -47,7 +46,7 @@
 
                     <td class="align-middle">
                         @if($data->image)
-                            <img src="{{ asset('storage/'.$data->image) }}"
+                            <img src="{{ asset($data->image) }}"
                                  width="60"
                                  height="60"
                                  style="object-fit: cover; border-radius: 8px; border:1px solid #ddd; padding:2px;">
@@ -61,7 +60,6 @@
                                 display:flex;
                                 align-items:center;
                                 justify-content:center;
-                                margin:auto;
                                 color:#888;
                                 font-size:11px;
                                 font-weight:600;">
@@ -71,7 +69,7 @@
                     </td>
 
                     <td>
-                        {{ \Illuminate\Support\Str::limit(strip_tags($data->description), 100) }}
+                        {{ \Illuminate\Support\Str::limit(strip_tags($data->description), 80) }}
                     </td>
 
                     <td class="align-middle">
@@ -83,7 +81,7 @@
                     <td>
                         @can('blog-edit')
                         <a class="btn btn-primary btn-sm"
-                           href="{{ route('manager.blog.edit', $data->id) }}">
+                           href="{{ route('manager.brand.edit', $data->id) }}">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
                         @endcan
@@ -91,7 +89,7 @@
                         @can('blog-delete')
                         <form id="deleteBlogForm{{ $key }}"
                               method="POST"
-                              action="{{ route('manager.blog.destroy', $data->id) }}"
+                              action="{{ route('manager.brand.destroy', $data->id) }}"
                               style="display:inline">
                             @csrf
                             @method('DELETE')

@@ -4,13 +4,7 @@
 	</div>
 	<div class="product-list-content">
 		<h4><a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}">{{$item->name}}</a></h4>
-		<div class="product-list-rate">
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="fas fa-star"></i>
-			<i class="far fa-star"></i>
-		</div>
+
 		<div class="product-list-price">
 			@if($item->discount_amount>0)
 			<span>Rs <del>{{number_format($item->price,2)}}</del>  {{number_format($item->final_price,2)}}</span>

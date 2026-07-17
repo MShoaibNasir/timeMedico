@@ -17,13 +17,7 @@ $wishlist = session('wishlist', []);
     </div>
     <div class="product-content">
         <h3 class="product-title"><a href="{{ route('frontend.singleShop', [Crypt::encryptString($item->id)]) }}">{{$item->name}}</a></h3>
-        <div class="product-rate">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-        </div>
+       
         <div class="product-bottom">
             <div class="product-price">
                 @if($item->discount_amount > 0)
