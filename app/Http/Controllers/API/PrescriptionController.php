@@ -13,7 +13,7 @@ class PrescriptionController extends Controller
 {
     public function upload(Request $request)
     {
-      
+
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|integer',
             'address' => 'required|string|max:255',
@@ -42,7 +42,28 @@ class PrescriptionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Prescription uploaded successfully.',
-           'data'=>$prescription
+            'data' => $prescription
+        ]);
+    }
+    public function list(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->all(),
+            ], 422);
+        }
+        $user_id = $request->user_id;
+        $prescription = UploadPrescription::where('user_id', $user_id)->latest()->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Prescription get successfully.',
+            'data' => $prescription
         ]);
     }
 }

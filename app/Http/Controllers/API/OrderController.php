@@ -9,6 +9,7 @@ use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Area;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,7 @@ use Throwable;
 
 class OrderController extends Controller
 {
-    
+
 
     public function placeOrder(Request $request): JsonResponse
     {
@@ -44,30 +45,31 @@ class OrderController extends Controller
                 'integer',
                 Rule::exists('customer_address', 'id')->where('user_id', $request->input('user_id')),
             ],
- 
+
             'delivery_instruction' => ['nullable', 'string', 'max:500'],
             'payment_type'         => ['required', 'in:cod,online'],
             //'image_payment_slip'   => ['nullable', 'string', 'max:500'], // pehle se uploaded file ka path/URL
             'image_payment_slip' => ['nullable','file','mimes:jpg,jpeg,png,pdf','max:2048'],
  
             'coupon_code'          => ['nullable', 'string', 'exists:coupons,code'],
- 
+
             // Items mein SIRF product_id aur quantity chahiye - price/discount
             // client se accept hi nahi kar rahe (security ke liye).
             'items'                => ['required', 'array', 'min:1'],
             'items.*.product_id'   => ['required', 'exists:products,id'],
             'items.*.quantity'     => ['required', 'integer', 'min:1', 'max:100'],
+            'area_id'                => ['required']
         ]);
- 
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
             ], 422);
         }
- 
+
         $validated = $validator->validated();
- 
+
         // ===================================================================
         // STEP 2: Address snapshot + coupon resolve karein
         // ===================================================================
@@ -85,7 +87,7 @@ class OrderController extends Controller
         $coupon = null;
         if (! empty($validated['coupon_code'])) {
             $coupon = Coupon::where('code', $validated['coupon_code'])->first();
- 
+
             if (! $coupon || ! $coupon->isValid()) {
                 return response()->json([
                     'success' => false,
@@ -93,7 +95,7 @@ class OrderController extends Controller
                 ], 422);
             }
         }
- 
+
         // ===================================================================
         // STEP 3: Transaction ke andar - order + items + stock decrement +
         // coupon usage sab ek sath succeed/fail hote hain
@@ -106,29 +108,29 @@ class OrderController extends Controller
                 $orderItemsData = [];
                 $subTotal = 0;
                 $productDiscountTotal = 0;
- 
+
                 foreach ($validated['items'] as $itemInput) {
                     $product = Product::where('id', $itemInput['product_id'])->lockForUpdate()->first();
- 
+
                     if (! $product || $product->status !== 1) {
                         throw ValidationException::withMessages([
                             'items' => "Product ID {$itemInput['product_id']} is no longer available.",
                         ]);
                     }
- 
+
                     if (isset($product->stock) && $itemInput['quantity'] > $product->stock) {
                         throw ValidationException::withMessages([
                             'items' => "Only {$product->stock} of \"{$product->name}\" left in stock.",
                         ]);
                     }
- 
+
                     $discountPercentage = $product->discount ?? 0;
                     $priceAfterDiscount = $product->price - ($product->price * $discountPercentage / 100);
                     $lineSubtotal = $priceAfterDiscount * $itemInput['quantity'];
- 
+
                     $subTotal += $product->price * $itemInput['quantity'];
                     $productDiscountTotal += ($product->price * $itemInput['quantity']) - $lineSubtotal;
- 
+
                     $orderItemsData[] = [
                         'product'              => $product,
                         'quantity'             => $itemInput['quantity'],
@@ -138,18 +140,17 @@ class OrderController extends Controller
                         'subtotal'             => $lineSubtotal,
                     ];
                 }
- 
+
                 // --- Coupon discount (agar apply hai) - subtotal minus product discount ke against ---
                 $afterProductDiscount = $subTotal - $productDiscountTotal;
                 $couponDiscount = $coupon ? $coupon->calculateDiscount($afterProductDiscount) : 0;
- 
 
                  $deliveryFee = (float) str_replace(',', '', $area->delivery_charges);
                 //$deliveryFee = (float) config('cart.delivery_fee');
                 $platformFee = (float) config('cart.platform_fee');
                 $afterDiscount = max(0, $afterProductDiscount - $couponDiscount);
                 $grandTotal = $afterDiscount + $deliveryFee + $platformFee;
- 
+
                 // --- Order create karein (order_no temporary placeholder se,
                 // kyunke asal order_no sirf insert ke baad $order->id se milta hai) ---
                 $order = Order::create([
@@ -172,11 +173,12 @@ class OrderController extends Controller
                     'payment_type'          => $validated['payment_type'],
                     'image_payment_slip'    => $paymentSlipPath, //$validated['image_payment_slip'] ?? null,
                     'status'                => 'Pending',
+                    'area_id'                => $validated['area_id']
                 ]);
- 
+
                 $order->order_no = 100000000 + $order->id;
                 $order->save();
- 
+
                 // --- Order items create karein + stock decrement karein ---
                 foreach ($orderItemsData as $data) {
                     OrderItem::create([
@@ -189,16 +191,19 @@ class OrderController extends Controller
                         'price_after_discount' => $data['price_after_discount'],
                         'subtotal'             => $data['subtotal'],
                     ]);
- 
+                    $product = Product::find($data['product']->id);
+                    Product::where('id', $data['product']->id)->update([
+                        'quantity' => $product->quantity - $data['quantity']
+                    ]);
                     if (isset($data['product']->stock)) {
                         $data['product']->decrement('stock', $data['quantity']);
                     }
                 }
- 
+
                 if ($coupon) {
                     $coupon->increment('used_count');
                 }
- 
+
                 return $order;
             });
         } catch (ValidationException $e) {
@@ -214,13 +219,13 @@ class OrderController extends Controller
                 'error'   => $e->getMessage(),
                 'trace'   => $e->getTraceAsString(),
             ]);
- 
+
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong while placing your order. Please try again.',
             ], 500);
         }
- 
+
         return response()->json([
             'success' => true,
             'message' => 'Order placed successfully',
@@ -288,7 +293,9 @@ class OrderController extends Controller
             $order = Order::create([
                 'order_no'         => $orderNo,
                 'user_id'          => $request->user_id,
+                'customer_email'          => $request->customer_email,
                 'customer_name'    => $request->customer_name,
+                'delivery_instruction'    => $request->delivery_instruction,
                 'phone'            => $request->phone,
                 'address'          => $request->address,
                 'total_amount'     => $request->total_amount,

@@ -14,11 +14,18 @@ use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DepartmentController;
 use App\Http\Controllers\API\SliderController;
+use App\Http\Controllers\API\CouponController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('authentication')->middleware('api.secret')->name('authentication.')->controller(RegisterController::class)->group(function () {
     Route::post('emailLogin', 'register');
     Route::post('emailVerification', 'tokenVerify');
+    Route::get('/marquee', 'marquee');
+    Route::get('/privacyPolicy', 'privacyPolicy');
+});
+
+Route::prefix('authentication')->middleware(['api.secret'])->name('authentication.')->controller(RegisterController::class)->group(function () {
+    Route::post('updateProfile', 'updateProfile');
 });
 
 Route::prefix('slider')->middleware('api.secret')->controller(SliderController::class)->group(function () {
@@ -43,6 +50,7 @@ Route::prefix('product')->middleware('api.secret')->controller(ProductController
 //  token required apis
 Route::prefix('Prescription')->middleware(['api.secret', 'auth:sanctum'])->controller(PrescriptionController::class)->group(function () {
     Route::post('/upload', 'upload');
+    Route::post('/get', 'list');
 });
 Route::prefix('image')->middleware(['api.secret', 'auth:sanctum'])->controller(ImageController::class)->group(function () {
     Route::post('/upload', 'upload');
@@ -52,6 +60,9 @@ Route::prefix('address')->middleware(['api.secret', 'auth:sanctum'])->controller
     Route::post('/add', 'add');
     Route::post('/make_primary', 'is_primary');
     Route::post('/list', 'list');
+});
+Route::prefix('coupon')->middleware(['api.secret', 'auth:sanctum'])->controller(CouponController::class)->group(function () {
+    Route::post('/get', 'getCoupon');
 });
 
 

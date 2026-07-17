@@ -5,7 +5,6 @@
 <section class="content mt-3">
     <div class="container-fluid">
 
-        <!-- Page Header -->
         <div class="row mb-3">
             <div class="col-sm-6">
                 <h1 class="mb-0">Coupon List</h1>
@@ -23,7 +22,6 @@
             </div>
         </div>
 
-        <!-- Coupon Table -->
         <div class="card shadow-sm">
             <div class="card-body">
 
@@ -41,110 +39,109 @@
                                 <th>Used</th>
                                 <th>Expiry Date</th>
                                 <th>Status</th>
-                                <th width="160">Action</th>
+
+                                @canany(['coupon-edit','coupon-delete'])
+                                    <th width="150">Action</th>
+                                @endcanany
                             </tr>
                         </thead>
 
                         <tbody>
 
-                            @forelse($coupons as $key => $coupon)
+                            @foreach($coupons as $coupon)
 
-                            <tr>
+                                <tr>
 
-                                <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $loop->iteration }}</td>
 
-                                <td>
-                                    <span class="badge badge-info p-2">
-                                        {{ $coupon->code }}
-                                    </span>
-                                </td>
+                                    <td>
+                                        <span class="badge badge-info">
+                                            {{ $coupon->code }}
+                                        </span>
+                                    </td>
 
-                                <td>
-                                    @if($coupon->type == 'percent')
-                                    <span class="badge badge-success">
-                                        {{ $coupon->value }}%
-                                    </span>
-                                    @else
-                                    <span class="badge badge-primary">
-                                        Rs. {{ number_format($coupon->value, 2) }}
-                                    </span>
-                                    @endif
-                                </td>
+                                    <td>
+                                        @if($coupon->type == 'percent')
+                                            <span class="badge badge-success">
+                                                {{ $coupon->value }}%
+                                            </span>
+                                        @else
+                                            <span class="badge badge-primary">
+                                                Rs. {{ number_format($coupon->value, 2) }}
+                                            </span>
+                                        @endif
+                                    </td>
 
-                                <td>
-                                    Rs. {{ number_format($coupon->min_order_amount, 2) }}
-                                </td>
+                                    <td>
+                                        Rs. {{ number_format($coupon->min_order_amount ?? 0, 2) }}
+                                    </td>
 
-                                <td>
-                                    Rs. {{ number_format($coupon->max_discount_amount, 2) }}
-                                </td>
+                                    <td>
+                                        Rs. {{ number_format($coupon->max_discount_amount ?? 0, 2) }}
+                                    </td>
 
-                                <td>
-                                    {{ $coupon->usage_limit }}
-                                </td>
+                                    <td>
+                                        {{ $coupon->usage_limit ?? 0 }}
+                                    </td>
 
-                                <td>
-                                    {{ $coupon->used_count }}
-                                </td>
+                                    <td>
+                                        {{ $coupon->used_count ?? 0 }}
+                                    </td>
 
-                                <td>
-                                    @if($coupon->expires_at)
-                                    {{ \Carbon\Carbon::parse($coupon->expires_at)->format('d M Y') }}
-                                    @else
-                                    N/A
-                                    @endif
-                                </td>
+                                    <td>
+                                        @if($coupon->expires_at)
+                                            {{ \Carbon\Carbon::parse($coupon->expires_at)->format('d M Y') }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
 
-                                <td>
-                                    @if($coupon->status == 1)
-                                    <span class="badge badge-success">
-                                        Active
-                                    </span>
-                                    @else
-                                    <span class="badge badge-danger">
-                                        Inactive
-                                    </span>
-                                    @endif
-                                </td>
+                                    <td>
+                                        @if($coupon->status)
+                                            <span class="badge badge-success">
+                                                Active
+                                            </span>
+                                        @else
+                                            <span class="badge badge-danger">
+                                                Inactive
+                                            </span>
+                                        @endif
+                                    </td>
 
-                                <td>
+                                    @canany(['coupon-edit','coupon-delete'])
 
-                                    @can('coupon-edit')
-                                    <a href="{{ route('manager.coupon.edit', $coupon->id) }}"
-                                        class="btn btn-primary btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    @endcan
+                                        <td>
 
-                                    @can('coupon-delete')
-                                    <form id="deleteCouponForm{{ $key }}"
-                                        action="{{ route('manager.coupon.destroy', $coupon->id) }}"
-                                        method="POST"
-                                        style="display:inline-block;">
-                                        @csrf
-                                        @method('DELETE')
+                                            @can('coupon-edit')
+                                                <a href="{{ route('manager.coupon.edit',$coupon->id) }}"
+                                                   class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endcan
 
-                                        <button type="button"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="deleteFunction({{ $key }})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                    @endcan
+                                            @can('coupon-delete')
+                                                <form id="deleteCouponForm{{ $coupon->id }}"
+                                                      action="{{ route('manager.coupon.destroy',$coupon->id) }}"
+                                                      method="POST"
+                                                      style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
 
-                                </td>
+                                                    <button type="button"
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="deleteCoupon({{ $coupon->id }})">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
 
-                            </tr>
+                                        </td>
 
-                            @empty
+                                    @endcanany
 
-                            <tr>
-                                <td colspan="10" class="text-center">
-                                    No Coupons Found
-                                </td>
-                            </tr>
+                                </tr>
 
-                            @endforelse
+                            @endforeach
 
                         </tbody>
 
@@ -162,7 +159,7 @@
 @push('specific_css')
 <style>
     .card {
-        border: none;
+        border: 0;
         border-radius: 10px;
     }
 
@@ -180,12 +177,11 @@
 
 @push('specific_js')
 <script>
-    function deleteFunction(key) {
-        let form = $("#deleteCouponForm" + key);
-
+    function deleteCoupon(id)
+    {
         Swal.fire({
             title: 'Delete Coupon?',
-            text: "This action cannot be undone.",
+            text: 'This action cannot be undone.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#28a745',
@@ -193,17 +189,26 @@
             confirmButtonText: 'Yes, Delete'
         }).then((result) => {
             if (result.isConfirmed) {
-                form.submit();
+                $('#deleteCouponForm' + id).submit();
             }
         });
     }
 
-    $(document).ready(function() {
+    $(function () {
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
         $('#dataTable').DataTable({
             responsive: true,
             autoWidth: false,
-            pageLength: 25
+            pageLength: 25,
+            language: {
+                emptyTable: "No coupons found"
+            }
         });
+
     });
 </script>
 @endpush

@@ -66,6 +66,7 @@ class OrderController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
+        
         $order->status = $request->status;
         $order->save();
 
