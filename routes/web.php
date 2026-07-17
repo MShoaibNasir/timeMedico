@@ -191,6 +191,7 @@ Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(
     Route::delete('cart/{product}', 'remove')->name('cart.remove');
     Route::delete('cart', 'clear')->name('cart.clear');
 
+    Route::post('cart/summary', 'cartsummary');
     Route::post('order/place', 'placeOrderNew')->name('order.place');
     Route::get('order/thank-you/{order}', 'thankYou')->name('order.thankyou');
 

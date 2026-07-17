@@ -202,11 +202,11 @@
                                 @endif
  
                                 <li><strong>After Discount:</strong> <span>{{ money($summary['after_discount']) }}</span></li>
-                                <li><strong>Delivery Fee:</strong> <span>+ {{ money($summary['delivery_fee']) }}</span></li>
+                                <li><strong>Delivery Fee:</strong> <span id="delivery_fee">+ {{ money($summary['delivery_fee']) }}</span></li>
                                 <li><strong>Platform Fee:</strong> <span>+ {{ money($summary['platform_fee']) }}</span></li>
                                 <li class="shop-cart-total">
                                     <strong>Order Total</strong>
-                                    <span>{{ money($summary['order_total']) }}</span>
+                                    <span id="grand_total">{{ money($summary['order_total']) }}</span>
                                 </li>
                             </ul>
 							{{--
@@ -230,7 +230,7 @@
         <div class="shop-checkout pt-3">
             <div class="container">
                 <div class="shop-checkout-wrap">
-				{{ html()->form('POST', route('frontend.order.place'))->open() }}
+				{{ html()->form('POST', route('frontend.order.place'))->acceptsFiles()->open() }}
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="shop-checkout-step">
@@ -247,28 +247,41 @@
                                                     <div class="row">
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Customer Name</label>
+                                                                <label>Customer Name*</label>
                                                                 {{ html()->text('customer_name')->class('form-control')->placeholder('Customer Name')->required()->value(old('customer_name', $user->name))->attribute('readonly') }}
                                                                 @error('customer_name') <span class="text-danger">{{ $message }}</span> @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Customer Email</label>
+                                                                <label>Customer Email*</label>
                                                                 {{ html()->email('customer_email')->class('form-control')->placeholder('Customer Email Address')->required()->value(old('customer_email', $user->email))->attribute('readonly') }}
                                                                 @error('customer_email') <span class="text-danger">{{ $message }}</span> @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-4">
                                                             <div class="form-group">
-                                                                <label>Customer Phone Number</label>
+                                                                <label>Customer Phone Number*</label>
                                                                 {{ html()->text('customer_phone')->class('form-control')->placeholder('Customer Phone Number')->required()->value(old('customer_phone', $user->phone_number)) }}
                                                                 @error('customer_phone') <span class="text-danger">{{ $message }}</span> @enderror
                                                             </div>
                                                         </div>
+
+<div class="col-lg-12">
+                                                            <div class="form-group">
+                                                                <label>Area*</label>
+@if ($area->isEmpty())
+<p class="text-muted">Area is not available</p>
+@else
+{{ html()->select('area_id', $area)->class('form-control')->id('area_id')->placeholder('Select Area')->required()->value(old('area_id')) }}
+@endif
+                                                                @error('area_id') <span class="text-danger">{{ $message }}</span> @enderror
+                                                            </div>
+                                                        </div>
+
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
-                                                                <label>Delivery Address</label>
+                                                                <label>Delivery Address*</label>
 @if ($customer_address->isEmpty())
 <p class="text-muted">You don't have any saved addresses. Please add a new address below</p>
 @else
@@ -288,20 +301,12 @@
                                                     </div>
 
                                             </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-
-                                    <div class="accordion-item">
-                                      <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#checkoutStep3" aria-expanded="false" aria-controls="checkoutStep3">
-                                           Payment Method
-                                        </button>
-                                      </h2>
-                                      <div id="checkoutStep3" class="accordion-collapse collapse" data-bs-parent="#shopCheckout">
-                                        <div class="accordion-body">
-                                            <div class="shop-checkout-payment">
+											
+											<!--payment start-->
+										<div class="shop-checkout-form">
+										<div class="row">
+                                                        <div class="col-lg-12">
+														<div class="form-group"><label>Payment Method*</label></div>
                                                 @error('payment_method')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
@@ -343,9 +348,88 @@
                                                 </ul>
 
                                                 <div class="tab-content" id="pills-tabContent">
-                                                    <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-tab-1" tabindex="0">
+                                                    <div class="tab-pane fade" id="pills-1" role="tabpanel" aria-labelledby="pills-tab-1" tabindex="0">
                                                         <div class="shop-checkout-form onlinepayment">
-                                                            <span>After clicking &ldquo;Proceed to online payment&rdquo;, you will be redirected to transaction page to complete your purchase securely.</span>
+
+
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-header bg-light">
+        <h5 class="mb-0">
+            <i class="fas fa-university me-2"></i>Bank Transfer
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        <div class="alert alert-info">
+            <strong>Instructions:</strong>
+            Please transfer the exact order amount to the bank account below. After completing the payment, upload your payment slip to place your order.
+        </div>
+
+        <div class="border rounded p-3 bg-light mb-4">
+            <h6 class="fw-bold mb-3">Bank Details</h6>
+
+            <div class="row mb-2">
+                <div class="col-md-4 fw-semibold">Bank Name</div>
+                <div class="col-md-8">ABC Bank Limited (ABC)</div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-4 fw-semibold">Account Title</div>
+                <div class="col-md-8">ABC Store (Pvt.) Ltd.</div>
+            </div>
+
+            <div class="row mb-2">
+    <div class="col-md-4 fw-semibold">Account Number</div>
+    <div class="col-md-8">
+        <span id="accountNumber">1234567890</span>
+
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary ms-2"
+                onclick="copyText('accountNumber', this)">
+            Copy
+        </button>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-4 fw-semibold">IBAN</div>
+    <div class="col-md-8">
+        <span id="iban">PK36HABB0000001234567890</span>
+
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary ms-2"
+                onclick="copyText('iban', this)">
+            Copy
+        </button>
+    </div>
+</div>
+
+            <div class="row">
+                <div class="col-md-4 fw-semibold">Branch</div>
+                <div class="col-md-8">Main Branch, Karachi</div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">
+                Upload Payment Slip <span class="text-danger">*</span>
+            </label>
+            {{ html()->file('payment_slip')->class('form-control')->attribute('accept', '.jpg,.jpeg,.png,.pdf') }}
+            <small class="text-muted">
+                Accepted formats: JPG, JPEG, PNG, PDF (Maximum 2 MB)
+            </small>
+        </div>
+
+        <div class="alert alert-warning mb-0">
+            <strong>Note:</strong> Your order will remain <strong>Pending Verification</strong> until our team verifies your payment.
+        </div>
+
+    </div>
+</div>
+															
+															
+															
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane fade" id="pills-4" role="tabpanel" aria-labelledby="pills-tab-4" tabindex="0">
@@ -354,10 +438,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
+												</div></div>
                                             </div>
+										<!--Payment end-->
+											
+											
                                         </div>
                                       </div>
                                     </div>
+
+
+                                    
                                 </div>
                             </div>
                         </div>
@@ -441,4 +532,64 @@
         margin-right: 4px;
     }
 </style>
+@endpush
+
+@push('script')
+<script>
+$('#area_id').on('change', function () {
+	alert();
+    $.post('cart/summary', {
+        area_id: $(this).val(),
+        _token: $('meta[name="csrf-token"]').attr('content')
+    }, function (res) {
+        $('#delivery_fee').text(res.delivery_fee);
+        $('#grand_total').text(res.order_total);
+    });
+});
+
+
+
+
+function copyText(elementId, button) {
+    const text = document.getElementById(elementId).textContent.trim();
+
+    // Modern browsers
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+            .then(() => copied(button))
+            .catch(() => fallbackCopy(text, button));
+    } else {
+        fallbackCopy(text, button);
+    }
+}
+
+function fallbackCopy(text, button) {
+    const input = document.createElement('input');
+    input.value = text;
+    document.body.appendChild(input);
+
+    input.select();
+    input.setSelectionRange(0, 99999);
+
+    document.execCommand('copy');
+
+    document.body.removeChild(input);
+
+    copied(button);
+}
+
+function copied(button) {
+    const old = button.innerHTML;
+
+    button.innerHTML = 'Copied ✓';
+    button.classList.remove('btn-outline-secondary');
+    button.classList.add('btn-success');
+
+    setTimeout(function () {
+        button.innerHTML = old;
+        button.classList.remove('btn-success');
+        button.classList.add('btn-outline-secondary');
+    }, 2000);
+}
+</script>
 @endpush
