@@ -8,9 +8,10 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark"> <!--begin::Sidebar Brand-->
     <div class="sidebar-brand">
         <a href="{{ url('/manager') }}" class="brand-link">
-            <img src="{{ asset('frontend/images/timemedico.png') }}" alt="AdminLTE Logo"
-                class="brand-image opacity-75 shadow">
-
+	@if($setting->hasMedia('logo'))
+		<img src="{{ $setting->getFirstMediaUrl('logo', 'full') }}" alt="{{ $setting->site_name ?? '' }}" class="brand-image opacity-75 shadow" />
+	@endif
+            <span class="brand-text fw-light">{{ __('CMS') }}</span>
         </a>
     </div>
     <div class="sidebar-wrapper">
@@ -82,6 +83,39 @@
                         @endcan
                     </ul>
                 </li>
+                @endcanany
+				
+				@canany(['page-list', 'menu-list', 'website-setting'])
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-globe"></i>
+                            <p>CMS<i class="nav-arrow bi bi-chevron-right"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+						    @can('menu-list')
+                                <li class="nav-item">
+                                    <a href="{{ route('manager.cms.menus.index') }}" class="nav-link"> <i
+                                            class="nav-icon far fa-circle"></i>
+                                        <p>Manage Menu Items</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('page-list')
+                                <li class="nav-item">
+                                    <a href="{{ route('manager.cms.pages.index') }}" class="nav-link"> <i
+                                            class="nav-icon far fa-circle"></i>
+                                        <p>Manage Pages</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+					@can('website-setting')
+					<li class="nav-item">
+                    <a href="{{ route('manager.cms.settings.edit') }}" class="nav-link"> <i class="nav-icon fa-solid fa-gear"></i>
+                        <p>Website Setting</p>
+                    </a>
+                    </li>
+					@endcan
                 @endcanany
 
                 @canany(['department-create', 'department-list'])

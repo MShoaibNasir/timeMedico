@@ -16,12 +16,14 @@ class CategoryObserver
      */
     public function saved(Category $category): void
     {
+        Cache::forget(SharedDataComposer::ALLCATEGORIES_CACHE_KEY);
         Cache::forget(SharedDataComposer::CATEGORIES_CACHE_KEY);
         Cache::forget(SharedDataComposer::DEPARTMENTS_CACHE_KEY);
     }
 
     public function deleted(Category $category): void
     {
+        Cache::forget(SharedDataComposer::ALLCATEGORIES_CACHE_KEY);    
         Cache::forget(SharedDataComposer::CATEGORIES_CACHE_KEY);
         Cache::forget(SharedDataComposer::DEPARTMENTS_CACHE_KEY);
     }

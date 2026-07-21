@@ -1,3 +1,13 @@
+{{--
+@if (is_homepage())
+
+@endif
+
+@if(!empty($setting->phone))<li><i class="bi bi-phone"></i>{{ $setting->phone }}</li>@endif
+@if(!empty($setting->email))<li><i class="bi bi-envelope"></i>{{ $setting->email }}</li>@endif
+@if(!empty($setting->address))<li><i class="bi bi-map"></i>{{ $setting->address }}</li>@endif
+--}}
+ 
  <!-- footer area -->
  <footer class="footer-area ft-bg">
      <div class="footer-widget">
@@ -6,16 +16,58 @@
                  <div class="col-md-6 col-lg-3">
                      <div class="footer-widget-box about-us">
                          <a href="index.html" class="footer-logo">
-                             <img src="{{ asset('frontend/images/timemedio-logo.png') }}" alt="">
+    @if($setting?->hasMedia('logo'))
+		<img src="{{ $setting->getFirstMediaUrl('logo', 'small') }}" alt="{{ $setting?->site_name ?? '' }}" />
+	@endif
                          </a>
                          <p class="mb-3">
                              We are many variations of the passages available but the majoro have suffered alteration
                              injected.
                          </p>
+						 
+						 
+						 
+						 
+
+			  
+
+              
+						 
+						 
+						 
                          <ul class="footer-contact">
-                             <li><a href="tel:+21111020202"><i class="far fa-phone"></i>+92 21 111020202</a></li>
-                             <li><i class="far fa-map-marker-alt"></i>Afzal Apartment, Stadium Road SB-12, <br>KDA Scheme 1, Karachi.</li>
-                             <li><a href="mailto:timemedico@hotmail.com"><i class="far fa-envelope"></i>timemedico@hotmail.com</a></li>
+@php
+    $phones = $setting->phone ?? [];
+    if (is_string($phones)) {
+        $decoded = json_decode($phones, true);
+        if (is_array($decoded)) {
+            $phones = $decoded;
+        } 
+        else {
+            $cleaned = str_replace(['"', "'"], '', $phones);
+            $phones = preg_split('/[,|]/', $cleaned);
+        }
+    }
+    $filteredPhones = array_filter(array_map('trim', (array) $phones));
+	$phoneChunks = array_chunk(array_filter($filteredPhones), 1);
+@endphp
+
+@if(!empty($phoneChunks))
+    @foreach($phoneChunks as $chunk)
+        <li><i class="far fa-phone"></i>
+            @foreach($chunk as $phone)
+                <a href="tel:{{ trim($phone) }}">{{ trim($phone) }}</a>
+            @endforeach
+        </li>
+    @endforeach
+@endif
+                    @if(!empty($setting->address))
+					<li><i class="far fa-map-marker-alt"></i>{!! $setting->address !!}</li>
+				    @endif
+					
+                    @if(!empty($setting->email))
+                    <li><a href="mailto:{{ $setting->email ?? '' }}"><i class="far fa-envelope"></i>{{ $setting->email ?? '' }}</a></li>
+                    @endif
 
                          </ul>
                      </div>
@@ -24,13 +76,7 @@
                      <div class="footer-widget-box list">
                          <h4 class="footer-widget-title">Quick Links</h4>
                          <ul class="footer-list">
-                             <li><a href="about-us">About Us</a></li>
-                             <li><a href="help">Delivery Info</a></li>
-                             <li><a href="contact-us">Contact Us</a></li>
-                             <li><a href="blog">Update News</a></li>
-
-                             <li><a href="terms">Terms Of Service</a></li>
-                             <li><a href="privacy">Privacy policy</a></li>
+                             <x-frontend.simple-menu :items="$footerMenus['footer_menu_2']" />
                          </ul>
                      </div>
                  </div>
@@ -38,13 +84,9 @@
                      <div class="footer-widget-box list">
                          <h4 class="footer-widget-title">Browse Category</h4>
                          <ul class="footer-list">
-                             <li><a href="shop">Medicine</a></li>
-                             <li><a href="shop">Medical Equipments</a></li>
-                             <li><a href="shop">Beauty Care</a></li>
-                             <li><a href="shop">Baby & Mom Care</a></li>
-                             <li><a href="shop">Healthcare</a></li>
-                             <li><a href="shop">Food & Nutrition</a></li>
-
+                            @foreach($categories as $category)
+                                <li><a href="{{ route('frontend.productFilter', [Crypt::encryptString($category->id)]) }}">{{ $category->name }}</a></li>
+                            @endforeach
                          </ul>
                      </div>
                  </div>
@@ -52,11 +94,7 @@
                      <div class="footer-widget-box list">
                          <h4 class="footer-widget-title">Support Center</h4>
                          <ul class="footer-list">
-                             <li><a href="faq">FAQ's</a></li>
-                             <li><a href="help">How To Buy</a></li>
-                             <li><a href="help">Support Center</a></li>
-                             <li><a href="track-order">Track Your Order</a></li>
-                             <li><a href="return">Returns Policy</a></li>
+                             <x-frontend.simple-menu :items="$footerMenus['footer_menu_3']" />
 
 
                          </ul>
@@ -103,17 +141,28 @@
              <div class="copyright-wrap">
                  <div class="row">
                      <div class="col-12 col-lg-6 align-self-center">
-                         <p class="copyright-text">
-                             © Copyright <span id="date"></span> <a href="home"> Time Medico </a> All Rights Reserved.
-                         </p>
+					 @if(!empty($setting->copyright_text))
+	<p class="copyright-text">&copy; {{ date('Y') }} {{ $setting->copyright_text }}. All rights reserved. Designed & Developed By <a href="https://a2zcreatorz.com/" target="_blank">A2Z Creatorz</a></p>
+	@endif
                      </div>
                      <div class="col-12 col-lg-6 align-self-center">
                          <div class="footer-social">
-                             <span>Follow Us:</span>
-                             <a href="#"><i class="fab fa-facebook-f"></i></a>
-                             <a href="#"><i class="fab fa-x-twitter"></i></a>
-                             <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                             <a href="#"><i class="fab fa-youtube"></i></a>
+                             <span>Follow Us:</span>						 
+	@if(!empty($setting->facebook))
+	  <a href="{{ $setting->facebook }}" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+    @endif
+    @if(!empty($setting->instagram))
+	  <a href="{{ $setting->instagram }}" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    @endif
+    @if(!empty($setting->linkedin))
+		<a href="{{ $setting->linkedin }}" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    @endif
+	@if(!empty($setting->twitter))
+  <a href="{{ $setting->twitter }}" target="_blank" aria-label="Twitter/X"><i class="fab fa-x-twitter"></i></a>  
+    @endif
+	@if(!empty($setting->youtube)) 
+  <a href="{{ $setting->youtube }}" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a> 
+    @endif
                          </div>
                      </div>
                  </div>

@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- title -->
-    <title>Time Medico</title>
+    <title>{{ $setting?->site_name ?? '' }}</title>
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('frontend/images/fav-icon.png') }}">
@@ -50,19 +50,19 @@
     <!-- header area -->
     <header class="header">
 
-        <!-- header top -->
-
+        @if(!empty($setting?->marquee))
+		<!-- header top -->
         <div class="header-top">
             <div class="container-fluid">
                 <div class="top-marquee">
                     <marquee behavior="scroll" direction="left" scrollamount="6">
-                        This is the official website of Time Medico and other sites that are running under this name have no affiliation with Time Medico.
+                        {{ $setting->marquee ?? '' }}
                     </marquee>
                 </div>
             </div>
         </div>
-
         <!-- header top end -->
+		@endif
 
         <!-- header middle -->
         <div class="header-middle">
@@ -71,7 +71,9 @@
                     <div class="col-5 col-lg-3 col-xl-3">
                         <div class="header-middle-logo">
                             <a class="navbar-brand" href="{{route('frontend.home.page')}}">
-                                <img src="{{ asset('frontend/images/timemedio-logo.png') }}" alt="logo">
+    @if($setting?->hasMedia('logo'))
+		<img src="{{ $setting->getFirstMediaUrl('logo', 'small') }}" alt="{{ $setting?->site_name ?? '' }}" />
+	@endif
                             </a>
                         </div>
                     </div>
@@ -81,17 +83,9 @@
                                 <div class="search-content">
                                     <select class="select">
                                         <option value="">All Category</option>
-                                        <option value="1">Medicine</option>
-                                        <option value="2">Medical Equipments</option>
-                                        <option value="3">Beauty Care</option>
-                                        <option value="4">Baby & Mom Care</option>
-                                        <option value="5">Healthcare</option>
-                                        <option value="6">Food & Nutrition</option>
-                                        <option value="7">Medical Supplies</option>
-                                        <option value="8">Lab Test</option>
-                                        <option value="9">Fitness</option>
-                                        <option value="10">Vitamins & Supplement</option>
-                                        <option value="11">Pet Care</option>
+                                        @foreach($allcategories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
                                     </select>
                                     <input type="text" class="form-control" placeholder="Search Here...">
                                     <button type="submit" class="search-btn"><i class="far fa-search"></i></button>
@@ -134,7 +128,7 @@
                                 </li>
                                 @endif
                             </ul>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>

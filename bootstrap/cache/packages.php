@@ -68,6 +68,50 @@
       0 => 'Laravel\\Ui\\UiServiceProvider',
     ),
   ),
+  'maatwebsite/excel' => 
+  array (
+    'aliases' => 
+    array (
+      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
+    ),
+    'providers' => 
+    array (
+      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    ),
+  ),
+  'mcamara/laravel-localization' => 
+  array (
+    'aliases' => 
+    array (
+      'LaravelLocalization' => 'Mcamara\\LaravelLocalization\\Facades\\LaravelLocalization',
+    ),
+    'providers' => 
+    array (
+      0 => 'Mcamara\\LaravelLocalization\\LaravelLocalizationServiceProvider',
+    ),
+  ),
+  'mews/captcha' => 
+  array (
+    'aliases' => 
+    array (
+      'Captcha' => 'Mews\\Captcha\\Facades\\Captcha',
+    ),
+    'providers' => 
+    array (
+      0 => 'Mews\\Captcha\\CaptchaServiceProvider',
+    ),
+  ),
+  'mews/purifier' => 
+  array (
+    'aliases' => 
+    array (
+      'Purifier' => 'Mews\\Purifier\\Facades\\Purifier',
+    ),
+    'providers' => 
+    array (
+      0 => 'Mews\\Purifier\\PurifierServiceProvider',
+    ),
+  ),
   'nesbot/carbon' => 
   array (
     'providers' => 
@@ -96,6 +140,13 @@
       0 => 'Pest\\Laravel\\PestServiceProvider',
     ),
   ),
+  'spatie/laravel-activitylog' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    ),
+  ),
   'spatie/laravel-html' => 
   array (
     'aliases' => 
@@ -105,6 +156,24 @@
     'providers' => 
     array (
       0 => 'Spatie\\Html\\HtmlServiceProvider',
+    ),
+  ),
+  'spatie/laravel-ignition' => 
+  array (
+    'aliases' => 
+    array (
+      'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
+    ),
+  ),
+  'spatie/laravel-medialibrary' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
     ),
   ),
   'spatie/laravel-permission' => 
@@ -119,6 +188,17 @@
     'providers' => 
     array (
       0 => 'Spatie\\Sitemap\\SitemapServiceProvider',
+    ),
+  ),
+  'spatie/laravel-sluggable' => 
+  array (
+    'aliases' => 
+    array (
+      'SelfHealing' => 'Spatie\\Sluggable\\Facades\\SelfHealing',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\Sluggable\\SluggableServiceProvider',
     ),
   ),
 );

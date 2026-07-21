@@ -16,8 +16,10 @@
 
                                 <div class="text-center">
 
-                                    <img src="{{ asset('frontend/images/timemedico.png') }}" style="width: 300px;" alt="logo">
-                                    <h4 class="mt-1 mb-5 pb-1">Time Medico Admin Dashboard</h4>
+                                    @if($setting->hasMedia('logo'))
+		<img src="{{ $setting->getFirstMediaUrl('logo', 'full') }}" style="width: 200px;" alt="{{ $setting->site_name ?? '' }}" />
+	@endif
+                                    <h4 class="mt-1 mb-5 pb-1">{{ $setting->site_name ?? '' }} Admin Panel</h4>
                                 </div>
                                 @if ($errors->any())
                                 <div class="alert alert-danger" role="alert">
@@ -61,7 +63,7 @@
                         </div>
                         <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
                             <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                                <h4 class="mb-4">Time Medico</h4>
+                                <h4 class="mb-4">{{ $setting->site_name ?? '' }}</h4>
                                 <p class="small mb-0">
                                     Time Medico is a healthcare commerce platform designed to simplify and digitalize the medical supply chain in Pakistan. It connects pharmacies, hospitals, and suppliers through a centralized system for efficient order and inventory management. The platform has improved transparency, faster delivery processes, and better coordination across healthcare operations, contributing to a more reliable medical distribution system.
                                 </p>

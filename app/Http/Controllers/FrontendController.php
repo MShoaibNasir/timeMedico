@@ -8,6 +8,7 @@ use App\Models\HomeSlider;
 use App\Models\Product;
 use App\Models\UserDataFotOTP;
 use App\Models\User;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -421,5 +422,20 @@ class FrontendController extends Controller
          return $sitemap;
         //$sitemap->writeToFile(public_path('sitemap.xml'));
 
+    }
+
+    
+    public function pageshow($slug){
+        try {
+            $page = Page::where('slug', $slug)->first();
+            if (!$page) {
+                abort(404);
+            }
+            
+            return view('frontend.pages.show', compact('page'));
+        } catch (\Throwable $e) {
+            \Log::error('Error fetching:', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            abort(404);
+        }
     }
 }
