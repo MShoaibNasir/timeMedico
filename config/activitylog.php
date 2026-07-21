@@ -1,18 +1,14 @@
 <?php
 
-<<<<<<< HEAD
 use Spatie\Activitylog\Actions\CleanActivityLogAction;
 use Spatie\Activitylog\Actions\LogActivityAction;
 use Spatie\Activitylog\Models\Activity;
 
-=======
->>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
 return [
 
     /*
      * If set to false, no activities will be saved to the database.
      */
-<<<<<<< HEAD
     'enabled' => env('ACTIVITYLOG_ENABLED', true),
 
     /*
@@ -20,15 +16,6 @@ return [
      * the number of days specified here will be deleted.
      */
     'clean_after_days' => 365,
-=======
-    'enabled' => env('ACTIVITY_LOGGER_ENABLED', true),
-
-    /*
-     * When the clean-command is executed, all recording activities older than
-     * the number of days specified here will be deleted.
-     */
-    'delete_records_older_than_days' => 365,
->>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
 
     /*
      * If no log name is passed to the activity() helper
@@ -43,23 +30,16 @@ return [
     'default_auth_driver' => null,
 
     /*
-<<<<<<< HEAD
      * If set to true, the subject relationship on activities
      * will include soft deleted models.
      */
     'include_soft_deleted_subjects' => false,
-=======
-     * If set to true, the subject returns soft deleted models.
-     */
-    'subject_returns_soft_deleted_models' => false,
->>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
 
     /*
      * This model will be used to log activity.
      * It should implement the Spatie\Activitylog\Contracts\Activity interface
      * and extend Illuminate\Database\Eloquent\Model.
      */
-<<<<<<< HEAD
     'activity_model' => Activity::class,
 
     /*
@@ -90,20 +70,4 @@ return [
         'log_activity' => LogActivityAction::class,
         'clean_log' => CleanActivityLogAction::class,
     ],
-=======
-    'activity_model' => \Spatie\Activitylog\Models\Activity::class,
-
-    /*
-     * This is the name of the table that will be created by the migration and
-     * used by the Activity model shipped with this package.
-     */
-    'table_name' => env('ACTIVITY_LOGGER_TABLE_NAME', 'activity_log'),
-
-    /*
-     * This is the database connection that will be used by the migration and
-     * the Activity model shipped with this package. In case it's not set
-     * Laravel's database.default will be used instead.
-     */
-    'database_connection' => env('ACTIVITY_LOGGER_DB_CONNECTION'),
->>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
 ];
