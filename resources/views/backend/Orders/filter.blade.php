@@ -44,6 +44,14 @@
                         <option value="Returned">Returned</option>
                     </select>
                 </div>
+                <div class="col-md-3">
+                    <label>Payment Method</label>
+                    <select id="payment_type" class="form-control">
+                        <option value="">All Method</option>
+                        <option value="cod">COD</option>
+                        <option value="online">Online</option>
+                    </select>
+                </div>
 
                 <div class="col-md-3">
                     <label>Qty</label>
@@ -133,6 +141,7 @@
                 let customer_search = $("#customer_search").val();
                 let status = $("#status").val();
                 let qty = $("#qty").val();
+                let payment_type = $("#payment_type").val();
                 let page = currentpage ?? 1;
 
                 $.ajax({
@@ -145,6 +154,7 @@
                         customer_search: customer_search,
                         status: status,
                         qty: qty,
+                        payment_type: payment_type,
                         page: page
                     },
                     success: function(response) {
@@ -157,7 +167,7 @@
                 filter_data();
             });
 
-            $('body').on('change', '#order_date,#status,#qty', function() {
+            $('body').on('change', '#order_date,#status,#qty,#payment_type', function() {
                 filter_data();
             });
 
@@ -189,9 +199,8 @@
 
 
 
-            $('body').on('change', '#sorting, #direction, #qty,#main_class,#type, #district, #tehsil_id, #uc_id,#bank_name', function(e) {
+            $('body').on('change', '#sorting, #direction, #qty,#main_class,#type, #district, #tehsil_id, #uc_id', function(e) {
                 e.preventDefault();
-
                 filter_data();
             });
 

@@ -33,7 +33,7 @@ use App\Http\Controllers\BrandsController;
 Route::prefix('manager')->name('manager.')->group(function () {
     Route::get('login', [AdminController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AdminController::class, 'loginPost'])->name('login.post');
-    Route::middleware(['auth:admin'])->group(function () {
+    Route::middleware(['auth:admin', 'prevent-back-history'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
 
@@ -152,12 +152,15 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('/filter', 'filter')->name('filter');
             Route::post('/store', 'store')->name('store');
+            Route::get('/verify/{id}', 'verify')->name('verify');
             Route::get('/edit/{id}', 'edit')->name('edit');
             Route::put('/update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
             Route::get('/view/{id}', 'view')->name('view');
             Route::put('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
+            Route::get('/place-order-page', 'placeOrderPage')->name('placeOrderPage');
+            Route::post('/place-order-store', 'placeOrderStore')->name('place.store');
         });
 
 
@@ -179,7 +182,7 @@ Auth::routes();
 
 
 
-Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->group(function () {
+Route::prefix('/')->name('frontend.')->middleware(['prevent-back-history'])->controller(FrontendController::class)->group(function () {
     Route::get('/', 'index')->name('home.page');
     Route::get('/singleShop/{id}', 'singleShop')->name('singleShop');
     Route::get('about-us', 'aboutUs')->name('aboutUs');
@@ -206,12 +209,12 @@ Route::prefix('/')->name('frontend.')->controller(FrontendController::class)->gr
 });
 
 
-Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(function () {
+Route::prefix('/')->name('frontend.')->middleware(['prevent-back-history'])->controller(CartController::class)->group(function () {
     // Coupon routes 
     Route::post('coupon', 'applyCoupon')->name('coupon.apply');
     Route::delete('coupon', 'removeCoupon')->name('coupon.remove');
-	//Route::get('checkout', 'checkout')->name('checkout');
-	
+    //Route::get('checkout', 'checkout')->name('checkout');
+
     Route::get('cart-checkout', 'index')->name('cartcheckout');
     Route::patch('cart/{product}', 'update')->name('cart.update');
     Route::delete('cart/{product}', 'remove')->name('cart.remove');
@@ -220,10 +223,8 @@ Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(
     Route::post('cart/summary', 'cartsummary');
     Route::post('order/place', 'placeOrderNew')->name('order.place');
     Route::get('order/thank-you/{order}', 'thankYou')->name('order.thankyou');
-
-    
 });
- 
+
 
 
 
@@ -232,23 +233,23 @@ Route::prefix('/')->name('frontend.')->controller(CartController::class)->group(
 
 
 
-Route::prefix('wishlist/')->name('frontend.wishlist.')->controller(WishlistController::class)->group(function () {
+Route::prefix('wishlist/')->name('frontend.wishlist.')->middleware(['prevent-back-history'])->controller(WishlistController::class)->group(function () {
     Route::post('add/', 'add')->name('add');
     Route::post('show/', 'show')->name('show');
     Route::get('/', 'WishList')->name('WishList');
     Route::post('product_list/', 'product_list')->name('product_list');
 });
 
-Route::prefix('blog/')->name('frontend.blog.')->controller(BlogsController::class)->group(function () {
+Route::prefix('blog/')->name('frontend.blog.')->middleware(['prevent-back-history'])->controller(BlogsController::class)->group(function () {
     Route::get('{id}/', 'show')->name('show');
 });
-Route::prefix('brand/')->name('frontend.brand.')->controller(BrandsController::class)->group(function () {
+Route::prefix('brand/')->name('frontend.brand.')->middleware(['prevent-back-history'])->controller(BrandsController::class)->group(function () {
     Route::get('{id}/', 'show')->name('show');
 });
 
 
 
-Route::prefix('user-dashboard/')->name('frontend.dashboard.')->controller(UserDashboardController::class)->group(function () {
+Route::prefix('user-dashboard/')->name('frontend.dashboard.')->middleware(['prevent-back-history'])->controller(UserDashboardController::class)->group(function () {
     Route::get('/', 'show')->name('show');
     Route::get('profile', 'profile')->name('profile');
     Route::post('update-profile', 'updateProfile')->name('updateProfile');
@@ -256,15 +257,18 @@ Route::prefix('user-dashboard/')->name('frontend.dashboard.')->controller(UserDa
     Route::get('order-detail/{id}', 'orderDetail')->name('orderDetail');
     Route::get('track-order', 'trackingOrder')->name('trackingOrder');
     Route::post('track-order-data', 'trackOrder')->name('trackOrder');
+    Route::post('upload-payment-slip', 'uploadPaymentSlip')->name('uploadPaymentSlip');
+    Route::get('/upload-Payment', 'uploadPayment')->name('uploadPayment');
+
 });
 
-Route::prefix('prescription/')->name('frontend.prescription.')->controller(PrescriptionController::class)->group(function () {
+Route::prefix('prescription/')->name('frontend.prescription.')->middleware(['prevent-back-history'])->controller(PrescriptionController::class)->group(function () {
     Route::get('/', 'show')->name('show');
     Route::get('/list', 'list')->name('list');
     Route::post('upload', 'upload')->name('upload');
 });
 
-Route::prefix('customer-address/')->name('frontend.customer.address.')->controller(CustomerAddressController::class)->group(function () {
+Route::prefix('customer-address/')->name('frontend.customer.address.')->middleware(['prevent-back-history'])->controller(CustomerAddressController::class)->group(function () {
     Route::get('/', 'show')->name('show');
     Route::get('/list', 'list')->name('list');
     Route::post('upload', 'upload')->name('upload');

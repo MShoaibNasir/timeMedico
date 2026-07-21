@@ -303,6 +303,7 @@ class FrontendController extends Controller
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+         session()->forget('api_auth_token');
         return redirect()->route('frontend.home.page')->with('success', 'Logged out successfully.');
     }
 

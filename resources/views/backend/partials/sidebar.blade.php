@@ -243,7 +243,7 @@
                     </ul>
                 </li>
                 @endcanany
-                @canany(['order-list'])
+                @canany(['order-list','place-order'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-cart-shopping"></i>
                         <p>Order <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
@@ -254,6 +254,14 @@
                             <a href="{{ route('manager.order.filter') }}" class="nav-link"> <i
                                     class="nav-icon far fa-circle"></i>
                                 <p>Order List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('place-order')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.order.placeOrderPage') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Place Order</p>
                             </a>
                         </li>
                         @endcan

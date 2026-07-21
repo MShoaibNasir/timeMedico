@@ -96,6 +96,7 @@ class CartController extends Controller
                 'quantity' => ($request->quantity ?? 1),
             ];
         }
+
         session()->put('cart', $cart);
 
         //return response()->json(['status' => false]);
@@ -240,6 +241,7 @@ class CartController extends Controller
 
     public function placeOrderNew(Request $request): RedirectResponse
     {
+     
         // ===================================================================
         // STEP 1: Input validation - SIRF non-financial fields client se lete hain.
         // Price/total/discount client se accept NAHI karte - session cart se
@@ -321,6 +323,7 @@ class CartController extends Controller
                     'customer_email'        => $validated['customer_email'],
                     'phone'                 => $validated['customer_phone'],
                     'address'               => $addressSnapshot,
+                    'order_source'               => 'Web Application',
                     'area'                  => $area->name ?? '',
                     'delivery_instruction'  => $validated['delivery_instruction'] ?? null,
                     'total_amount'          => $summary['sub_total'],
