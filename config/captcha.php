@@ -6,9 +6,15 @@ return [
         'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
         'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
         't', 'u', 'v', 'w', 'x', 'y', 'z', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+<<<<<<< HEAD
     //'fontsDirectory' => dirname(__DIR__) . '/assets/fonts',
     //'bgsDirectory' => dirname(__DIR__) . '/assets/backgrounds',
     'defaultoriginal' => [
+=======
+    'fontsDirectory' => dirname(__DIR__) . '/assets/fonts',
+    'bgsDirectory' => dirname(__DIR__) . '/assets/backgrounds',
+    'default' => [
+>>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
         'length' => 6,
         'width' => 345,
         'height' => 65,
@@ -17,6 +23,7 @@ return [
         'expire' => 60,
         'encrypt' => false,
     ],
+<<<<<<< HEAD
 	'default' => [
         'characters' => ['0','1','2', '3', '4','5', '6', '7', '8', '9'],
         'length' => 4,
@@ -31,6 +38,8 @@ return [
         'expire' => 300,
         'encrypt' => false,
     ],
+=======
+>>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
     'flat' => [
         'length' => 6,
         'fontColors' => ['#2c3e50', '#c0392b', '#16a085', '#c0392b', '#8e44ad', '#303f9f', '#f57c00', '#795548'],

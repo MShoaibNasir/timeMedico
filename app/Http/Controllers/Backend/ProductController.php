@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -76,7 +77,8 @@ class ProductController extends Controller
     {
         $classes = Category::where('status', 1)->get();
         $type = Type::where('status', 1)->get();
-        return view('backend.product.create', compact('classes', 'type'));
+        $brand=Brand::where('status', 1)->get();
+        return view('backend.product.create', compact('classes', 'type','brand'));
     }
     public function store(Request $request)
     {
@@ -92,9 +94,10 @@ class ProductController extends Controller
             'discount'  => 'required',
             'quantity'    => 'required',
             'type'    => 'required',
-            'company_name'    => 'required',
+            // 'company_name'    => 'required',
             'generic_name'    => 'required',
             'unit'    => 'required',
+            'brand_id'    => 'required',
 
         ]);
         $in_stock = $request->in_stock;
@@ -124,11 +127,12 @@ class ProductController extends Controller
             'price'       => $request->price,
             'in_stock'  => $in_stock,
             'quantity'    => $request->quantity,
-            'company_name'    => $request->company_name ?? null,
+            // 'company_name'    => $request->company_name ?? null,
             'admin_id'    => Auth::guard('admin')->id(),
             'type'    => $request->type,
             'generic_name'    => $request->generic_name,
-            'unit'    => $request->unit
+            'unit'    => $request->unit,
+            'brand_id'    => $request->brand_id
         ]);
 
         return redirect()->route('manager.product.filter')
@@ -139,9 +143,10 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $type = Type::where('status', 1)->get();
+        $brand=Brand::where('status', 1)->get();
         $category = Category::where('status', 1)->get();
 
-        return view('backend.product.edit', compact('product', 'category', 'type'));
+        return view('backend.product.edit', compact('product', 'category', 'type','brand'));
     }
 
     public function update(Request $request, $id)
@@ -157,8 +162,9 @@ class ProductController extends Controller
             'price'       => 'required',
             'discount'  => 'required',
             'quantity'    => 'required',
-            'company_name'    => 'required',
+            // 'company_name'    => 'required',
             'type'    => 'required',
+            'brand_id'    => 'required',
         ]);
 
 
@@ -190,10 +196,11 @@ class ProductController extends Controller
             'cost_price'  => $request->cost_price,
             'quantity'    => $request->quantity,
             'discount'     => $request->discount,
-            'company_name'    => $request->company_name ?? null,
+            // 'company_name'    => $request->company_name ?? null,
             'product_description' => $request->product_description ?? null,
             'in_stock'  => $in_stock,
             'type'    => $request->type,
+            'brand_id'    => $request->brand_id
         ]);
 
         return redirect()->route('manager.product.filter')

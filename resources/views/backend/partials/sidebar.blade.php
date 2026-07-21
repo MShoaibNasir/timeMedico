@@ -277,7 +277,7 @@
                     </ul>
                 </li>
                 @endcanany
-                @canany(['order-list'])
+                @canany(['order-list','place-order'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-cart-shopping"></i>
                         <p>Order <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
@@ -291,10 +291,71 @@
                             </a>
                         </li>
                         @endcan
+                        @can('place-order')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.order.placeOrderPage') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Place Order</p>
+                            </a>
+                        </li>
+                        @endcan
                     </ul>
                 </li>
-                
+
                 @endcanany
+                @canany(['blog-list','blog-create'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="bi bi-newspaper me-2"></i>
+                        <p>Blog<br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('blog-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.blog.list') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Blog List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('blog-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.blog.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Blog Create</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+
+                @endcanany
+                @canany(['brand-list','brand-create'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="bi bi-tags me-2"></i>
+                        <p>Brand<br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('brand-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.brand.list') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Brand List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('brand-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.brand.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Brand Create</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+
+                @endcanany
+                {{--
                 @canany(['coupon-list','coupon-create'])
                 <li class="nav-item">
                     <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-ticket"></i>
@@ -304,30 +365,31 @@
                         @can('coupon-list')
                         <li class="nav-item">
                             <a href="{{ route('manager.coupon.index') }}" class="nav-link"> <i
-                                    class="nav-icon far fa-circle"></i>
-                                <p>Coupon List</p>
-                            </a>
-                        </li>
-                        @endcan
-                        @can('coupon-create')
-                        <li class="nav-item">
-                            <a href="{{ route('manager.coupon.create') }}" class="nav-link"> <i
-                                    class="nav-icon far fa-circle"></i>
-                                <p>Coupon Create</p>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
+                    class="nav-icon far fa-circle"></i>
+                <p>Coupon List</p>
+                </a>
                 </li>
-                @endcanany
-
+                @endcan
+                @can('coupon-create')
                 <li class="nav-item">
-                    <a href="{{ route('manager.logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                        class="nav-link"> <i class="nav-icon fa-solid fa-right-from-bracket"></i>
-                        <p>Logout</p>
+                    <a href="{{ route('manager.coupon.create') }}" class="nav-link"> <i
+                            class="nav-icon far fa-circle"></i>
+                        <p>Coupon Create</p>
                     </a>
                 </li>
+                @endcan
+            </ul>
+            </li>
+            @endcanany
+            --}}
+
+            <li class="nav-item">
+                <a href="{{ route('manager.logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    class="nav-link"> <i class="nav-icon fa-solid fa-right-from-bracket"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
             </ul>
         </nav>
     </div>

@@ -94,9 +94,9 @@
     <!-- big banner end -->
 
   @include('frontend.HomeComponents.feature_item',['featured_items'=>$featured_items])
-  @include('frontend.HomeComponents.popular_brands')
+  @include('frontend.HomeComponents.popular_brands',['brands' => $brands])
   @include('frontend.HomeComponents.productlist',['on_sale_items'=>$on_sale_items,'best_seller_items'=>$best_seller_items,'top_rated'=>$top_rated])
-  @include('frontend.HomeComponents.blogs')
+  @include('frontend.HomeComponents.blogs',['blogs' => $blogs])
 </main>
 
 

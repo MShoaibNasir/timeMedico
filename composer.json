@@ -23,7 +23,11 @@
         "mews/purifier": "^3.4",
         "pusher/pusher-php-server": "^7.2",
         "spatie/image": "^3.9",
+<<<<<<< HEAD
         "spatie/laravel-activitylog": "^5.0",
+=======
+        "spatie/laravel-activitylog": "^4.12",
+>>>>>>> fc01ef197783576ca65074e4264f59b7ee02a501
         "spatie/laravel-html": "^3.13",
         "spatie/laravel-medialibrary": "^11.23",
         "spatie/laravel-permission": "^6.19",

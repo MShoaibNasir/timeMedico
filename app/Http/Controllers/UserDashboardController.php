@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Models\PaymentSlipHistory;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class UserDashboardController extends Controller
 {
@@ -54,11 +56,34 @@ class UserDashboardController extends Controller
     public function trackOrder(Request $request)
     {
         $order = null;
+        $order_verify_for_payment = false;
+        if (isset($request->order_verify_for_payment)) {
+            $order_verify_for_payment = $request->order_verify_for_payment;
+        }
         if ($request->filled('order_no')) {
             $order = Order::where('order_no', $request->order_no)->first();
         }
-        return view('components.trackOrder', compact('order'));
+        return view('components.trackOrder', compact('order', 'order_verify_for_payment'));
     }
+
+    public function uploadPaymentSlip(Request $request)
+    {
+        $paymentSlipPath = null;
+        if ($request->hasFile('image_payment_slip')) {
+            $paymentSlipPath = $request->file('image_payment_slip')->store('payment-slips', 'public');
+        }
+
+
+        $order = Order::where('id', $request->order_id)->update(['image_payment_slip' => $paymentSlipPath, 'order_confirmed_by_admin' => 1]);
+        PaymentSlipHistory::create([
+            'image' => $paymentSlipPath,
+            'order_id' => $request->order_id
+        ]);
+        return redirect()->back()->with([
+            'success' => 'Thank you! Your payment slip has been submitted successfully. Once verified, your order status will be updated and you will be notified.'
+        ]);
+    }
+
     public function orderDetail(Request $request, $id)
     {
         $id = decrypt($id);
@@ -81,5 +106,9 @@ class UserDashboardController extends Controller
             'image' => $imagePath
         ]);
         return redirect()->back()->with('success', 'Profile Update Successfully!');
+    }
+    public function uploadPayment(Request $request)
+    {
+        return view('frontend.verify');
     }
 }

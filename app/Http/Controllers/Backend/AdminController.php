@@ -55,11 +55,13 @@ class AdminController extends Controller
         return redirect()->route('manager.login')->with('error', 'This credentials is incorrect');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+
         Auth::guard('admin')->logout();
         session()->forget('api_auth_token');
-
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('manager.login')->with('success', 'Admin has been logged out!');
     }
 
@@ -123,8 +125,8 @@ class AdminController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'user_code' => 'required|unique:admins,user_code,'.$id,
-            'email' => 'required|email|unique:admins,email,'.$id,
+            'user_code' => 'required|unique:admins,user_code,' . $id,
+            'email' => 'required|email|unique:admins,email,' . $id,
             'password' => 'same:confirm-password',
             'roles' => 'required',
         ]);

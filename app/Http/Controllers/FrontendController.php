@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Log;
 use Jenssegers\Agent\Agent;
 use Illuminate\Validation\ValidationException;
 use App\Mail\ContactFormSubmission;
+use App\Models\Blog;
+use App\Models\Brand;
 use Spatie\Sitemap\Sitemap;
 
 class FrontendController extends Controller
@@ -40,6 +42,8 @@ class FrontendController extends Controller
         $on_sale_items = Product::where('status', 1)->where('type', 12)->get();
         $best_seller_items = Product::where('status', 1)->where('type', 13)->get();
         $top_rated = Product::where('status', 1)->where('type', 14)->get();
+        $blogs = Blog::where('status', 1)->get();
+        $brands = Brand::where('status', 1)->get();
         $polular_item_categories = Category::with('products_with_out_trashed')->where('status', 1)->take(5)->latest()->get();
 
 
@@ -51,7 +55,9 @@ class FrontendController extends Controller
             'on_sale_items' => $on_sale_items,
             'best_seller_items' => $best_seller_items,
             'top_rated' => $top_rated,
-            'polular_item_categories' => $polular_item_categories
+            'polular_item_categories' => $polular_item_categories,
+            'blogs' => $blogs,
+            'brands' => $brands
 
         ]);
     }
@@ -298,6 +304,7 @@ class FrontendController extends Controller
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+         session()->forget('api_auth_token');
         return redirect()->route('frontend.home.page')->with('success', 'Logged out successfully.');
     }
 

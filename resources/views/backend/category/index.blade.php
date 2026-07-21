@@ -1,78 +1,78 @@
 @extends('backend.layout.master')
+
 @section('content')
 
 <section class="content mt-3">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Category List</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ url('/manager') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Category List</li>
-                </ol>
-            </div>
+
+```
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1>Blog List</h1>
         </div>
-        {{-- @if ($message = Session::get('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ $message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                    <a href="{{ url('/manager') }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Blog List</li>
+            </ol>
+        </div>
     </div>
-    @elseif ($message = Session::get('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ $message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif --}}
+
     <div class="col-md-12">
-        <table id="dataTable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
-            width="100%">
+        <table id="dataTable"
+               class="table table-striped table-bordered dt-responsive nowrap"
+               cellspacing="0"
+               width="100%">
+
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
                     <th>Name</th>
                     <th>Image</th>
-                    <th>status</th>
-                    <th>Department</th>
+                    <th>Description</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
+
             <tbody>
-                @foreach ($classes as $key => $data)
+                @foreach ($blogs as $key => $data)
                 <tr>
-                    <td>{{ $loop->index+1 }}</td>
+
+                    <td>{{ $loop->iteration }}</td>
+
                     <td>{{ $data->name }}</td>
+
                     <td class="align-middle">
                         @if($data->image)
-                        <img src="{{ asset('storage/'.$data->image) }}"
-                            width="60"
-                            height="60"
-                            style="object-fit: cover; border-radius: 8px; border:1px solid #ddd; padding:2px;">
+                            <img src="{{ asset('storage/'.$data->image) }}"
+                                 width="60"
+                                 height="60"
+                                 style="object-fit: cover; border-radius: 8px; border:1px solid #ddd; padding:2px;">
                         @else
-                        <div style="
-            width:60px;
-            height:60px;
-            background:#f1f1f1;
-            border:1px dashed #ccc;
-            border-radius:8px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            margin:auto;
-            color:#888;
-            font-size:11px;
-            font-weight:600;
-        ">
-                            No Logo
-                        </div>
+                            <div style="
+                                width:60px;
+                                height:60px;
+                                background:#f1f1f1;
+                                border:1px dashed #ccc;
+                                border-radius:8px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                margin:auto;
+                                color:#888;
+                                font-size:11px;
+                                font-weight:600;">
+                                No Image
+                            </div>
                         @endif
                     </td>
 
+                    <td>
+                        {{ \Illuminate\Support\Str::limit(strip_tags($data->description), 100) }}
+                    </td>
 
                     <td class="align-middle">
                         <span class="badge {{ $data->status == 1 ? 'bg-success' : 'bg-danger' }}">
@@ -80,50 +80,54 @@
                         </span>
                     </td>
 
-                    <td class="align-middle">
-                        <span>
-                            {{ $data->department->name }}
-                        </span>
-                    </td>
-
-
                     <td>
-                        @can('category-edit')
-                        <a class="btn btn-primary btn-sm" href="{{ route('manager.category.edit',$data->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        @can('blog-edit')
+                        <a class="btn btn-primary btn-sm"
+                           href="{{ route('manager.blog.edit', $data->id) }}">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </a>
                         @endcan
 
-                        @can('category-delete')
-                        <form id="deleteAdminForm{{ $key }}"
-                            method="POST"
-                            action="{{ route('manager.category.destroy', $data->id) }}"
-                            style="display:inline">
+                        @can('blog-delete')
+                        <form id="deleteBlogForm{{ $key }}"
+                              method="POST"
+                              action="{{ route('manager.blog.destroy', $data->id) }}"
+                              style="display:inline">
                             @csrf
                             @method('DELETE')
 
                             <button type="button"
-                                class="btn btn-danger btn-sm"
-                                onclick="deleteFunction({{ $key }})">
+                                    class="btn btn-danger btn-sm"
+                                    onclick="deleteFunction({{ $key }})">
                                 <i class="fa-solid fa-trash"></i> Delete
                             </button>
                         </form>
                         @endcan
                     </td>
+
                 </tr>
                 @endforeach
             </tbody>
+
         </table>
     </div>
-    </div>
+
+</div>
+```
+
 </section>
+
 @endsection
 
 @push('specific_css')
 @endpush
 
 @push('specific_js')
+
 <script>
-    function deleteFunction(key) {
-        var form = $("#deleteAdminForm" + key);
+    function deleteFunction(key)
+    {
+        var form = $("#deleteBlogForm" + key);
 
         Swal.fire({
             title: "Are you sure?",
@@ -139,9 +143,10 @@
             }
         });
     }
-    $(document).ready(function() {
-        $("#dataTable").dataTable();
 
+    $(document).ready(function () {
+        $("#dataTable").DataTable();
     });
 </script>
+
 @endpush

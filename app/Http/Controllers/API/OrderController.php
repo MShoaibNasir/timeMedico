@@ -160,6 +160,7 @@ class OrderController extends Controller
                     'customer_email'        => $validated['customer_email'],
                     'phone'                 => $validated['phone'],
                     'address'               => $addressSnapshot,
+                    'order_source'          => 'Mobile Application',
                     'area'                  => $area->name ?? '',
                     'delivery_instruction'  => $validated['delivery_instruction'] ?? null,
                     'total_amount'          => $subTotal,

@@ -53,6 +53,19 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <strong>Our Product: <span style="color: red;">*</span></strong>
+                                    <select name="brand_id" class="form-control">
+                                        <option value="">Select</option>
+                                        @foreach($brand as $class)
+                                        <option value="{{ $class->id }}">
+                                            {{ $class->name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
                             <!-- Sub Class Name -->
                             <div class="col-md-6 mt-2">
@@ -83,12 +96,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mt-2">
+                          {{--    <div class="col-md-6 mt-2">
                                 <div class="form-group">
                                     <strong>Company Name:<span style="color: red;">*</span></strong>
                                     <input type="text" name="company_name" placeholder="Company Name" class="form-control">
                                 </div>
                             </div>
+                            --}}
 
 
                             <div class="col-md-6 mt-2">
@@ -98,13 +112,14 @@
                                 </div>
                             </div>
 
-
-                            <div class="col-md-6 mt-2">
+                            <input type="hidden" name="discount" class="form-control" value="0">
+                            {{--<div class="col-md-6 mt-2">
                                 <div class="form-group">
                                     <strong>Discount(In Percentage):<span style="color: red;">*</span></strong>
-                                    <input type="number" name="discount" class="form-control" value="0">
+                                    <input type="hidden" name="discount" class="form-control" value="0">
                                 </div>
                             </div>
+                            --}}
 
                             <div class="col-md-6 mt-2">
                                 <div class="form-group">

@@ -64,6 +64,19 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <strong>Our Product: <span style="color: red;">*</span></strong>
+                                        <select name="brand_id" class="form-control">
+                                            <option value="">Select</option>
+                                            @foreach($brand as $class)
+                                            <option value="{{ $class->id }}" {{ $class->id == $product->brand_id ? 'selected' : '' }}> {{ $class->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-6 mt-2">
                                     <div class="form-group">
                                         <strong>Name:<span style="color: red;">*</span></strong>
@@ -152,7 +165,7 @@
                                 <div class="col-md-6 mt-2">
                                     <div class="form-group">
                                         <strong>Discount(In Percentage):<span style="color: red;">*</span></strong>
-                                        <input type="number" name="discount" class="form-control" value="{{ $product->discount }}">
+                                        <input type="hidden" name="discount" class="form-control" value="{{ $product->discount }}">
                                     </div>
                                 </div>
 

@@ -8,7 +8,7 @@
         margin: 0;
     }
 </style>
-<div class="row">
+<div class="row my-4">
     <div class="col-md-12">
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -20,6 +20,7 @@
                         <th>Phone</th>
                         <th>Total Amount</th>
                         <th>Status</th>
+                        <th>Payment Method</th>
                         <th>Date</th>
                         @can('order-show')
                         <th>Action</th>
@@ -68,6 +69,18 @@
                             @else
                             <span class="badge bg-dark px-3 py-2">
                                 {{ $item->status }}
+                            </span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($item->payment_type == 'online')
+                            <span class="badge bg-warning text-dark px-3 py-2">
+                                <i class="fa-solid fa-wallet"></i>  Online
+                            </span>
+
+                            @elseif($item->payment_type == 'cod')
+                            <span class="badge bg-info px-3 py-2">
+                                <i class="fa-solid fa-money-bill-wave me-1"></i> COD
                             </span>
                             @endif
                         </td>
@@ -136,4 +149,4 @@
 
         }
     </script>
-</div> 
+</div>

@@ -26,7 +26,8 @@ class CartService
      * Sub Total = sab items ka (price * quantity) ka sum, discount se pehle.
      */
     public function subTotal(): float
-    {
+    { 
+        
         return collect($this->items)->sum(
             fn ($item) => $item['price'] * $item['quantity']
         );
