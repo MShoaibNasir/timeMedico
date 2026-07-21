@@ -27,6 +27,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogsController;
 use App\Http\Controllers\BrandsController;
 
+use App\Http\Controllers\Backend\PageController;
+use App\Http\Controllers\Backend\MenuController;
+use App\Http\Controllers\Backend\WebsiteSettingController;
+
 
 
 
@@ -36,6 +40,37 @@ Route::prefix('manager')->name('manager.')->group(function () {
     Route::middleware(['auth:admin', 'prevent-back-history'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
+		
+		
+		
+		
+		Route::prefix('dashboard/pages')->controller(PageController::class)->as('cms.pages.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/edit/{page}', 'edit')->name('edit');
+                Route::put('/update/{page}', 'update')->name('update');
+                Route::delete('/delete/{page}', 'destroy')->name('destroy');
+                Route::post('/toggle-status', 'toggleStatus')->name('toggle-status');
+            });
+            Route::prefix('dashboard/menus')->controller(MenuController::class)->as('cms.menus.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/edit/{menu}', 'edit')->name('edit');
+                Route::put('/update/{menu}', 'update')->name('update');
+                Route::delete('/delete/{menu}', 'destroy')->name('destroy');
+                Route::post('/toggle-status', 'toggleStatus')->name('toggle-status');
+            });
+			Route::prefix('dashboard/settings')->controller(WebsiteSettingController::class)->as('cms.settings.')->group(function () {
+				Route::get('/edit', 'edit')->name('edit');
+                Route::post('/edit', 'update')->name('update');
+            });
+		
+		
+		
+		
+		
 
         Route::prefix('dashboard/category')->name('category.')->controller(CategoryController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
@@ -205,6 +240,7 @@ Route::prefix('/')->name('frontend.')->middleware(['prevent-back-history'])->con
     Route::get('/contact-us', 'contact')->name('contact');
     Route::post('/contact-us', 'contactPost')->name('contact.post');
     Route::get('/sitemap', 'sitemap')->name('sitemap');
+    Route::get('/page/{id}', 'pageshow')->name('page.show');
     // Frontend End
 });
 
