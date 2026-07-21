@@ -318,7 +318,7 @@ class FrontendController extends Controller
         if (!Auth::guard('web')->check()) {
             return response()->json([
                 'status' => true,
-                'message' => 'Please login first.'
+                'message' => 'Please log in to continue.'
             ]);
         }
         $product = Product::find($request->product_id);

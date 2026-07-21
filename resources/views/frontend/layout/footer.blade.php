@@ -155,7 +155,7 @@
  <script src="{{ asset('frontend/js/flex-slider.js') }}"></script>
  <script src="{{ asset('frontend/js/main.js') }}"></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@stack('script')
+ @stack('script')
  <script>
      // Create a reusable Toast configuration
      const Toast = Swal.mixin({
@@ -231,7 +231,7 @@
 
 
 
-
+ 
 
 
 
@@ -344,21 +344,22 @@
              },
 
              success: function(response) {
+                console.log(response);
+                
                  if (response.status) {
-
-                     Swal.fire({
+                     Toast.fire({
                          icon: 'warning',
-                         title: 'Login Required',
-                         text: response.message,
-                         confirmButtonText: 'OK'
+                         title: response.message
                      });
 
+                 } else {
+                     Toast.fire({
+                         icon: 'success',
+                         title: 'Product Add to Cart Successfully!'
+                     });
+                     viewCart();
                  }
-                 Toast.fire({
-                     icon: 'success',
-                     title: 'Product Add to Cart Successfully!'
-                 });
-                 viewCart();
+
 
                  //  $('.dropdown-cart').html(response)
              },
@@ -392,7 +393,7 @@
 
                  if (response.status) {
 
-                     viewCart(); 
+                     viewCart();
 
                      toastr.success(response.message);
                  }
