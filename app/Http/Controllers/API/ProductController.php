@@ -79,6 +79,7 @@ class ProductController extends BaseController
 
         $data = Product::with('category', 'reviews')
             ->where('id', $request->id)
+            ->where('status', 1)
             ->select(
                 'id',
                 'name',

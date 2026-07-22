@@ -15,6 +15,9 @@ return new class extends Migration
                 'Mobile Application',
                 'Admin Panel'
             ])->default('Web Application')->after('payment_type');
+            $table->unsignedBigInteger('address_id')
+                ->nullable()
+                ->after('order_source');
 
             $table->string('social_media_order_source')
                 ->nullable()
