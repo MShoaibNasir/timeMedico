@@ -16,7 +16,7 @@
             <div class="brand-item">
                 <a href="{{route('frontend.brand.show',[$brand->id])}}">
                     <img
-                        src="{{ asset($brand->image) }}"
+                        src="{{ asset('storage/'.$brand->image) }}"
                         alt="{{ $brand->name }}"
                         class="img-fluid">
                 </a>

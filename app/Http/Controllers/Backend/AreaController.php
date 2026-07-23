@@ -3,16 +3,23 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Auth;
+use App\Http\Requests\Backend\AreaBulkRequest;
 use App\Models\Area;
+use Auth;
+use Illuminate\Http\Request;
+use App\Services\AreaServices;
 use Illuminate\Support\Facades\Storage;
 
 class AreaController extends Controller
 {
+    protected AreaServices $areaServices;
+    public function __construct(AreaServices $areaServices)
+    {
+        $this->areaServices = $areaServices;
+    }
+
     public function index(Request $request)
     {
-
 
         $query = Area::latest();
         $classes = $query->paginate(10);
@@ -30,13 +37,16 @@ class AreaController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'delivery_charges' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'is_service_able' => 'required|in:0,1',
+
         ]);
 
         Area::create([
             'name' => $request->name,
             'delivery_charges' => $request->delivery_charges,
-            'status' => $request->status
+            'status' => $request->status,
+            'is_service_able' => $request->is_service_able,
         ]);
 
         return redirect()->route('manager.area.index')
@@ -56,7 +66,9 @@ class AreaController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'delivery_charges' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'is_service_able' => 'required|in:0,1',
+
         ]);
 
 
@@ -65,6 +77,7 @@ class AreaController extends Controller
             'name' => $request->name,
             'delivery_charges' => $request->delivery_charges,
             'status' => $request->status,
+            'is_service_able' => $request->is_service_able,
         ]);
 
         return redirect()->route('manager.area.index')
@@ -80,5 +93,14 @@ class AreaController extends Controller
             ->with('success', 'Area deleted successfully');
     }
 
-  
+    public function UpdateBulkPrice(AreaBulkRequest $request)
+    {
+        $data = $request->all();
+        $bulk_update = $this->areaServices->UpdateBulkPrice($data);
+        if ($bulk_update['success']) {
+            return redirect()->back()->with(['success' => 'Price Update Successfully!']);
+        } else {
+            return redirect()->back()->with(['error' => $bulk_update['message']]);
+        }
+    }
 }

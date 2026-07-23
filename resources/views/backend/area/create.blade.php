@@ -36,10 +36,17 @@
                                 <strong>Name:</strong>
                                 <input type="text" name="name" placeholder="Enter Name" class="form-control">
                             </div>
+                            <div class="form-group mb-3">
+                                <strong>Service Available:</strong>
+                                <select name="is_service_able" class="form-control">
+                                    <option value="1" selected>Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
 
                             <div class="form-group mb-3">
                                 <strong>Delivery Charges:</strong>
-                                <input type="text" name="delivery_charges" placeholder="Enter Delivery Charges" class="form-control">
+                                <input type="number" name="delivery_charges" placeholder="Enter Delivery Charges" class="form-control">
                             </div>
                             <div class="form-group mb-3">
                                 <strong>Status:</strong>

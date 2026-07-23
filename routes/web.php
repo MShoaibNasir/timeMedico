@@ -1,35 +1,38 @@
 <?php
 
 use App\Http\Controllers\Backend\AdminController;
-use App\Http\Controllers\Backend\BlogController;
-use App\Http\Controllers\Backend\OrderController;
-use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\EmailSenderController;
-use App\Http\Controllers\Backend\PermissionController;
-use App\Http\Controllers\Backend\RoleController;
-use App\Http\Controllers\Backend\DepartmentController;
-use App\Http\Controllers\Backend\HomeSliderController;
 use App\Http\Controllers\Backend\AreaController;
-use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\Backend\BlogController;
+use App\Http\Controllers\Backend\BrandController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\CouponController;
+use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\DepartmentController;
+use App\Http\Controllers\Backend\FeedbackBackendController;
+use App\Http\Controllers\Backend\HomeSliderController;
+use App\Http\Controllers\Backend\MenuController;
+use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\Backend\PageController;
+use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\TypeController;
+use App\Http\Controllers\Backend\WebsiteSettingController;
+use App\Http\Controllers\BlogsController;
+use App\Http\Controllers\BrandsController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerAddressController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\PrescriptionController;
+
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\TypeController;
-use App\Http\Controllers\Backend\CouponController;
-use App\Http\Controllers\Backend\BrandController;
-use App\Http\Controllers\WishlistController;
-use App\Http\Controllers\PrescriptionController;
-use App\Http\Controllers\CustomerAddressController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\BlogsController;
-use App\Http\Controllers\BrandsController;
 
-use App\Http\Controllers\Backend\PageController;
-use App\Http\Controllers\Backend\MenuController;
-use App\Http\Controllers\Backend\WebsiteSettingController;
+
 
 
 
@@ -40,37 +43,37 @@ Route::prefix('manager')->name('manager.')->group(function () {
     Route::middleware(['auth:admin', 'prevent-back-history'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
-		
-		
-		
-		
-		Route::prefix('dashboard/pages')->controller(PageController::class)->as('cms.pages.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/create', 'create')->name('create');
-                Route::post('/store', 'store')->name('store');
-                Route::get('/edit/{page}', 'edit')->name('edit');
-                Route::put('/update/{page}', 'update')->name('update');
-                Route::delete('/delete/{page}', 'destroy')->name('destroy');
-                Route::post('/toggle-status', 'toggleStatus')->name('toggle-status');
-            });
-            Route::prefix('dashboard/menus')->controller(MenuController::class)->as('cms.menus.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/create', 'create')->name('create');
-                Route::post('/store', 'store')->name('store');
-                Route::get('/edit/{menu}', 'edit')->name('edit');
-                Route::put('/update/{menu}', 'update')->name('update');
-                Route::delete('/delete/{menu}', 'destroy')->name('destroy');
-                Route::post('/toggle-status', 'toggleStatus')->name('toggle-status');
-            });
-			Route::prefix('dashboard/settings')->controller(WebsiteSettingController::class)->as('cms.settings.')->group(function () {
-				Route::get('/edit', 'edit')->name('edit');
-                Route::post('/edit', 'update')->name('update');
-            });
-		
-		
-		
-		
-		
+
+
+
+
+        Route::prefix('dashboard/pages')->controller(PageController::class)->as('cms.pages.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{page}', 'edit')->name('edit');
+            Route::put('/update/{page}', 'update')->name('update');
+            Route::delete('/delete/{page}', 'destroy')->name('destroy');
+            Route::post('/toggle-status', 'toggleStatus')->name('toggle-status');
+        });
+        Route::prefix('dashboard/menus')->controller(MenuController::class)->as('cms.menus.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit/{menu}', 'edit')->name('edit');
+            Route::put('/update/{menu}', 'update')->name('update');
+            Route::delete('/delete/{menu}', 'destroy')->name('destroy');
+            Route::post('/toggle-status', 'toggleStatus')->name('toggle-status');
+        });
+        Route::prefix('dashboard/settings')->controller(WebsiteSettingController::class)->as('cms.settings.')->group(function () {
+            Route::get('/edit', 'edit')->name('edit');
+            Route::post('/edit', 'update')->name('update');
+        });
+
+
+
+
+
 
         Route::prefix('dashboard/category')->name('category.')->controller(CategoryController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
@@ -153,6 +156,7 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::put('/update/{id}', 'update')->name('update');
             Route::delete('/destroy/{id}', 'destroy')->name('destroy');
             Route::get('/toggleStatus/{id}', 'toggleStatus')->name('toggleStatus');
+            Route::post('/update-bulk-price', 'UpdateBulkPrice')->name('UpdateBulkPrice');
         });
 
         Route::prefix('admin/dashboard/blog')->name('blog.')->controller(BlogController::class)->group(function () {
@@ -196,6 +200,9 @@ Route::prefix('manager')->name('manager.')->group(function () {
             Route::put('/updateStatus/{id}', 'updateStatus')->name('updateStatus');
             Route::get('/place-order-page', 'placeOrderPage')->name('placeOrderPage');
             Route::post('/place-order-store', 'placeOrderStore')->name('place.store');
+        });
+        Route::prefix('admin/dashboard/feedback')->name('feedback.')->controller(FeedbackBackendController::class)->group(function () {
+            Route::get('/list', 'list')->name('list');
         });
 
 
@@ -295,13 +302,17 @@ Route::prefix('user-dashboard/')->name('frontend.dashboard.')->middleware(['prev
     Route::post('track-order-data', 'trackOrder')->name('trackOrder');
     Route::post('upload-payment-slip', 'uploadPaymentSlip')->name('uploadPaymentSlip');
     Route::get('/upload-Payment', 'uploadPayment')->name('uploadPayment');
-
 });
 
 Route::prefix('prescription/')->name('frontend.prescription.')->middleware(['prevent-back-history'])->controller(PrescriptionController::class)->group(function () {
     Route::get('/', 'show')->name('show');
     Route::get('/list', 'list')->name('list');
     Route::post('upload', 'upload')->name('upload');
+});
+Route::prefix('feedback/')->name('frontend.feedback.')->middleware(['prevent-back-history'])->controller(FeedbackController::class)->group(function () {
+    Route::get('/', 'show')->name('show');
+    Route::post('upload', 'upload')->name('upload');
+    Route::get('list', 'list')->name('list');
 });
 
 Route::prefix('customer-address/')->name('frontend.customer.address.')->middleware(['prevent-back-history'])->controller(CustomerAddressController::class)->group(function () {

@@ -15,8 +15,9 @@ class Area extends Model
     protected $table = 'area';
     protected $guarded = ['id'];
     public function getDeliveryChargesAttribute($value)
-    {
-        return number_format($value);
+    { 
+        return $value;
+        // return number_format($value);
     }
 
     //  public function product()

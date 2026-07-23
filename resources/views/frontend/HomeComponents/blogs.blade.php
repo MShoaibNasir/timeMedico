@@ -15,7 +15,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="blog-item wow fadeInUp" data-wow-delay=".25s">
                     <div class="blog-item-img">
-                        <img src="{{ asset($blog->image) }}" alt="{{ $blog->name }}">
+                        <img src="{{ asset('storage/'.$blog->image) }}" alt="{{ $blog->name }}">
 
                         <span class="blog-date">
                             <i class="far fa-calendar-alt"></i>

@@ -5,7 +5,7 @@
 <section class="content mt-3">
     <div class="container-fluid">
 
-```
+
     <div class="row mb-2">
         <div class="col-sm-6">
             <h1>Create Blog</h1>
@@ -92,7 +92,7 @@
                             <i class="fas fa-save mr-1"></i> Submit
                         </button>
 
-                        <a href="{{ route('manager.blog.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('manager.blog.list') }}" class="btn btn-secondary">
                             Cancel
                         </a>
                     </div>
@@ -104,7 +104,6 @@
     </div>
 
 </div>
-```
 
 </section>
 @endsection

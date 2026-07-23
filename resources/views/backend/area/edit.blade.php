@@ -52,9 +52,23 @@
                                     class="form-control"
                                     value="{{ old('name', $area->name) }}">
                             </div>
-                               <div class="form-group mb-3">
+                            <div class="form-group mb-3">
+                                <strong>Service Available:</strong>
+                                <select name="is_service_able" class="form-control">
+                                    <option value="1"
+                                        {{ old('is_service_able', $area->is_service_able) == 1 ? 'selected' : '' }}>
+                                        Yes
+                                    </option>
+
+                                    <option value="0"
+                                        {{ old('is_service_able', $area->is_service_able) == 0 ? 'selected' : '' }}>
+                                        No
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
                                 <strong>Delivery Charges:</strong>
-                                <input type="text" name="delivery_charges" placeholder="Enter Delivery Charges" value="{{$area->delivery_charges}}" class="form-control">
+                                <input type="number" name="delivery_charges" placeholder="Enter Delivery Charges" value="{{$area->delivery_charges}}" class="form-control">
                             </div>
 
 

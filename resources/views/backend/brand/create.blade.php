@@ -5,7 +5,7 @@
 <section class="content mt-3">
     <div class="container-fluid">
 
-```
+
     <div class="row mb-2">
         <div class="col-sm-6">
             <h1>Create Brand</h1>
@@ -37,7 +37,7 @@
 
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-blog mr-1"></i> Create Blog
+                        <i class="fas fa-blog mr-1"></i> Create Brand
                     </h3>
                 </div>
 
@@ -47,17 +47,17 @@
                     <div class="card-body">
 
                         <div class="form-group mb-3">
-                            <label><strong>Blog Name</strong></label>
+                            <label><strong>Brand Name</strong></label>
                             <input type="text"
                                 name="name"
                                 class="form-control"
-                                placeholder="Enter Blog Name"
+                                placeholder="Enter Brand Name"
                                 value="{{ old('name') }}"
                                 required>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label><strong>Blog Image</strong></label>
+                            <label><strong>Brand Image</strong></label>
                             <input type="file" name="image" class="form-control">
                             <small class="text-muted">
                                 Allowed: JPG, JPEG, PNG, SVG (Max: 2MB)
@@ -69,7 +69,7 @@
                             <textarea name="description"
                                 rows="6"
                                 class="form-control"
-                                placeholder="Enter Blog Description"
+                                placeholder="Enter Brand Description"
                                 required>{{ old('description') }}</textarea>
                         </div>
 
@@ -91,20 +91,18 @@
                         <button type="submit" class="btn btn-dark">
                             <i class="fas fa-save mr-1"></i> Submit
                         </button>
-
-                        <a href="{{ route('manager.blog.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('manager.brand.list') }}" class="btn btn-secondary">
                             Cancel
                         </a>
                     </div>
 
                 </form>
-
             </div>
         </div>
     </div>
 
 </div>
-```
+
 
 </section>
 @endsection

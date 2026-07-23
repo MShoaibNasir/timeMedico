@@ -161,76 +161,79 @@
                                     </div>
                                 </div>
 
-
+                                <input type="hidden" name="discount" class="form-control" value="{{ $product->discount }}">
+                                {{--
                                 <div class="col-md-6 mt-2">
                                     <div class="form-group">
                                         <strong>Discount(In Percentage):<span style="color: red;">*</span></strong>
                                         <input type="hidden" name="discount" class="form-control" value="{{ $product->discount }}">
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
+--}}
+
 
                                 <div class="col-md-6 mt-2">
                                     <div class="form-group">
                                         <strong>Description:</strong>
                                         <textarea name="product_description" id="product_description" class="form-control">{{ $product->product_description }}</textarea>
-                                    </div>
-                                </div>
-
-
-
-
-                                <!-- Quantity -->
-                                <div class="col-md-6 mt-2">
-                                    <div class="form-group">
-                                        <strong>Quantity:<span style="color:red;">*</span></strong>
-                                        <input type="number"
-                                            name="quantity"
-                                            class="form-control"
-                                            value="{{$product->quantity}}"
-                                            placeholder="Enter Quantity">
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="col-md-6 mt-2">
-                                    <div class="form-group">
-                                        <strong>Type:<span style="color: red;">*</span></strong>
-                                        <select name="type" class="form-control">
-                                            <option value="">Select Type</option>
-                                            @foreach ($type as $data)
-                                            <option value="{{ $data->id }}"
-                                                {{ $data->id == $product->type ? 'selected' : '' }}>
-                                                {{ $data->name }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Status -->
-                                <div class="col-md-6 mt-2">
-                                    <div class="form-group">
-                                        <strong>Status:<span style="color:red;">*</span></strong>
-                                        <select name="status" class="form-control">
-                                            <option value="1" {{$product->status==1 ? 'selected' : ''}}>Active</option>
-                                            <option value="0" {{$product->status==0 ? 'selected' : ''}}>Inactive</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-dark">Submit</button>
-                        </div>
-
-                    </form>
                 </div>
             </div>
+
+
+
+
+            <!-- Quantity -->
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <strong>Quantity:<span style="color:red;">*</span></strong>
+                    <input type="number"
+                        name="quantity"
+                        class="form-control"
+                        value="{{$product->quantity}}"
+                        placeholder="Enter Quantity">
+                </div>
+            </div>
+
+
+
+
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <strong>Type:<span style="color: red;">*</span></strong>
+                    <select name="type" class="form-control">
+                        <option value="">Select Type</option>
+                        @foreach ($type as $data)
+                        <option value="{{ $data->id }}"
+                            {{ $data->id == $product->type ? 'selected' : '' }}>
+                            {{ $data->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <strong>Status:<span style="color:red;">*</span></strong>
+                    <select name="status" class="form-control">
+                        <option value="1" {{$product->status==1 ? 'selected' : ''}}>Active</option>
+                        <option value="0" {{$product->status==0 ? 'selected' : ''}}>Inactive</option>
+                    </select>
+                </div>
+            </div>
+
         </div>
+    </div>
+
+    <div class="card-footer">
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </div>
+
+    </form>
+    </div>
+    </div>
+    </div>
 
     </div>
 </section>

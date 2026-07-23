@@ -4,7 +4,7 @@
 <section class="content mt-3">
     <div class="container-fluid">
 
-```
+
     <div class="row mb-2">
         <div class="col-sm-6">
             <h1>Brand List</h1>
@@ -46,7 +46,7 @@
 
                     <td class="align-middle">
                         @if($data->image)
-                            <img src="{{ asset($data->image) }}"
+                            <img src="{{ asset('storage/'.$data->image) }}"
                                  width="60"
                                  height="60"
                                  style="object-fit: cover; border-radius: 8px; border:1px solid #ddd; padding:2px;">
@@ -111,7 +111,7 @@
     </div>
 
 </div>
-```
+
 
 </section>
 

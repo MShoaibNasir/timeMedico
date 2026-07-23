@@ -3,7 +3,7 @@
 use App\Http\Controllers\API\AdditionalCertificateController;
 use App\Http\Controllers\API\AwardController;
 use App\Http\Controllers\API\BioProfileController;
-use App\Http\Controllers\API\BoardComitteeMemberController;
+use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\AreaController;
 use App\Http\Controllers\API\ImageController;
@@ -66,7 +66,7 @@ Route::prefix('coupon')->middleware(['api.secret', 'auth:sanctum'])->controller(
     Route::post('/get', 'getCoupon');
 });
 Route::prefix('websitesetting')->middleware(['api.secret'])->controller(WebsiteSettingController::class)->group(function () {
-    Route::post('/get', 'index');
+    Route::get('/get', 'index');
 });
 
 
@@ -79,4 +79,7 @@ Route::prefix('Orders')->controller(OrderController::class)->group(function () {
 
 Route::prefix('area')->middleware(['api.secret'])->controller(AreaController::class)->group(function () {
     Route::get('/list', 'list');
+});
+Route::prefix('feedback')->middleware(['api.secret'])->controller(FeedbackController::class)->group(function () {
+    Route::get('/upload', 'upload');
 });

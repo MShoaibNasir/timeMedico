@@ -264,6 +264,7 @@
                                 @endif
                                 @if(Auth::guard('web')->check())
                                 <li class="nav-item"><a class="nav-link" href="{{route('frontend.customer.address.show')}}">Upload Address</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{{route('frontend.feedback.show')}}">Feedback</a></li>
                                 @endif
                             </ul>
                             <!-- nav-right -->

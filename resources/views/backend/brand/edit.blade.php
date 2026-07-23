@@ -5,7 +5,7 @@
 <section class="content mt-3">
     <div class="container-fluid">
 
-```
+
     <div class="row mb-2">
         <div class="col-sm-6">
             <h1>Edit Brand</h1>
@@ -48,7 +48,7 @@
                     <div class="card-body">
 
                         <div class="form-group mb-3">
-                            <strong>Blog Name:</strong>
+                            <strong>Brand Name:</strong>
                             <input type="text"
                                    name="name"
                                    class="form-control"
@@ -60,7 +60,7 @@
                             <strong>Current Image:</strong><br>
 
                             @if($brand->image)
-                                <img src="{{ asset($brand->image) }}"
+                                <img src="{{ asset('storage/'.$brand->image) }}"
                                      width="120"
                                      class="img-thumbnail mb-2">
                             @else
@@ -78,7 +78,7 @@
                             <textarea name="description"
                                       rows="6"
                                       class="form-control"
-                                      placeholder="Enter Blog Description">{{ old('description', $brand->description) }}</textarea>
+                                      placeholder="Enter Brand Description">{{ old('description', $brand->description) }}</textarea>
                         </div>
 
                         <div class="form-group mb-3">
@@ -101,7 +101,7 @@
                             Update
                         </button>
 
-                        <a href="{{ route('manager.blog.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('manager.brand.list') }}" class="btn btn-secondary">
                             Cancel
                         </a>
                     </div>
@@ -113,7 +113,7 @@
     </div>
 
 </div>
-```
+
 
 </section>
 @endsection
