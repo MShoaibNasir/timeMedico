@@ -62,11 +62,13 @@ class HomeSliderController extends Controller
                 ],
                 'status' => 'required|boolean',
                 'type' => 'required|in:mobile,website',
+                'position' => 'required_if:type,mobile|nullable|in:upper,downside',
             ],
             [
                 'image.dimensions' => $request->type == 'mobile'
-                    ? 'Mobile slider image must be exactly 852 × 704 pixels.'
+                    ? 'Mobile slider image must be exactly 1520 × 704 pixels.'
                     : 'Website slider image must be exactly 1760 × 608 pixels.',
+                'position.required_if' => 'Please select whether this is the Upper or Downside mobile slider.',
             ]
         );
 
@@ -81,6 +83,7 @@ class HomeSliderController extends Controller
             'status' => $request->status,
             'type' => $request->type,
             'admin_id' => Auth::id(),
+            'position' => $request->type == 'mobile' ? $request->position : null,
         ]);
 
         return redirect()
@@ -111,11 +114,13 @@ class HomeSliderController extends Controller
                 ],
                 'status' => 'required|boolean',
                 'type' => 'required|in:mobile,website',
+                'position' => 'required_if:type,mobile|nullable|in:upper,downside',
             ],
             [
                 'image.dimensions' => $request->type == 'mobile'
                     ? 'Mobile slider image must be exactly 1520 × 704 pixels.'
                     : 'Website slider image must be exactly 1760 × 608 pixels.',
+                'position.required_if' => 'Please select whether this is the Upper or Downside mobile slider.',
             ]
         );
 
@@ -136,6 +141,7 @@ class HomeSliderController extends Controller
             'status'   => $request->status,
             'type'     => $request->type,
             'admin_id' => Auth::id(),
+            'position' => $request->type == 'mobile' ? $request->position : null,
         ]);
 
         return redirect()

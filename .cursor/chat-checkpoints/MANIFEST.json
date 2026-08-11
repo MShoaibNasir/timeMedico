@@ -1,0 +1,226 @@
+{
+  "chat": "add-to-cart login redirect",
+  "current_stage": 20,
+  "stages": [
+    {
+      "id": 0,
+      "name": "stage-000",
+      "summary": "Baseline before this chat's first change (HEAD footer)",
+      "files": [
+        "resources/views/frontend/layout/footer.blade.php"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "stage-001",
+      "summary": "Add login check on .product-cart-btn; guests redirect to frontend.register; logged-in users add to cart",
+      "files": [
+        "resources/views/frontend/layout/footer.blade.php",
+        "resources/views/resources/views/frontend/layout/footer.blade.php"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "stage-002",
+      "summary": "Frontend intended URL: guests redirected to login, then returned to previous page after auth",
+      "files": [
+        "app/helpers.php",
+        "app/Http/Controllers/FrontendController.php",
+        "app/Http/Controllers/UserDashboardController.php",
+        "app/Http/Controllers/FeedbackController.php",
+        "app/Http/Controllers/CartController.php",
+        "resources/views/frontend/layout/footer.blade.php",
+        "resources/views/frontend/login.blade.php"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "stage-003",
+      "summary": "Fix broken footer JS (stray });), restore wishlist UI server-side, keep intended-login flow for cart",
+      "files": [
+        "app/helpers.php",
+        "resources/views/frontend/layout/footer.blade.php",
+        "resources/views/frontend/layout/header.blade.php"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "stage-004",
+      "summary": "Guest auth uses /register (name/email/phone OTP); return to intended page after saveUser",
+      "files": [
+        "app/helpers.php",
+        "resources/views/frontend/layout/footer.blade.php"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "stage-005",
+      "summary": "Fix cart return-after-register: relative intended URLs + redirect hidden field through OTP/saveUser",
+      "files": [
+        "app/helpers.php",
+        "app/Http/Controllers/FrontendController.php",
+        "resources/views/frontend/otpModal.blade.php",
+        "resources/views/frontend/layout/footer.blade.php"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "stage-006",
+      "summary": "Fix website settings logo/favicon: stop saving temp paths to DB, store via media library, show previews",
+      "files": [
+        "app/Models/WebsiteSetting.php",
+        "app/Http/Controllers/Backend/WebsiteSettingController.php",
+        "resources/views/backend/settings/edit.blade.php"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "stage-007",
+      "summary": "Add attribute_changes column for Spatie activitylog v5",
+      "files": [
+        "database/migrations/2026_08_11_091653_add_attribute_changes_to_activity_log_table.php"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "stage-008",
+      "summary": "Product card add-to-cart shows qty +/- controls synced with cart",
+      "files": [
+        "resources/views/frontend/Components/product.blade.php",
+        "resources/views/frontend/layout/footer.blade.php",
+        "app/Http/Controllers/FrontendController.php",
+        "routes/web.php",
+        "public/frontend/css/style.css"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "stage-009",
+      "summary": "Polish product card price + qty stepper UI",
+      "files": [
+        "resources/views/frontend/Components/product.blade.php",
+        "public/frontend/css/style.css"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "stage-010",
+      "summary": "Add cart qty +/- to home product list itemlist component",
+      "files": [
+        "resources/views/components/frontend/products/itemlist.blade.php",
+        "public/frontend/css/style.css"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "stage-011",
+      "summary": "Shop filter productList uses shared product component with qty cart UI",
+      "files": [
+        "resources/views/frontend/productList.blade.php"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "stage-012",
+      "summary": "Professional singleShop page with cart qty sync, real product info, related products",
+      "files": [
+        "resources/views/frontend/singleShop.blade.php",
+        "app/Http/Controllers/FrontendController.php",
+        "resources/views/frontend/layout/footer.blade.php",
+        "public/frontend/css/style.css"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "stage-013",
+      "summary": "Fix singleShop Add to Cart button styling override",
+      "files": [
+        "public/frontend/css/style.css",
+        "resources/views/frontend/singleShop.blade.php"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "stage-014",
+      "summary": "Functional header product search via shop page",
+      "files": [
+        "routes/web.php",
+        "app/Http/Controllers/FrontendController.php",
+        "resources/views/frontend/layout/header.blade.php",
+        "resources/views/frontend/productFilter.blade.php"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "stage-015",
+      "summary": "Customer reorder from order history into editable cart (frontend only)",
+      "files": [
+        "app/Http/Controllers/UserDashboardController.php",
+        "routes/web.php",
+        "resources/views/frontend/order.blade.php",
+        "resources/views/frontend/order-detail.blade.php"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "stage-016",
+      "summary": "Fix PHP 8.4 number_format TypeError on area delivery_charges",
+      "files": [
+        "resources/views/backend/area/index.blade.php"
+      ]
+    },
+    {
+      "id": 17,
+      "name": "stage-017",
+      "summary": "Admin order status forward-only (no backward transitions)",
+      "files": [
+        "app/Models/Order.php",
+        "app/Http/Controllers/Backend/OrderController.php",
+        "resources/views/backend/Orders/show.blade.php"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "stage-018",
+      "summary": "Professional dynamic ecommerce admin dashboard UI",
+      "files": [
+        "app/Http/Controllers/Backend/DashboardController.php",
+        "resources/views/backend/pages/index.blade.php"
+      ]
+    },
+    {
+      "id": 19,
+      "name": "stage-019",
+      "summary": "Bulk update delivery charges for all areas at once",
+      "files": [
+        "app/Models/Area.php",
+        "app/Http/Controllers/Backend/AreaController.php",
+        "resources/views/backend/area/index.blade.php",
+        "routes/web.php"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "stage-020",
+      "summary": "Non-serviceable areas + courier / all-Pakistan delivery options",
+      "files": [
+        "app/Models/Area.php",
+        "app/Services/CartService.php",
+        "app/Http/Controllers/Backend/AreaController.php",
+        "app/Http/Controllers/Backend/OrderController.php",
+        "app/Http/Controllers/CartController.php",
+        "app/Http/Controllers/API/AreaController.php",
+        "config/cart.php",
+        "routes/web.php",
+        "database/migrations/2026_08_11_172000_add_delivery_method_to_orders_table.php",
+        "resources/views/backend/area/index.blade.php",
+        "resources/views/backend/area/create.blade.php",
+        "resources/views/backend/area/edit.blade.php",
+        "resources/views/backend/Orders/placeOrder.blade.php",
+        "resources/views/backend/Orders/show.blade.php",
+        "resources/views/frontend/cart-checkout.blade.php",
+        "resources/views/frontend/order-detail.blade.php"
+      ]
+    }
+  ]
+}

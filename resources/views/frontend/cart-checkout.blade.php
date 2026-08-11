@@ -59,7 +59,7 @@
                                         <th>Image</th>
                                         <th>Product Name</th>
                                         <th>Price</th>
-                                        <th>Discount</th>
+                                        
                                         <th>Quantity</th>
                                         <th>Sub Total</th>
                                         <th></th>
@@ -97,11 +97,7 @@
                                 <span>{{ money($data['price']) }}</span>
                             </div>
                         </td>
-                        <td>
-                            <div class="">
-                                <span>{{ $data['discount'] }}%</span>
-                            </div>
-                        </td>
+                     
                         <td>
                             <form action="{{ route('frontend.cart.update', $data['id']) }}" method="POST" class="shop-cart-qty">
                                 @csrf
@@ -272,13 +268,83 @@
 
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
-                                                            <label>Area*</label>
-                                                            @if ($area->isEmpty())
-                                                            <p class="text-muted">Area is not available</p>
+                                                            <label>Delivery Option*</label>
+                                                            <div class="delivery-method-options d-flex flex-column gap-2">
+                                                                <label class="delivery-option-card">
+                                                                    <input type="radio" name="delivery_method" value="local" {{ old('delivery_method', 'local') === 'local' ? 'checked' : '' }} required>
+                                                                    <span>
+                                                                        <strong>Local Area Delivery</strong>
+                                                                        <small>Deliver to serviceable areas with local charges</small>
+                                                                    </span>
+                                                                </label>
+                                                                <label class="delivery-option-card">
+                                                                    <input type="radio" name="delivery_method" value="courier" {{ old('delivery_method') === 'courier' ? 'checked' : '' }}>
+                                                                    <span>
+                                                                        <strong>Courier Service</strong>
+                                                                        <small>For non-serviceable areas (e.g. Bahria Town, Baldia Town) — from Rs {{ number_format((float) $courierFee, 0) }}</small>
+                                                                    </span>
+                                                                </label>
+                                                               {{-- <label class="delivery-option-card">
+                                                                    <input type="radio" name="delivery_method" value="pakistan" {{ old('delivery_method') === 'pakistan' ? 'checked' : '' }}>
+                                                                    <span>
+                                                                        <strong>All Over Pakistan</strong>
+                                                                        <small>Nationwide courier delivery — Rs {{ number_format((float) $pakistanFee, 0) }}</small>
+                                                                    </span>
+                                                                </label>
+                                                                --}}
+                                                            </div>
+                                                            @error('delivery_method') <span class="text-danger">{{ $message }}</span> @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    @if($nonServiceableList->isNotEmpty())
+                                                    <div class="col-lg-12">
+                                                        <div class="alert alert-warning py-2 mb-3">
+                                                            <strong>Non-serviceable areas:</strong>
+                                                            {{ $nonServiceableList->implode(', ') }}.
+                                                            These are delivered via <strong>Courier Service</strong> only.
+                                                        </div>
+                                                    </div>
+                                                    @endif
+
+                                                    <div class="col-lg-12" id="localAreaWrap">
+                                                        <div class="form-group">
+                                                            <label>Serviceable Area*</label>
+                                                            @if ($serviceableAreas->isEmpty())
+                                                            <p class="text-muted">No serviceable areas available</p>
                                                             @else
-                                                            {{ html()->select('area_id', $area)->class('form-control')->id('area_id')->placeholder('Select Area')->required()->value(old('area_id')) }}
+                                                            <select id="local_area_id" class="form-control area-select">
+                                                                <option value="">Select Area</option>
+                                                                @foreach($serviceableAreas as $id => $name)
+                                                                    <option value="{{ $id }}" @selected((string) old('area_id') === (string) $id)>{{ $name }}</option>
+                                                                @endforeach
+                                                            </select>
                                                             @endif
                                                             @error('area_id') <span class="text-danger">{{ $message }}</span> @enderror
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12 d-none" id="courierAreaWrap">
+                                                        <div class="form-group">
+                                                            <label>Non-serviceable Area (Courier)*</label>
+                                                            @if ($nonServiceableAreas->isEmpty())
+                                                            <p class="text-muted">No non-serviceable areas listed yet. Contact support or choose All Over Pakistan.</p>
+                                                            @else
+                                                            <select id="courier_area_id" class="form-control area-select">
+                                                                <option value="">Select Area</option>
+                                                                @foreach($nonServiceableAreas as $id => $name)
+                                                                    <option value="{{ $id }}" @selected((string) old('area_id') === (string) $id)>{{ $name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12 d-none" id="pakistanAreaWrap">
+                                                        <div class="form-group">
+                                                            <label>City / Area (All Over Pakistan)*</label>
+                                                            <input type="text" name="delivery_area_text" id="delivery_area_text" class="form-control" placeholder="e.g. Lahore, Multan, Quetta" value="{{ old('delivery_area_text') }}">
+                                                            @error('delivery_area_text') <span class="text-danger">{{ $message }}</span> @enderror
                                                         </div>
                                                     </div>
 
@@ -459,24 +525,88 @@
         height: 50px;
         margin-right: 4px;
     }
+
+    .delivery-option-card {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        border: 2px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 12px 14px;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .delivery-option-card input {
+        margin-top: 4px;
+    }
+
+    .delivery-option-card span {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .delivery-option-card small {
+        color: #6c757d;
+    }
+
+    .delivery-option-card:has(input:checked) {
+        border-color: #e53935;
+        box-shadow: 0 0 0 1px #e53935;
+    }
 </style>
 @endpush
 
 @push('script')
 <script>
-    $('#area_id').on('change', function() {
+    function refreshCartSummary() {
+        var method = $('input[name="delivery_method"]:checked').val() || 'local';
+        var areaId = null;
 
-        $.post('cart/summary', {
-            area_id: $(this).val(),
+        if (method === 'local') {
+            areaId = $('#local_area_id').val();
+        } else if (method === 'courier') {
+            areaId = $('#courier_area_id').val();
+        }
+
+        $.post('{{ route("frontend.cart.summary") }}', {
+            area_id: areaId,
+            delivery_method: method,
             _token: $('meta[name="csrf-token"]').attr('content')
         }, function(res) {
-            $('#delivery_fee').text(res.delivery_fee);
+            $('#delivery_fee').text('+ ' + res.delivery_fee);
             $('#grand_total').text(res.order_total);
         });
+    }
+
+    function syncDeliveryMethodUI() {
+        var method = $('input[name="delivery_method"]:checked').val() || 'local';
+
+        $('#localAreaWrap, #courierAreaWrap, #pakistanAreaWrap').addClass('d-none');
+        $('#local_area_id, #courier_area_id').prop('disabled', true).removeAttr('name');
+        $('#delivery_area_text').prop('disabled', true);
+
+        if (method === 'local') {
+            $('#localAreaWrap').removeClass('d-none');
+            $('#local_area_id').prop('disabled', false).attr('name', 'area_id');
+        } else if (method === 'courier') {
+            $('#courierAreaWrap').removeClass('d-none');
+            $('#courier_area_id').prop('disabled', false).attr('name', 'area_id');
+        } else {
+            $('#pakistanAreaWrap').removeClass('d-none');
+            $('#delivery_area_text').prop('disabled', false);
+        }
+
+        refreshCartSummary();
+    }
+
+    $(document).on('change', 'input[name="delivery_method"]', syncDeliveryMethodUI);
+    $(document).on('change', '#local_area_id, #courier_area_id', refreshCartSummary);
+
+    $(function () {
+        syncDeliveryMethodUI();
     });
-
-
-
 
     function copyText(elementId, button) {
         const text = document.getElementById(elementId).textContent.trim();

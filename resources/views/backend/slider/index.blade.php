@@ -38,6 +38,7 @@
                     <th>Image</th>
                     <th>status</th>
                     <th>Media Type</th>
+                    <th>Position</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -60,6 +61,16 @@
                         <span class="badge {{ $data->type == 'website' ? 'bg-success' : 'bg-danger' }}">
                             {{ $data->type }}
                         </span>
+                    </td>
+
+                    <td class="align-middle">
+                        @if($data->type == 'mobile')
+                        <span class="badge {{ $data->position == 'upper' ? 'bg-info' : 'bg-secondary' }}">
+                            {{ $data->position == 'upper' ? 'Upper Slider' : 'Downside Slider' }}
+                        </span>
+                        @else
+                        <span class="text-muted">—</span>
+                        @endif
                     </td>
 
 

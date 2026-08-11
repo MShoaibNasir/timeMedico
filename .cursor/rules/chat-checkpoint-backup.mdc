@@ -1,0 +1,32 @@
+---
+description: After every prompt in this chat, stage and backup changes; support revert to previous stage
+alwaysApply: true
+---
+
+# Chat Checkpoint Backup Protocol
+
+This chat uses staged backups. Follow after EVERY completed prompt (unless the user only asked to revert).
+
+## After each prompt (mandatory)
+
+1. Identify files created/modified in that prompt only (not the whole dirty repo).
+2. Copy those files into `.cursor/chat-checkpoints/stage-NNN/` preserving relative paths.
+3. Update `.cursor/chat-checkpoints/MANIFEST.json` (increment `current_stage`, append stage entry with summary + file list).
+4. `git add` only those chat-touched files (and checkpoint files if tracking them is useful locally).
+5. Confirm briefly: `Backed up as stage-NNN`.
+
+## On revert request
+
+1. Read `MANIFEST.json`.
+2. Restore working tree files from the **previous** stage (`current_stage - 1`), not the latest.
+3. Set `current_stage` to that previous stage.
+4. Do not delete newer stage folders (keep history).
+5. Confirm what was restored.
+
+## Rules
+
+- Never discard current work unless the user asks to revert.
+- Do not commit unless the user explicitly asks to commit.
+- Do not stage unrelated pre-existing dirty files outside this chat’s edits.
+- Stage numbering: zero-padded 3 digits (`stage-001`, `stage-002`, …).
+- `stage-000` = baseline before this chat’s first code change.

@@ -66,9 +66,18 @@
                             </div>
                             <div class="form-group mb-3">
                                 <strong>Media Type:</strong>
-                                <select name="type" class="form-control">
+                                <select name="type" id="media_type" class="form-control">
                                     <option value="website" {{ $class->type=='website' ? 'selected' : '' }}>Web</option>
                                     <option value="mobile" {{ $class->type=='mobile' ? 'selected' : '' }}>Mobile</option>
+                                </select>
+                            </div>
+
+                            {{-- Ye field sirf tab dikhega jab Media Type "Mobile" select hoga --}}
+                            <div class="form-group mb-3" id="mobile_position_wrapper" style="{{ $class->type == 'mobile' ? '' : 'display: none;' }}">
+                                <strong>Mobile Slider Position:</strong>
+                                <select name="position" class="form-control">
+                                    <option value="upper" {{ $class->position=='upper' ? 'selected' : '' }}>Upper Slider</option>
+                                    <option value="downside" {{ $class->position=='downside' ? 'selected' : '' }}>Downside Slider</option>
                                 </select>
                             </div>
                         </div>
@@ -201,4 +210,23 @@
 @endpush
 
 @push('specific_js')
+<script>
+    $(document).ready(function () {
+        function toggleMobilePosition() {
+            if ($('#media_type').val() === 'mobile') {
+                $('#mobile_position_wrapper').show();
+            } else {
+                $('#mobile_position_wrapper').hide();
+            }
+        }
+
+        // page load par check karo (existing value ke mutabiq)
+        toggleMobilePosition();
+
+        // dropdown change hone par check karo
+        $('#media_type').on('change', function () {
+            toggleMobilePosition();
+        });
+    });
+</script>
 @endpush

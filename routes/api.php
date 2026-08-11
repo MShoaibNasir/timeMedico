@@ -3,7 +3,7 @@
 use App\Http\Controllers\API\AdditionalCertificateController;
 use App\Http\Controllers\API\AwardController;
 use App\Http\Controllers\API\BioProfileController;
-use App\Http\Controllers\API\FeedbackController;
+use App\Http\Controllers\API\BoardComitteeMemberController;
 use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\AreaController;
 use App\Http\Controllers\API\ImageController;
@@ -13,6 +13,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DepartmentController;
+use App\Http\Controllers\API\FeedbackController;
 use App\Http\Controllers\API\SliderController;
 use App\Http\Controllers\API\CouponController;
 use App\Http\Controllers\API\WebsiteSettingController;
@@ -31,6 +32,7 @@ Route::prefix('authentication')->middleware(['api.secret'])->name('authenticatio
 
 Route::prefix('slider')->middleware('api.secret')->controller(SliderController::class)->group(function () {
     Route::get('/list', 'index');
+    Route::get('/list/downslider', 'downslider');
 });
 Route::prefix('department')->middleware('api.secret')->controller(DepartmentController::class)->group(function () {
     Route::get('/list', 'index');
@@ -80,6 +82,8 @@ Route::prefix('Orders')->controller(OrderController::class)->group(function () {
 Route::prefix('area')->middleware(['api.secret'])->controller(AreaController::class)->group(function () {
     Route::get('/list', 'list');
 });
+
 Route::prefix('feedback')->middleware(['api.secret'])->controller(FeedbackController::class)->group(function () {
-    Route::get('/upload', 'upload');
+    Route::post('/upload', 'upload');
+    Route::post('/list', 'list');
 });

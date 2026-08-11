@@ -1,7 +1,5 @@
 @extends('backend.layout.master')
-
 @section('content')
-
 <section class="content mt-3">
     <div class="container-fluid">
 

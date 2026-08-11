@@ -355,25 +355,6 @@
                 </li>
 
                 @endcanany
-                @canany(['feedback-list'])
-                <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="bi bi-envelope-paper me-2"></i>
-                        <p>Feedback<br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @can('feedback-list')
-                        <li class="nav-item">
-                            <a href="{{ route('manager.feedback.list') }}" class="nav-link"> <i
-                                    class="nav-icon far fa-circle"></i>
-                                <p>Feedback List</p>
-                            </a>
-                        </li>
-                        @endcan
-                 
-                    </ul>
-                </li>
-
-                @endcanany
                 {{--
                 @canany(['coupon-list','coupon-create'])
                 <li class="nav-item">
