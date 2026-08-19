@@ -1,0 +1,404 @@
+<style>
+    .sidebar-brand {
+
+        background: white !important;
+    }
+</style>
+
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark"> <!--begin::Sidebar Brand-->
+    <div class="sidebar-brand">
+        <a href="{{ url('/manager') }}" class="brand-link">
+	@if($setting->hasMedia('logo'))
+		<img src="{{ $setting->getFirstMediaUrl('logo', 'full') }}" alt="{{ $setting->site_name ?? '' }}" class="brand-image opacity-75 shadow" />
+	@endif
+            <span class="brand-text fw-light">{{ __('CMS') }}</span>
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        @if (Auth::guard('admin')->check())
+        <form id="logout-form" action="{{ route('manager.logout') }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+        </form>
+        @endif
+        <nav class="mt-2"> <!--begin::Sidebar Menu-->
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ url('/manager') }}" class="nav-link"><i class="nav-icon fa-solid fa-house"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                @canany(['admin-create', 'admin-list', 'role-create', 'role-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-user"></i>
+                        <p>Authentication<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('admin-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.users.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Admin User</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('admin-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.users.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Admin Users</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('role-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.roles.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Role</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('role-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.roles.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Roles</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('permission-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.permissions.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Permissions</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('permission-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.permissions.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Permissions</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+				
+				@canany(['page-list', 'menu-list', 'website-setting'])
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-globe"></i>
+                            <p>CMS<i class="nav-arrow bi bi-chevron-right"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+						    @can('menu-list')
+                                <li class="nav-item">
+                                    <a href="{{ route('manager.cms.menus.index') }}" class="nav-link"> <i
+                                            class="nav-icon far fa-circle"></i>
+                                        <p>Manage Menu Items</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('page-list')
+                                <li class="nav-item">
+                                    <a href="{{ route('manager.cms.pages.index') }}" class="nav-link"> <i
+                                            class="nav-icon far fa-circle"></i>
+                                        <p>Manage Pages</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+					@can('website-setting')
+					<li class="nav-item">
+                    <a href="{{ route('manager.cms.settings.edit') }}" class="nav-link"> <i class="nav-icon fa-solid fa-gear"></i>
+                        <p>Website Setting</p>
+                    </a>
+                    </li>
+					@endcan
+                @endcanany
+
+                @canany(['department-create', 'department-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-building"></i>
+
+                        <p>Department <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('department-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.department.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Department</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('department-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.department.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Department</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
+
+                @canany(['type-create', 'type-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-layer-group"></i>
+
+                        <p>Type <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('type-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.type.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Type</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('type-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.type.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Type</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+                @canany(['category-create', 'category-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-tags"></i>
+
+                        <p>Category <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('category-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.category.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Category</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('category-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.category.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Category</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
+                @canany(['product-create', 'product-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-box-open"></i>
+                        <p>Product <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('product-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.product.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Product</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('product-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.product.filter') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Product</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
+                @canany(['slider-create', 'slider-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-images"></i>
+
+                        <p>Slider <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('slider-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.slider.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add Slider</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('slider-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.slider.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Slider</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+                @canany(['area-create', 'area-list'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-map-location-dot"></i>
+
+                        <p>Area <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('area-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.area.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Add area</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('area-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.area.index') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Manage Area</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcanany
+
+                <li class="nav-item">
+                    <a href="{{ route('manager.feedback.index') }}" class="nav-link">
+                        <i class="nav-icon fa-solid fa-comments"></i>
+                        <p>Customer Feedback</p>
+                    </a>
+                </li>
+
+                @canany(['order-list','place-order'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-cart-shopping"></i>
+                        <p>Order <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('order-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.order.filter') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Order List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('place-order')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.order.placeOrderPage') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Place Order</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+
+                @endcanany
+                @canany(['blog-list','blog-create'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="bi bi-newspaper me-2"></i>
+                        <p>Blog<br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('blog-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.blog.list') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Blog List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('blog-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.blog.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Blog Create</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+
+                @endcanany
+                @canany(['brand-list','brand-create'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="bi bi-tags me-2"></i>
+                        <p>Brand<br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('brand-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.brand.list') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Brand List</p>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('brand-create')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.brand.create') }}" class="nav-link"> <i
+                                    class="nav-icon far fa-circle"></i>
+                                <p>Brand Create</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+
+                @endcanany
+                {{--
+                @canany(['coupon-list','coupon-create'])
+                <li class="nav-item">
+                    <a href="#" class="nav-link"> <i class="nav-icon fa-solid fa-ticket"></i>
+                        <p>Coupon <br> Management<i class="nav-arrow bi bi-chevron-right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @can('coupon-list')
+                        <li class="nav-item">
+                            <a href="{{ route('manager.coupon.index') }}" class="nav-link"> <i
+                    class="nav-icon far fa-circle"></i>
+                <p>Coupon List</p>
+                </a>
+                </li>
+                @endcan
+                @can('coupon-create')
+                <li class="nav-item">
+                    <a href="{{ route('manager.coupon.create') }}" class="nav-link"> <i
+                            class="nav-icon far fa-circle"></i>
+                        <p>Coupon Create</p>
+                    </a>
+                </li>
+                @endcan
+            </ul>
+            </li>
+            @endcanany
+            --}}
+
+            <li class="nav-item">
+                <a href="{{ route('manager.logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    class="nav-link"> <i class="nav-icon fa-solid fa-right-from-bracket"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

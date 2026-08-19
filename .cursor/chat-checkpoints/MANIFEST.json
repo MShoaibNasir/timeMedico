@@ -1,6 +1,6 @@
 {
   "chat": "add-to-cart login redirect",
-  "current_stage": 20,
+  "current_stage": 39,
   "stages": [
     {
       "id": 0,
@@ -220,6 +220,271 @@
         "resources/views/backend/Orders/show.blade.php",
         "resources/views/frontend/cart-checkout.blade.php",
         "resources/views/frontend/order-detail.blade.php"
+      ]
+    },
+    {
+      "id": 21,
+      "name": "stage-021",
+      "summary": "AJAX cart quantity +/- without page reload on checkout",
+      "files": [
+        "app/Http/Controllers/CartController.php",
+        "resources/views/frontend/cart-checkout.blade.php"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "stage-022",
+      "summary": "Admin product bulk update module (select fields + apply)",
+      "files": [
+        "app/Http/Controllers/Backend/ProductController.php",
+        "app/Models/Product.php",
+        "routes/web.php",
+        "resources/views/backend/product/filter.blade.php",
+        "resources/views/backend/product/index.blade.php"
+      ]
+    },
+    {
+      "id": 23,
+      "name": "stage-023",
+      "summary": "Admin sidebar tab to list/view/delete customer feedback",
+      "files": [
+        "app/Http/Controllers/Backend/FeedbackBackendController.php",
+        "app/Models/Feedback.php",
+        "routes/web.php",
+        "resources/views/backend/partials/sidebar.blade.php",
+        "resources/views/backend/feedback/index.blade.php",
+        "resources/views/backend/feedback/show.blade.php",
+        "resources/views/backend/pages/index.blade.php"
+      ]
+    },
+    {
+      "id": 24,
+      "name": "stage-024",
+      "summary": "Feedback list filters + Excel export (.xlsx)",
+      "files": [
+        "app/Exports/FeedbackExport.php",
+        "app/Http/Controllers/Backend/FeedbackBackendController.php",
+        "routes/web.php",
+        "resources/views/backend/feedback/index.blade.php"
+      ]
+    },
+    {
+      "id": 25,
+      "name": "stage-025",
+      "summary": "Master activity logs table, middleware logger, admin list/detail UI",
+      "files": [
+        "database/migrations/2026_08_13_112400_create_master_logs_table.php",
+        "app/Models/MasterLog.php",
+        "app/Services/MasterLogger.php",
+        "config/masterlog.php",
+        "app/Http/Middleware/LogMasterActivity.php",
+        "app/Http/Controllers/Backend/MasterLogController.php",
+        "bootstrap/app.php",
+        "routes/web.php",
+        "resources/views/backend/master-logs/index.blade.php",
+        "resources/views/backend/master-logs/show.blade.php",
+        "resources/views/backend/partials/sidebar.blade.php",
+        "app/Http/Controllers/Backend/DashboardController.php",
+        "app/helpers.php",
+        "resources/views/backend/pages/index.blade.php"
+      ]
+    },
+    {
+      "id": 26,
+      "name": "stage-026",
+      "summary": "Remove master log delete and clear-older from admin panel",
+      "files": [
+        "resources/views/backend/master-logs/index.blade.php",
+        "resources/views/backend/master-logs/show.blade.php",
+        "routes/web.php",
+        "app/Http/Controllers/Backend/MasterLogController.php"
+      ]
+    },
+    {
+      "id": 27,
+      "name": "stage-027",
+      "summary": "Order status notifications with Firebase FCM + customer notification UI",
+      "files": [
+        "composer.json",
+        "config/firebase.php",
+        "app/Services/FcmService.php",
+        "app/Services/OrderNotificationService.php",
+        "app/Observers/OrderObserver.php",
+        "app/Models/Notification.php",
+        "app/Models/User.php",
+        "app/Http/Controllers/NotificationController.php",
+        "app/Http/Controllers/API/NotificationController.php",
+        "app/Providers/AppServiceProvider.php",
+        "routes/web.php",
+        "routes/api.php",
+        "resources/views/frontend/notifications.blade.php",
+        "resources/views/components/userDashboardSidebar.blade.php",
+        "resources/views/frontend/layout/header.blade.php",
+        ".gitignore",
+        ".env.example"
+      ]
+    },
+    {
+      "id": 28,
+      "name": "stage-028",
+      "summary": "Header dropdown toolbar fix + admin operational notifications",
+      "files": [
+        "resources/views/frontend/layout/header.blade.php",
+        "resources/views/frontend/Components/wishlist.blade.php",
+        "resources/views/frontend/Components/mycart.blade.php",
+        "resources/views/frontend/layout/footer.blade.php",
+        "public/frontend/css/style.css",
+        "database/migrations/2026_08_13_172800_create_admin_notifications_table.php",
+        "app/Models/AdminNotification.php",
+        "app/Models/Admin.php",
+        "app/Services/AdminNotificationService.php",
+        "app/Services/FeedbackServices.php",
+        "app/Http/Controllers/Backend/AdminNotificationController.php",
+        "app/Observers/OrderObserver.php",
+        "app/Http/Controllers/UserDashboardController.php",
+        "resources/views/backend/admin-notifications/index.blade.php",
+        "resources/views/backend/admin-notifications/show.blade.php",
+        "resources/views/backend/partials/sidebar.blade.php",
+        "routes/web.php"
+      ]
+    },
+    {
+      "id": 29,
+      "name": "stage-029",
+      "summary": "Match dropdown headers to navbar navy (#2C2872)",
+      "files": [
+        "public/frontend/css/style.css"
+      ]
+    },
+    {
+      "id": 30,
+      "name": "stage-030",
+      "summary": "Fix giant pagination SVG on master logs via Bootstrap 5 links",
+      "files": [
+        "resources/views/backend/master-logs/index.blade.php",
+        "resources/views/backend/admin-notifications/index.blade.php",
+        "resources/views/frontend/notifications.blade.php"
+      ]
+    },
+    {
+      "id": 31,
+      "name": "stage-031",
+      "summary": "Comment Discount UI in views for later implementation",
+      "files": [
+        "resources/views/frontend/order-detail.blade.php",
+        "resources/views/backend/Orders/show.blade.php",
+        "resources/views/frontend/cart-checkout.blade.php",
+        "resources/views/frontend/checkout.blade.php",
+        "resources/views/frontend/singleShop.blade.php",
+        "resources/views/frontend/cart.blade.php",
+        "resources/views/frontend/cart-old.blade.php",
+        "resources/views/frontend/Components/product.blade.php",
+        "resources/views/components/frontend/products/itemlist.blade.php",
+        "resources/views/frontend/Components/wishlist_product.blade.php",
+        "resources/views/frontend/brand.blade.php",
+        "resources/views/frontend/Components/quickViewModal.blade.php",
+        "resources/views/backend/product/filter.blade.php"
+      ]
+    },
+    {
+      "id": 32,
+      "name": "stage-032",
+      "summary": "Remove notification delete on frontend and backend; hide TEMP- order placeholders",
+      "files": [
+        "app/Models/Concerns/HidesTemporaryOrderNo.php",
+        "app/Models/Order.php",
+        "app/Models/Notification.php",
+        "app/Models/AdminNotification.php",
+        "app/Observers/OrderObserver.php",
+        "app/Services/OrderNotificationService.php",
+        "app/Services/AdminNotificationService.php",
+        "app/Http/Controllers/NotificationController.php",
+        "app/Http/Controllers/Backend/AdminNotificationController.php",
+        "app/Http/Controllers/API/NotificationController.php",
+        "routes/web.php",
+        "routes/api.php",
+        "resources/views/frontend/notifications.blade.php",
+        "resources/views/backend/admin-notifications/index.blade.php",
+        "resources/views/backend/admin-notifications/show.blade.php",
+        "resources/views/frontend/layout/header.blade.php"
+      ]
+    },
+    {
+      "id": 33,
+      "name": "stage-033",
+      "summary": "Fix header middle layout overflow without changing design; View also marks notification read",
+      "files": [
+        "resources/views/frontend/layout/header.blade.php",
+        "public/frontend/css/style.css",
+        "resources/views/frontend/notifications.blade.php",
+        "app/Http/Controllers/NotificationController.php"
+      ]
+    },
+    {
+      "id": 34,
+      "name": "stage-034",
+      "summary": "Replace displayed phone 0321-6905568 with 0321-5879954 in login, register, and admin place order",
+      "files": [
+        "resources/views/frontend/login.blade.php",
+        "resources/views/frontend/register.blade.php",
+        "resources/views/backend/Orders/placeOrder.blade.php"
+      ]
+    },
+    {
+      "id": 35,
+      "name": "stage-035",
+      "summary": "Send generated OTP to the user's email on send and resend, using themed mail template",
+      "files": [
+        "app/Mail/OtpMail.php",
+        "app/Services/OtpDeliveryService.php",
+        "resources/views/emails/otp.blade.php",
+        "resources/views/emails/otp-text.blade.php",
+        "app/Http/Controllers/FrontendController.php",
+        "app/Http/Controllers/API/RegisterController.php",
+        "routes/web.php",
+        "resources/views/frontend/otpModal.blade.php"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "stage-036",
+      "summary": "Fix OTP signup 500 by pointing SMTP at Mailtrap and clearer mail error",
+      "files": [
+        "app/Http/Controllers/FrontendController.php",
+        "resources/views/frontend/layout/header.blade.php"
+      ]
+    },
+    {
+      "id": 37,
+      "name": "stage-037",
+      "summary": "Narrow header search bar width without changing logo or action icons",
+      "files": [
+        "public/frontend/css/style.css"
+      ]
+    },
+    {
+      "id": 38,
+      "name": "stage-038",
+      "summary": "Reuse existing FCM stack: multi-device tokens, register API, invalid token cleanup, order push payload",
+      "files": [
+        "database/migrations/2026_08_17_124000_create_user_devices_table.php",
+        "app/Models/UserDevice.php",
+        "app/Models/User.php",
+        "app/Services/DeviceTokenService.php",
+        "app/Services/FcmService.php",
+        "app/Services/OrderNotificationService.php",
+        "app/Http/Controllers/API/RegisterController.php",
+        "app/Http/Controllers/API/NotificationController.php",
+        "routes/api.php"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "stage-039",
+      "summary": "Temporary POST /api/test/fcm endpoint to verify existing FcmService",
+      "files": [
+        "app/Http/Controllers/API/TestFcmController.php",
+        "routes/api.php"
       ]
     }
   ]

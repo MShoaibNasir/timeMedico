@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label>Phone</label>
-                            <input required type="text" id="phone_number" class="form-control" placeholder="0321-6905568" maxlength="12" pattern="03[0-9]{2}-[0-9]{7}" name="phone_number">
+                            <input required type="text" id="phone_number" class="form-control" placeholder="0321-5478852" maxlength="12" pattern="03[0-9]{2}-[0-9]{7}" name="phone_number">
                         </div>
                         {{--<div class="d-flex justify-content-between mb-4">
                                 <div class="form-check">
